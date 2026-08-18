@@ -30,27 +30,78 @@ export function verifyAccessCode(code: string): boolean {
   return a.length === b.length && timingSafeEqual(a, b);
 }
 
-/** Crée un jeton de session signé : "<expiration>.<signature>". */
-export function createSessionToken(): string {
+/** Crée un jeton de session signé portant le code du membre : "member|<code>|<exp>.<signature>". */
+export function createSessionToken(code: string): string {
   const expiresAt = Date.now() + SESSION_DURATION_MS;
-  const payload = String(expiresAt);
+  const payload = `member|${code}|${expiresAt}`;
   return `${payload}.${sign(payload)}`;
 }
 
-/** Valide un jeton de session (signature + expiration). */
-export function verifySessionToken(token: string | undefined): boolean {
-  if (!token) return false;
-  const [payload, signature] = token.split(".");
-  if (!payload || !signature) return false;
+/** Valide un jeton de session ; retourne le code du membre ou null. */
+export function verifySessionToken(token: string | undefined): string | null {
+  if (!token) return null;
+  const idx = token.lastIndexOf(".");
+  if (idx <= 0) return null;
+  const payload = token.slice(0, idx);
+  const signature = token.slice(idx + 1);
+  const parts = payload.split("|");
+  if (parts.length !== 3 || parts[0] !== "member") return null;
   const expected = sign(payload);
   const a = Buffer.from(signature);
   const b = Buffer.from(expected);
-  if (a.length !== b.length || !timingSafeEqual(a, b)) return false;
-  return Number(payload) > Date.now();
+  if (a.length !== b.length || !timingSafeEqual(a, b)) return null;
+  if (Number(parts[2]) <= Date.now()) return null;
+  return parts[1];
 }
 
 /** Lit le cookie de session et dit si l'utilisateur est membre connecté. */
 export async function isAuthenticated(): Promise<boolean> {
   const store = await cookies();
+  return verifySessionToken(store.get(SESSION_COOKIE)?.value) !== null;
+}
+
+/** Code du membre connecté (jeton de session), ou null. */
+export async function getSessionCode(): Promise<string | null> {
+  const store = await cookies();
   return verifySessionToken(store.get(SESSION_COOKIE)?.value);
+}
+
+/** Code d'accès affiché à l'acheteur après paiement confirmé. */
+export function getAccessCode(): string {
+  return ACCESS_CODE;
+}
+
+/* ===================== Administration ===================== */
+
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "capadmin2026";
+export const ADMIN_COOKIE = "admin_session";
+
+export function verifyAdminPassword(password: string): boolean {
+  const a = Buffer.from(password);
+  const b = Buffer.from(ADMIN_PASSWORD);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
+export function createAdminToken(): string {
+  const payload = `admin.${Date.now() + SESSION_DURATION_MS}`;
+  return `${payload}.${sign(payload)}`;
+}
+
+export function verifyAdminToken(token: string | undefined): boolean {
+  if (!token) return false;
+  const idx = token.lastIndexOf(".");
+  if (idx <= 0) return false;
+  const payload = token.slice(0, idx);
+  const signature = token.slice(idx + 1);
+  if (!payload.startsWith("admin.")) return false;
+  const expected = sign(payload);
+  const a = Buffer.from(signature);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length || !timingSafeEqual(a, b)) return false;
+  return Number(payload.slice("admin.".length)) > Date.now();
+}
+
+export async function isAdminAuthenticated(): Promise<boolean> {
+  const store = await cookies();
+  return verifyAdminToken(store.get(ADMIN_COOKIE)?.value);
 }

@@ -1,16 +1,15 @@
 import { NextResponse } from "next/server";
+import { createOrder, markOrderPaid, updateOrder } from "@/lib/orders";
+import { feexpayConfigured, requestToPay } from "@/lib/feexpay";
+import { site } from "@/content/site";
 
 /**
- * Création de commande — POINT D'INTÉGRATION PAIEMENT.
+ * Création de commande + lancement du paiement FeexPay.
  *
- * Pour l'instant : simulation (la commande est acceptée directement).
- *
- * Prochaine étape : brancher un agrégateur de paiement FCFA, par exemple
- * CinetPay, FedaPay, PayDunya ou Paystack :
- *   1. créer la transaction chez le prestataire avec le montant,
- *   2. rediriger le client vers l'URL de paiement retournée,
- *   3. dans le webhook de confirmation, générer/envoyer le code d'accès
- *      par email au client.
+ * - Mobile Money : demande "request to pay" (push USSD sur le téléphone),
+ *   puis le client est redirigé vers /paiement/<ref> qui suit le statut.
+ * - Sans FEEXPAY_API_KEY : mode simulation (paiement accepté directement)
+ *   pour tester le tunnel de bout en bout.
  */
 export async function POST(request: Request) {
   let data: { name?: string; email?: string; phone?: string; method?: string };
@@ -32,6 +31,39 @@ export async function POST(request: Request) {
     );
   }
 
-  // TODO (intégration paiement) : créer la transaction et renvoyer paymentUrl.
-  return NextResponse.json({ ok: true, redirect: "/merci" });
+  const amount = parseInt(site.pricing.price.replace(/\D/g, ""), 10);
+  const order = await createOrder({
+    name,
+    email,
+    phone,
+    method,
+    amount,
+    currency: site.pricing.currency,
+  });
+
+  // Mode simulation tant que FeexPay n'est pas configuré
+  if (!feexpayConfigured() || method === "card") {
+    // TODO carte bancaire : brancher la page de paiement carte FeexPay
+    await markOrderPaid(order.ref);
+    return NextResponse.json({ ok: true, redirect: `/merci?ref=${order.ref}` });
+  }
+
+  try {
+    const { reference } = await requestToPay({
+      method,
+      phone,
+      amount,
+      orderRef: order.ref,
+      customer: { name, email },
+    });
+    await updateOrder(order.ref, { providerRef: reference });
+    return NextResponse.json({ ok: true, redirect: `/paiement/${order.ref}` });
+  } catch (e) {
+    console.error("FeexPay requestToPay:", e);
+    await updateOrder(order.ref, { status: "failed" });
+    return NextResponse.json(
+      { ok: false, error: "Le paiement n'a pas pu être lancé. Vérifie ton numéro et réessaie." },
+      { status: 502 },
+    );
+  }
 }

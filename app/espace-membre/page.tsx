@@ -2,10 +2,13 @@ import { redirect } from "next/navigation";
 import { isAuthenticated } from "@/lib/auth";
 import { LogoutButton } from "@/components/LogoutButton";
 import { Icon } from "@/components/Icon";
-import { site } from "@/content/site";
+import { site as staticSite } from "@/content/site";
+import { getMergedSite } from "@/lib/content";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: `Espace membre — ${site.brand}`,
+  title: `Espace membre — ${staticSite.brand}`,
   robots: { index: false, follow: false },
 };
 
@@ -14,6 +17,8 @@ export default async function EspaceMembrePage() {
   if (!(await isAuthenticated())) {
     redirect("/connexion");
   }
+
+  const site = await getMergedSite();
 
   return (
     <main>

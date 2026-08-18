@@ -307,13 +307,13 @@ export const site = {
       "Garantie satisfait ou remboursé 7 jours",
     ],
     paymentNote:
-      "Paiement sécurisé (Mobile Money, Orange Money, Wave, carte bancaire) — Après ton achat, tu reçois immédiatement ton code d'accès à l'espace membre.",
+      "Paiement sécurisé via FeexPay (MTN MoMo, Moov Money, Celtiis Cash, carte bancaire) — Après ton achat, tu reçois immédiatement ton code d'accès personnel par email.",
   },
 
   paymentMethods: [
-    { id: "orange", label: "Orange Money", icon: "smartphone" as IconName },
-    { id: "mtn", label: "MTN Mobile Money", icon: "wallet" as IconName },
-    { id: "wave", label: "Wave", icon: "wave" as IconName },
+    { id: "mtn", label: "MTN Mobile Money", icon: "smartphone" as IconName },
+    { id: "moov", label: "Moov Money", icon: "wallet" as IconName },
+    { id: "celtiis", label: "Celtiis Cash", icon: "wave" as IconName },
     { id: "card", label: "Carte bancaire", icon: "credit-card" as IconName },
   ],
 

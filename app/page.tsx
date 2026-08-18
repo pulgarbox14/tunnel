@@ -1,10 +1,16 @@
-import { site } from "@/content/site";
 import { Cta } from "@/components/Cta";
 import { Icon } from "@/components/Icon";
+import { ResultsCarousel } from "@/components/ResultsCarousel";
+import { TrackVisit } from "@/components/TrackVisit";
+import { getMergedSite } from "@/lib/content";
 
-export default function HomePage() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const site = await getMergedSite();
   return (
     <main>
+      <TrackVisit />
       {/* ===== HERO ===== */}
       <section className="grid-bg text-center">
         <div className="container">
@@ -282,30 +288,7 @@ export default function HomePage() {
           <p className="muted text-center" style={{ maxWidth: 520, margin: "0 auto" }}>
             {site.results.intro}
           </p>
-          <div className="results-grid">
-            {site.results.items.map((t, i) => (
-              <div className="result-card" key={i}>
-                <p className="caption">
-                  <strong>{t.name}</strong> : « {t.caption} »
-                </p>
-                <div className={`media${t.type === "image" ? " whatsapp" : ""}`}>
-                  {t.src ? (
-                    t.type === "vimeo" ? (
-                      <iframe src={t.src} allowFullScreen title={t.name} />
-                    ) : (
-                      /* eslint-disable-next-line @next/next/no-img-element */
-                      <img src={t.src} alt={`Avis de ${t.name}`} />
-                    )
-                  ) : (
-                    <span className="icon-line">
-                      <Icon name={t.type === "vimeo" ? "video" : "smartphone"} size={16} />
-                      {t.type === "vimeo" ? "Vidéo Vimeo à ajouter" : "Capture WhatsApp à ajouter"}
-                    </span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+          <ResultsCarousel items={site.results.items} />
           <div className="text-center mt-3">
             <Cta href="/checkout" label="Rejoindre le programme" sub="maintenant" />
           </div>

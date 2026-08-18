@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Données du site (commandes, codes, stats, contenu admin)
+/data/
+# Fichiers uploadés depuis le panel admin
+/public/uploads/*
+!/public/uploads/.gitkeep

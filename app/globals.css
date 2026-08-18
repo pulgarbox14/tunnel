@@ -662,6 +662,207 @@ input:focus { outline: 2px solid var(--yellow-light); }
 .funnel-steps span { color: var(--gray-dark); }
 .funnel-steps .active { color: var(--yellow); }
 
+/* ===== Carrousel d'avis ===== */
+.carousel-wrap {
+  position: relative;
+  margin-top: 30px;
+}
+.carousel-track {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 6px 4px 16px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--yellow) transparent;
+}
+.carousel-item {
+  min-width: 290px;
+  max-width: 290px;
+  scroll-snap-align: center;
+  flex-shrink: 0;
+}
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--yellow);
+  background: rgba(0, 0, 0, 0.75);
+  color: var(--yellow);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carousel-arrow:hover { background: var(--yellow); color: var(--ink); }
+.carousel-arrow.left { left: -8px; }
+.carousel-arrow.right { right: -8px; }
+
+/* ===== Paiement en cours ===== */
+.spinner {
+  width: 46px;
+  height: 46px;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: 4px solid rgba(252, 209, 22, 0.25);
+  border-top-color: var(--yellow);
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== Code d'accès (page merci) ===== */
+.access-code-box {
+  background: #000;
+  border: 2px dashed var(--yellow);
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: var(--yellow);
+}
+
+/* ===== Panel admin ===== */
+.admin-wrap { padding-bottom: 60px; }
+.admin-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  border-bottom: 1px solid rgba(252, 209, 22, 0.3);
+  padding-bottom: 10px;
+}
+.admin-tab {
+  background: transparent;
+  border: 1.5px solid var(--gray-dark);
+  color: var(--gray);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.admin-tab.active {
+  border-color: var(--yellow);
+  background: var(--yellow);
+  color: var(--ink);
+}
+.admin-h2 {
+  color: var(--yellow);
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 26px 0 10px;
+}
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+.stat-card {
+  background: var(--bg-card);
+  border: 2px solid var(--yellow);
+  border-radius: 14px;
+  padding: 18px;
+  text-align: center;
+}
+.stat-card .num { display: block; font-size: 1.6rem; font-weight: 900; }
+.stat-card .label {
+  font-size: 0.68rem;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.visits-bars { max-width: 480px; }
+.visit-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-size: 0.75rem;
+}
+.visit-row .d { width: 44px; color: var(--gray); }
+.visit-row .bar {
+  height: 10px;
+  background: linear-gradient(90deg, var(--yellow), var(--yellow-dark));
+  border-radius: 5px;
+  min-width: 4px;
+}
+.visit-row .n { color: var(--gray); }
+.table-scroll { overflow-x: auto; }
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+  min-width: 640px;
+}
+.admin-table th {
+  text-align: left;
+  color: var(--yellow);
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(252, 209, 22, 0.35);
+}
+.admin-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--gray);
+  vertical-align: top;
+}
+.admin-table .mono { font-family: monospace; color: var(--yellow); }
+.status.paid { color: var(--green); }
+.status.pending { color: var(--yellow); }
+.status.failed { color: var(--red); }
+.small-btn { font-size: 0.65rem; padding: 5px 12px; }
+.lesson-row { margin-bottom: 12px; }
+.lesson-row label {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--gray);
+  margin-bottom: 4px;
+}
+.admin-wrap select {
+  background: #111;
+  border: 1.5px solid var(--yellow);
+  border-radius: 10px;
+  color: var(--white);
+  font-size: 0.85rem;
+  padding: 12px 14px;
+}
+.avis-editor { padding: 18px; }
+.avis-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.avis-row input[type="text"] { flex: 1; min-width: 180px; }
+.img-field {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+.img-field input[type="text"] { flex: 1; min-width: 200px; }
+.upload-btn { display: inline-flex; align-items: center; cursor: pointer; }
+.img-preview {
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1.5px solid var(--yellow);
+}
+
 /* ===== Footer ===== */
 footer {
   border-top: 1px solid rgba(252, 209, 22, 0.3);
