@@ -1,20 +1,20 @@
 /* ===== Thème sombre / rouge — tunnel de vente ===== */
 :root {
-  --bg: #000000;
-  --bg-card: #0d0d0d;
+  --bg: #ffffff;
+  --bg-card: #fffdf3;
   --red: #e3132b;
   --red-dark: #8f0d1c;
   --pink: #e91e5a;
   /* Couleurs du drapeau du Bénin */
-  --yellow: #fcd116;
-  --yellow-light: #ffe45c;
+  --yellow: #f0c000;
+  --yellow-light: #ffd83d;
   --yellow-dark: #c7a300;
   --green: #00a865;
   --green-dark: #008751;
   --ink: #1a1200; /* texte sombre sur fond jaune */
   --white: #ffffff;
-  --gray: #b8b8b8;
-  --gray-dark: #6e6e6e;
+  --gray: #57534e;
+  --gray-dark: #8a8578;
   --radius: 14px;
 }
 
@@ -26,7 +26,7 @@ body {
   /* Poppins est injectée par next/font dans le layout ; ceci est le repli. */
   font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
   background: var(--bg);
-  color: var(--white);
+  color: #1c1917;
   line-height: 1.65;
   font-size: 15px;
   overflow-x: hidden;
@@ -41,8 +41,8 @@ h1, h2, h3 { letter-spacing: 0.4px; }
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(227, 19, 43, 0.18) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(227, 19, 43, 0.18) 1px, transparent 1px);
+    linear-gradient(rgba(227, 19, 43, 0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(227, 19, 43, 0.10) 1px, transparent 1px);
   background-size: 90px 90px;
   transform: perspective(600px) rotateX(28deg) scale(1.4);
   transform-origin: center top;
@@ -162,7 +162,7 @@ h1, h2, h3 { letter-spacing: 0.4px; }
 .btn-ghost {
   background: transparent;
   border: 1.5px solid var(--yellow);
-  color: var(--white);
+  color: #1c1917;
   font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -217,7 +217,7 @@ h1, h2, h3 { letter-spacing: 0.4px; }
 }
 .red-list li .dot-green { background: var(--green-dark); }
 .red-list li .dot-yellow { background: var(--yellow); color: var(--ink); }
-.red-list strong { color: var(--white); }
+.red-list strong { color: #111; }
 .red-list .hl { color: var(--red); font-weight: 700; }
 .red-list .hl-y { color: var(--yellow); font-weight: 700; }
 
@@ -246,7 +246,7 @@ h1, h2, h3 { letter-spacing: 0.4px; }
   font-weight: 900;
   font-size: 0.85rem;
 }
-.numbered strong { color: var(--white); }
+.numbered strong { color: #111; }
 
 /* ===== Sections & utilitaires ===== */
 section { padding: 56px 0; }
@@ -256,7 +256,7 @@ section { padding: 56px 0; }
 .mt-1 { margin-top: 12px; }
 .mt-2 { margin-top: 24px; }
 .mt-3 { margin-top: 36px; }
-.strong-white { color: var(--white); font-weight: 700; }
+.strong-white { color: #111; font-weight: 700; }
 
 /* ===== Barre de confiance ===== */
 .trust-bar {
@@ -346,7 +346,7 @@ section { padding: 56px 0; }
 }
 .module-card .cover {
   aspect-ratio: 3 / 2;
-  background: linear-gradient(135deg, #191400, #382c00 60%, var(--yellow-dark));
+  background: linear-gradient(135deg, #fff6cf, #ffe98f 60%, var(--yellow));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -370,7 +370,7 @@ section { padding: 56px 0; }
   font-weight: 800;
   text-transform: uppercase;
   padding: 8px 14px 4px;
-  color: var(--white);
+  color: #111;
 }
 .module-card .duration {
   color: var(--yellow);
@@ -424,10 +424,10 @@ input[type="email"],
 input[type="tel"],
 input[type="password"] {
   width: 100%;
-  background: #111;
+  background: #ffffff;
   border: 1.5px solid var(--yellow);
   border-radius: 10px;
-  color: var(--white);
+  color: #111;
   font-size: 1rem;
   padding: 14px 16px;
 }
@@ -444,8 +444,8 @@ input:focus { outline: 2px solid var(--yellow-light); }
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #111;
-  border: 1.5px solid var(--gray-dark);
+  background: #ffffff;
+  border: 1.5px solid #d6d3d1;
   border-radius: 10px;
   padding: 12px 14px;
   cursor: pointer;
@@ -479,13 +479,13 @@ input:focus { outline: 2px solid var(--yellow-light); }
   width: 100%;
   aspect-ratio: 16 / 9;
   border: 0;
-  background: #0a0a0a;
+  background: #f5f5f4;
   display: block;
 }
 .video-item .placeholder {
   width: 100%;
   aspect-ratio: 16 / 9;
-  background: #0a0a0a;
+  background: #f5f5f4;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -571,13 +571,13 @@ input:focus { outline: 2px solid var(--yellow-light); }
   border: 2.5px solid var(--yellow);
   border-radius: 16px;
   overflow: hidden;
-  background: linear-gradient(135deg, #191400, #382c00 60%, var(--yellow-dark));
+  background: linear-gradient(135deg, #fff6cf, #ffe98f 60%, var(--yellow));
   box-shadow: 0 0 26px rgba(252, 209, 22, 0.25);
   aspect-ratio: 4 / 3;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.55);
+  color: #a08c2f;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -634,7 +634,7 @@ input:focus { outline: 2px solid var(--yellow-light); }
   text-transform: uppercase;
 }
 .result-card .media {
-  background: #0a0a0a;
+  background: #f5f5f4;
   border-radius: 12px;
   overflow: hidden;
   aspect-ratio: 16 / 10;
