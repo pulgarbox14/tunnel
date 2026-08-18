@@ -17,7 +17,7 @@ export default function CheckoutPage() {
           </div>
 
           <div className="card-dark text-center">
-            <span className="badge">{site.pricing.badge}</span>
+            <span className="badge badge-yellow">{site.pricing.badge}</span>
             <h1 className="title-red mt-2" style={{ fontSize: "1.4rem" }}>
               Finalise ta commande
             </h1>

@@ -8,7 +8,7 @@ export default function HomePage() {
       {/* ===== HERO ===== */}
       <section className="grid-bg text-center">
         <div className="container">
-          <span className="badge">
+          <span className="badge badge-yellow">
             <Icon name="graduation-cap" size={13} /> {site.hero.badge}
           </span>
           <h1 className="title-red mt-2">{site.hero.title}</h1>
@@ -180,7 +180,7 @@ export default function HomePage() {
               de la découverte des universités jusqu&apos;à ton plan de carrière.
             </span>
           </p>
-          <h2 className="section-heading">Découvre les 3 modules du programme</h2>
+          <h2 className="section-heading">Découvre les 5 modules du programme</h2>
           <div className="modules-grid">
             {site.modules.map((mod) => (
               <div className="module-card" key={mod.title}>
@@ -189,11 +189,13 @@ export default function HomePage() {
                 </div>
                 <span className="tag">{mod.tag}</span>
                 <h3>{mod.title}</h3>
+                {mod.duration && <span className="duration">{mod.duration}</span>}
                 <ul>
                   {mod.points.map((p) => (
                     <li key={p}>{p}</li>
                   ))}
                 </ul>
+                {mod.promise && <p className="promise">« {mod.promise} »</p>}
               </div>
             ))}
           </div>
@@ -215,7 +217,7 @@ export default function HomePage() {
                 <ul className="red-list divided" style={{ marginBottom: 0 }}>
                   {site.coach.points.map((p) => (
                     <li key={p} style={{ marginBottom: 12 }}>
-                      <span className="dot">
+                      <span className="dot dot-green">
                         <Icon name="check" size={13} />
                       </span>
                       <span>{p}</span>
@@ -315,7 +317,7 @@ export default function HomePage() {
         <div className="container">
           <h2 className="section-heading">Rejoins le programme maintenant</h2>
           <div className="card-dark" style={{ maxWidth: 420, margin: "0 auto" }}>
-            <span className="badge">{site.pricing.badge}</span>
+            <span className="badge badge-yellow">{site.pricing.badge}</span>
             <div className="mt-2 price-old">
               {site.pricing.oldPrice} {site.pricing.currency}
             </div>
@@ -326,7 +328,7 @@ export default function HomePage() {
             <ul className="red-list mt-2" style={{ textAlign: "left" }}>
               {site.pricing.features.map((f) => (
                 <li key={f}>
-                  <span className="dot">
+                  <span className="dot dot-green">
                     <Icon name="check" size={14} />
                   </span>
                   <span>{f}</span>

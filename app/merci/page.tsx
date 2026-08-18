@@ -18,7 +18,7 @@ export default function MerciPage() {
           </div>
 
           <div className="card-dark text-center">
-            <span className="badge">
+            <span className="badge badge-green">
               <Icon name="check" size={13} /> Commande confirmée
             </span>
             <h1 className="title-red mt-2" style={{ fontSize: "1.5rem" }}>

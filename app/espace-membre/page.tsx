@@ -20,7 +20,7 @@ export default async function EspaceMembrePage() {
       <div className="container-wide">
         <div className="member-header">
           <div>
-            <span className="badge">
+            <span className="badge badge-green">
               <Icon name="check" size={13} /> Membre connecté
             </span>
             <h1 className="title-red mt-1" style={{ fontSize: "1.4rem" }}>

@@ -22,6 +22,7 @@ export default function RootLayout({
     <html lang="fr">
       <body className={poppins.className}>
         <div className="topbar">{site.topbar}</div>
+        <div className="flag-stripe" />
         {children}
         <footer>
           <p>© 2026 {site.brand} — Tous droits réservés</p>

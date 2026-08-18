@@ -5,6 +5,13 @@
   --red: #e3132b;
   --red-dark: #8f0d1c;
   --pink: #e91e5a;
+  /* Couleurs du drapeau du Bénin */
+  --yellow: #fcd116;
+  --yellow-light: #ffe45c;
+  --yellow-dark: #c7a300;
+  --green: #00a865;
+  --green-dark: #008751;
+  --ink: #1a1200; /* texte sombre sur fond jaune */
   --white: #ffffff;
   --gray: #b8b8b8;
   --gray-dark: #6e6e6e;
@@ -59,6 +66,17 @@ h1, h2, h3 { letter-spacing: 0.4px; }
   padding: 8px 12px;
 }
 
+/* Liseré tricolore (drapeau du Bénin) sous le bandeau */
+.flag-stripe {
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--green-dark) 0 33.3%,
+    var(--yellow) 33.3% 66.6%,
+    var(--red) 66.6% 100%
+  );
+}
+
 /* ===== Badges & titres ===== */
 .badge {
   display: inline-flex;
@@ -73,6 +91,8 @@ h1, h2, h3 { letter-spacing: 0.4px; }
   padding: 7px 18px;
   border-radius: 999px;
 }
+.badge-yellow { background: var(--yellow); color: var(--ink); }
+.badge-green { background: var(--green-dark); color: var(--white); }
 
 .title-red {
   color: var(--red);
@@ -95,9 +115,14 @@ h1, h2, h3 { letter-spacing: 0.4px; }
 .section-heading::after {
   content: "";
   display: block;
-  width: 54px;
+  width: 66px;
   height: 3px;
-  background: var(--red);
+  background: linear-gradient(
+    90deg,
+    var(--green-dark) 0 33.3%,
+    var(--yellow) 33.3% 66.6%,
+    var(--red) 66.6% 100%
+  );
   margin: 12px auto 0;
   border-radius: 2px;
 }
@@ -105,8 +130,8 @@ h1, h2, h3 { letter-spacing: 0.4px; }
 /* ===== Boutons CTA ===== */
 .btn-cta {
   display: inline-block;
-  background: linear-gradient(180deg, var(--pink), var(--red));
-  color: var(--white);
+  background: linear-gradient(180deg, var(--yellow-light), var(--yellow) 55%, #eec20d);
+  color: var(--ink);
   text-decoration: none;
   text-align: center;
   font-weight: 900;
@@ -117,7 +142,7 @@ h1, h2, h3 { letter-spacing: 0.4px; }
   border-radius: 999px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 6px 24px rgba(227, 19, 43, 0.45);
+  box-shadow: 0 6px 24px rgba(252, 209, 22, 0.35);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .btn-cta small {
@@ -125,11 +150,11 @@ h1, h2, h3 { letter-spacing: 0.4px; }
   font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 2px;
-  opacity: 0.85;
+  opacity: 0.75;
 }
 .btn-cta:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(227, 19, 43, 0.6);
+  box-shadow: 0 10px 32px rgba(252, 209, 22, 0.55);
 }
 .btn-cta:disabled { opacity: 0.6; cursor: wait; }
 .btn-block { display: block; width: 100%; }
@@ -190,8 +215,14 @@ h1, h2, h3 { letter-spacing: 0.4px; }
   justify-content: center;
   font-size: 0.8rem;
 }
+.red-list li .dot-green { background: var(--green-dark); }
+.red-list li .dot-yellow { background: var(--yellow); color: var(--ink); }
 .red-list strong { color: var(--white); }
 .red-list .hl { color: var(--red); font-weight: 700; }
+.red-list .hl-y { color: var(--yellow); font-weight: 700; }
+
+.text-yellow { color: var(--yellow); }
+.text-green { color: var(--green); }
 
 .numbered { list-style: none; }
 .numbered li {
@@ -341,6 +372,22 @@ section { padding: 56px 0; }
   padding: 8px 14px 4px;
   color: var(--white);
 }
+.module-card .duration {
+  color: var(--yellow);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 0 14px;
+}
+.module-card .promise {
+  border-top: 1px solid rgba(227, 19, 43, 0.45);
+  margin-top: auto;
+  padding: 10px 14px 14px;
+  font-size: 0.74rem;
+  color: var(--gray);
+  font-style: italic;
+}
 .module-card ul {
   list-style: none;
   padding: 4px 14px 16px;
@@ -355,9 +402,10 @@ section { padding: 56px 0; }
 .price-now {
   font-size: clamp(1.8rem, 7vw, 2.6rem);
   font-weight: 900;
-  color: var(--red);
+  color: var(--yellow);
   line-height: 1.1;
   white-space: nowrap;
+  text-shadow: 0 0 26px rgba(252, 209, 22, 0.35);
 }
 
 /* ===== Formulaires ===== */
@@ -612,7 +660,7 @@ input:focus { outline: 2px solid var(--pink); }
   letter-spacing: 1px;
 }
 .funnel-steps span { color: var(--gray-dark); }
-.funnel-steps .active { color: var(--red); }
+.funnel-steps .active { color: var(--yellow); }
 
 /* ===== Footer ===== */
 footer {
