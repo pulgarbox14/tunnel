@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Icon } from "@/components/Icon";
 
 export function LoginForm() {
   const router = useRouter();
@@ -46,7 +47,11 @@ export function LoginForm() {
           required
         />
       </div>
-      {error && <p className="error-msg">❌ {error}</p>}
+      {error && (
+        <p className="error-msg icon-line">
+          <Icon name="alert-triangle" size={13} /> {error}
+        </p>
+      )}
       <button type="submit" className="btn-cta btn-block" disabled={loading}>
         {loading ? "Vérification…" : "Débloquer mes vidéos"}
         <small>accès membre</small>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Icon } from "@/components/Icon";
 import { site } from "@/content/site";
 
 export const metadata = { title: `Merci — ${site.brand}` };
@@ -17,12 +18,14 @@ export default function MerciPage() {
           </div>
 
           <div className="card-dark text-center">
-            <span className="badge">✅ Commande confirmée</span>
+            <span className="badge">
+              <Icon name="check" size={13} /> Commande confirmée
+            </span>
             <h1 className="title-red mt-2" style={{ fontSize: "1.5rem" }}>
-              Félicitations, tu es dedans ! 🎉
+              Félicitations, tu es dedans !
             </h1>
             <p className="muted mt-1">
-              Ton accès à la formation est en cours d&apos;activation. Tu vas recevoir
+              Ton accès au programme est en cours d&apos;activation. Tu vas recevoir
               ton <span className="strong-white">code d&apos;accès par email</span> dans
               quelques minutes.
             </p>

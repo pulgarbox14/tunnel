@@ -23,8 +23,8 @@ body {
   overflow-x: hidden;
 }
 
-/* Grille rouge en perspective */
-.grid-bg { position: relative; }
+/* Grille rouge en perspective (confinée à sa section) */
+.grid-bg { position: relative; overflow: hidden; }
 .grid-bg::before {
   content: "";
   position: absolute;
@@ -57,7 +57,9 @@ body {
 
 /* ===== Badges & titres ===== */
 .badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: var(--red);
   color: var(--white);
   font-size: 0.68rem;
@@ -242,7 +244,10 @@ section { padding: 56px 0; }
   font-weight: 800;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   padding: 6px;
   border-radius: 8px 8px 0 0;
 }
@@ -297,8 +302,8 @@ section { padding: 56px 0; }
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.4rem;
 }
+.cover-icon { color: var(--white); opacity: 0.9; }
 .module-card .tag,
 .tag {
   background: var(--red);
@@ -432,6 +437,31 @@ input:focus { outline: 2px solid var(--pink); }
   gap: 16px;
   flex-wrap: wrap;
   padding: 24px 0 8px;
+}
+
+/* ===== Icônes ===== */
+.icon-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.icon-line svg { flex-shrink: 0; }
+
+.module-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.module-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--red);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ===== Étapes du tunnel (checkout) ===== */

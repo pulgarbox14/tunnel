@@ -1,7 +1,10 @@
-# Tunnel de Vente — Formation Vidéo
+# Cap sur monAvenir — Réussir Son Post-BAC
 
 Tunnel de vente complet construit avec **Next.js 16 + TypeScript** (App Router).
-Design sombre : fond noir, grille rouge en perspective, accents rouges.
+Thème : orientation et accompagnement des nouveaux bacheliers (universités,
+bourses, plateforme Apremonbac, débouchés métiers et impact de l'IA).
+Design sombre : fond noir, grille rouge en perspective, accents rouges,
+icônes SVG inline (composant `Icon`).
 
 ## Parcours du tunnel
 

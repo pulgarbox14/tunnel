@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { site } from "@/content/site";
+import { Icon } from "@/components/Icon";
 
 export function CheckoutForm() {
   const router = useRouter();
@@ -62,15 +63,19 @@ export function CheckoutForm() {
           {site.paymentMethods.map((m, i) => (
             <label key={m.id}>
               <input type="radio" name="method" value={m.id} defaultChecked={i === 0} required />
-              <span>
-                {m.emoji} {m.label}
+              <span className="icon-line">
+                <Icon name={m.icon} size={16} /> {m.label}
               </span>
             </label>
           ))}
         </div>
       </div>
 
-      {error && <p className="error-msg">❌ {error}</p>}
+      {error && (
+        <p className="error-msg icon-line">
+          <Icon name="alert-triangle" size={13} /> {error}
+        </p>
+      )}
 
       <button type="submit" className="btn-cta btn-block" disabled={loading}>
         {loading ? "Traitement…" : "Valider ma commande"}

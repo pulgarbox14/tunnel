@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { site } from "@/content/site";
+import { Icon } from "@/components/Icon";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,7 +19,9 @@ export default function RootLayout({
         <footer>
           <p>© 2026 {site.brand} — Tous droits réservés</p>
           <p className="mt-1">
-            <a href="/connexion">🔑 Déjà membre ? Accéder à mes vidéos</a>
+            <a href="/connexion" className="icon-line">
+              <Icon name="key" size={12} /> Déjà membre ? Accéder à mes vidéos
+            </a>
           </p>
           <p className="mt-1">
             <a href="#">Mentions légales</a> · <a href="#">CGV</a> ·{" "}
