@@ -314,7 +314,7 @@ section { padding: 56px 0; }
 
 /* ===== Prix ===== */
 .price-old { text-decoration: line-through; color: var(--gray-dark); font-size: 1.1rem; }
-.price-now { font-size: 3rem; font-weight: 900; color: var(--red); line-height: 1.1; }
+.price-now { font-size: clamp(1.8rem, 7vw, 2.6rem); font-weight: 900; color: var(--red); line-height: 1.1; white-space: nowrap; }
 
 /* ===== Footer ===== */
 footer {
