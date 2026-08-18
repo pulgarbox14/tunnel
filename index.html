@@ -3,510 +3,237 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tunnel de Vente en un Instant — Lancez votre offre aujourd'hui</title>
-  <meta name="description" content="Créez un tunnel de vente complet en quelques minutes. Page de capture, page de vente, paiement : tout est prêt.">
-  <style>
-    :root {
-      --primary: #4f46e5;
-      --primary-dark: #4338ca;
-      --accent: #f59e0b;
-      --dark: #0f172a;
-      --gray: #64748b;
-      --light: #f8fafc;
-      --white: #ffffff;
-      --radius: 12px;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      color: var(--dark);
-      background: var(--white);
-      line-height: 1.6;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* ===== Barre d'urgence ===== */
-    .urgency-bar {
-      background: var(--dark);
-      color: var(--white);
-      text-align: center;
-      padding: 10px 16px;
-      font-size: 0.9rem;
-    }
-    .urgency-bar strong { color: var(--accent); }
-
-    /* ===== Header ===== */
-    header {
-      padding: 20px 0;
-      border-bottom: 1px solid #e2e8f0;
-    }
-    header .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .logo {
-      font-size: 1.3rem;
-      font-weight: 800;
-    }
-    .logo span { color: var(--primary); }
-
-    /* ===== Boutons ===== */
-    .btn {
-      display: inline-block;
-      padding: 16px 36px;
-      border-radius: var(--radius);
-      font-size: 1.05rem;
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-    .btn-primary {
-      background: var(--primary);
-      color: var(--white);
-      box-shadow: 0 8px 20px rgba(79, 70, 229, 0.35);
-    }
-    .btn-primary:hover {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-    }
-    .btn-small { padding: 10px 22px; font-size: 0.9rem; }
-
-    /* ===== Hero ===== */
-    .hero {
-      padding: 80px 0 70px;
-      text-align: center;
-      background: linear-gradient(180deg, var(--light) 0%, var(--white) 100%);
-    }
-    .badge {
-      display: inline-block;
-      background: #eef2ff;
-      color: var(--primary);
-      padding: 6px 16px;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
-    .hero h1 {
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      line-height: 1.15;
-      margin-bottom: 20px;
-      font-weight: 800;
-    }
-    .hero h1 em {
-      font-style: normal;
-      color: var(--primary);
-    }
-    .hero p.sub {
-      font-size: 1.2rem;
-      color: var(--gray);
-      max-width: 640px;
-      margin: 0 auto 32px;
-    }
-    .hero .guarantee {
-      margin-top: 14px;
-      font-size: 0.85rem;
-      color: var(--gray);
-    }
-
-    /* ===== Compte à rebours ===== */
-    .countdown {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      margin: 32px 0;
-    }
-    .countdown .unit {
-      background: var(--dark);
-      color: var(--white);
-      border-radius: var(--radius);
-      padding: 14px 18px;
-      min-width: 76px;
-    }
-    .countdown .num {
-      font-size: 1.8rem;
-      font-weight: 800;
-      display: block;
-    }
-    .countdown .label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      opacity: 0.7;
-    }
-
-    /* ===== Sections ===== */
-    section { padding: 70px 0; }
-    .section-title {
-      text-align: center;
-      font-size: clamp(1.6rem, 4vw, 2.2rem);
-      font-weight: 800;
-      margin-bottom: 12px;
-    }
-    .section-sub {
-      text-align: center;
-      color: var(--gray);
-      max-width: 560px;
-      margin: 0 auto 48px;
-    }
-
-    /* ===== Bénéfices ===== */
-    .benefits { background: var(--light); }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 28px;
-    }
-    .card {
-      background: var(--white);
-      border-radius: var(--radius);
-      padding: 32px 28px;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
-    }
-    .card .icon {
-      font-size: 2rem;
-      margin-bottom: 14px;
-    }
-    .card h3 { margin-bottom: 8px; font-size: 1.15rem; }
-    .card p { color: var(--gray); font-size: 0.95rem; }
-
-    /* ===== Étapes ===== */
-    .steps { counter-reset: step; }
-    .step {
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-      max-width: 640px;
-      margin: 0 auto 28px;
-    }
-    .step .num {
-      flex-shrink: 0;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--primary);
-      color: var(--white);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 1.1rem;
-    }
-    .step h3 { font-size: 1.1rem; margin-bottom: 4px; }
-    .step p { color: var(--gray); font-size: 0.95rem; }
-
-    /* ===== Témoignages ===== */
-    .testimonials { background: var(--light); }
-    .testimonial .stars { color: var(--accent); margin-bottom: 10px; }
-    .testimonial p.quote {
-      font-style: italic;
-      margin-bottom: 16px;
-      color: var(--dark);
-    }
-    .testimonial .author {
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
-    .testimonial .role {
-      color: var(--gray);
-      font-size: 0.8rem;
-    }
-
-    /* ===== Offre / CTA final ===== */
-    .offer {
-      text-align: center;
-      background: var(--dark);
-      color: var(--white);
-    }
-    .offer .section-title { color: var(--white); }
-    .price-box {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: var(--radius);
-      max-width: 420px;
-      margin: 0 auto 32px;
-      padding: 36px 28px;
-    }
-    .price-old {
-      text-decoration: line-through;
-      opacity: 0.5;
-      font-size: 1.1rem;
-    }
-    .price-now {
-      font-size: 3rem;
-      font-weight: 800;
-      color: var(--accent);
-      margin: 6px 0;
-    }
-    .price-box ul {
-      list-style: none;
-      text-align: left;
-      margin: 20px 0;
-      font-size: 0.95rem;
-    }
-    .price-box ul li {
-      padding: 6px 0;
-    }
-    .price-box ul li::before {
-      content: "✅ ";
-      margin-right: 6px;
-    }
-
-    /* ===== Formulaire de capture ===== */
-    .capture-form {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-    .capture-form input {
-      padding: 15px 20px;
-      border-radius: var(--radius);
-      border: 1px solid #cbd5e1;
-      font-size: 1rem;
-      min-width: 280px;
-    }
-    .capture-form input:focus {
-      outline: 2px solid var(--primary);
-      border-color: transparent;
-    }
-
-    /* ===== FAQ ===== */
-    .faq details {
-      max-width: 640px;
-      margin: 0 auto 12px;
-      background: var(--light);
-      border-radius: var(--radius);
-      padding: 18px 22px;
-      cursor: pointer;
-    }
-    .faq summary { font-weight: 700; }
-    .faq details p { margin-top: 10px; color: var(--gray); }
-
-    /* ===== Footer ===== */
-    footer {
-      background: var(--dark);
-      color: #94a3b8;
-      text-align: center;
-      padding: 30px 0;
-      font-size: 0.85rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    footer a { color: #94a3b8; }
-
-    @media (max-width: 600px) {
-      .countdown .unit { min-width: 64px; padding: 10px 12px; }
-      .countdown .num { font-size: 1.4rem; }
-    }
-  </style>
+  <title>Formation Vidéo — Passe à l'action maintenant</title>
+  <meta name="description" content="Une formation 100 % vidéo, étape par étape, avec accès sécurisé à vie. Rejoins le programme maintenant.">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- Barre d'urgence -->
-  <div class="urgency-bar">
-    🔥 Offre de lancement : <strong>-50 %</strong> pour les 100 premiers inscrits — plus que quelques places !
-  </div>
+  <!-- Bandeau supérieur -->
+  <div class="topbar">La formation vidéo la plus complète pour te lancer — Places limitées</div>
 
-  <!-- Header -->
-  <header>
+  <!-- ===== HERO ===== -->
+  <section class="grid-bg text-center">
     <div class="container">
-      <div class="logo">Tunnel<span>Instant</span></div>
-      <a href="#offre" class="btn btn-primary btn-small">Commencer</a>
-    </div>
-  </header>
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container">
-      <div class="badge">⚡ Nouveau — Lancement 2026</div>
-      <h1>Créez votre tunnel de vente <em>en un instant</em></h1>
-      <p class="sub">
-        Page de capture, page de vente, paiement et emails de relance :
-        tout est prêt en quelques minutes, sans aucune compétence technique.
+      <span class="badge">Programme spécial — 100 % vidéo</span>
+      <h1 class="title-red mt-2">Ta Formation Vidéo<br>Étape par Étape</h1>
+      <p class="muted mt-1" style="max-width: 520px; margin-left: auto; margin-right: auto;">
+        Des vidéos claires et structurées pour apprendre à ton rythme,
+        avec un <strong style="color:#fff;">accès membre sécurisé à vie</strong>.
+        Chaque module te fait avancer concrètement, sans jargon et sans blabla.
       </p>
 
-      <!-- Compte à rebours -->
-      <div class="countdown" id="countdown">
-        <div class="unit"><span class="num" id="cd-hours">23</span><span class="label">Heures</span></div>
-        <div class="unit"><span class="num" id="cd-minutes">59</span><span class="label">Minutes</span></div>
-        <div class="unit"><span class="num" id="cd-seconds">59</span><span class="label">Secondes</span></div>
+      <!-- Vidéo de présentation -->
+      <div class="video-frame">
+        <div class="video-label">🔴 Regarde la vidéo ci-dessous 🔴</div>
+        <div class="video-inner">
+          <!-- Remplace ce bloc par ta vraie vidéo de vente (YouTube non répertorié, Vimeo, etc.) -->
+          <div class="play-btn"></div>
+        </div>
       </div>
 
-      <a href="#offre" class="btn btn-primary">🚀 Je lance mon tunnel maintenant</a>
-      <p class="guarantee">✔️ Garantie satisfait ou remboursé 30 jours — sans engagement</p>
-    </div>
-  </section>
+      <a href="#offre" class="btn-cta">Rejoindre la formation<small>maintenant</small></a>
 
-  <!-- Bénéfices -->
-  <section class="benefits">
-    <div class="container">
-      <h2 class="section-title">Pourquoi choisir TunnelInstant ?</h2>
-      <p class="section-sub">Tout ce qu'il vous faut pour vendre en ligne, sans assembler dix outils différents.</p>
-      <div class="grid-3">
-        <div class="card">
-          <div class="icon">⚡</div>
-          <h3>Prêt en 5 minutes</h3>
-          <p>Choisissez un modèle, personnalisez vos textes, publiez. Votre tunnel est en ligne avant la fin de votre café.</p>
-        </div>
-        <div class="card">
-          <div class="icon">💳</div>
-          <h3>Paiement intégré</h3>
-          <p>Encaissez par carte bancaire dès le premier jour. Aucune configuration compliquée, aucun code.</p>
-        </div>
-        <div class="card">
-          <div class="icon">📈</div>
-          <h3>Conçu pour convertir</h3>
-          <p>Des pages optimisées et testées sur des milliers de ventes pour maximiser votre taux de conversion.</p>
-        </div>
+      <div class="trust-bar">
+        <div>Accès<br>immédiat</div>
+        <div>Garantie<br>7 jours</div>
+        <div>Places<br>limitées</div>
       </div>
     </div>
   </section>
 
-  <!-- Comment ça marche -->
-  <section class="steps">
+  <!-- ===== ET SI TU POUVAIS ===== -->
+  <section>
     <div class="container">
-      <h2 class="section-title">Comment ça marche ?</h2>
-      <p class="section-sub">Trois étapes simples entre vous et vos premières ventes.</p>
-      <div class="step">
-        <div class="num">1</div>
-        <div>
-          <h3>Choisissez votre modèle</h3>
-          <p>Sélectionnez un tunnel prêt à l'emploi adapté à votre offre : formation, coaching, e-commerce, service…</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="num">2</div>
-        <div>
-          <h3>Personnalisez en quelques clics</h3>
-          <p>Modifiez les textes, les couleurs et ajoutez votre logo. Aucune compétence technique nécessaire.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="num">3</div>
-        <div>
-          <h3>Publiez et vendez</h3>
-          <p>Votre tunnel est en ligne. Partagez le lien et commencez à encaisser vos premières ventes.</p>
-        </div>
+      <h2 class="section-heading">Et si tu pouvais enfin y arriver ?</h2>
+      <p class="muted text-center" style="max-width: 500px; margin: 0 auto 26px;">
+        Apprendre seul, c'est long et décourageant. Cette formation te donne
+        un chemin clair, en vidéo, du premier pas jusqu'au résultat.
+      </p>
+      <ul class="red-list" style="max-width: 520px; margin: 0 auto;">
+        <li><span class="dot">🎥</span><span><strong>Des vidéos courtes et concrètes</strong> — chaque leçon va droit au but, tu appliques immédiatement.</span></li>
+        <li><span class="dot">🔒</span><span><strong>Un espace membre sécurisé</strong> — tes vidéos sont hébergées dans un espace privé, accessible uniquement aux membres.</span></li>
+        <li><span class="dot">♾️</span><span><strong>Un accès à vie</strong> — tu avances à ton rythme et tu reviens quand tu veux, y compris sur les mises à jour.</span></li>
+      </ul>
+      <div class="text-center mt-3">
+        <a href="#offre" class="btn-cta">Rejoindre la formation<small>maintenant</small></a>
       </div>
     </div>
   </section>
 
-  <!-- Témoignages -->
-  <section class="testimonials">
+  <!-- ===== POUR QUI ===== -->
+  <section class="text-center">
     <div class="container">
-      <h2 class="section-title">Ils ont lancé leur tunnel avec nous</h2>
-      <p class="section-sub">Rejoignez des centaines d'entrepreneurs qui vendent déjà.</p>
-      <div class="grid-3">
-        <div class="card testimonial">
-          <div class="stars">★★★★★</div>
-          <p class="quote">« J'ai mis mon tunnel en ligne en une soirée. Première vente dès le lendemain matin. Incroyable. »</p>
-          <div class="author">Sophie M.</div>
-          <div class="role">Coach bien-être</div>
-        </div>
-        <div class="card testimonial">
-          <div class="stars">★★★★★</div>
-          <p class="quote">« Enfin un outil simple. J'ai abandonné trois plateformes avant celle-ci — celle-là, je la garde. »</p>
-          <div class="author">Karim B.</div>
-          <div class="role">Formateur en ligne</div>
-        </div>
-        <div class="card testimonial">
-          <div class="stars">★★★★★</div>
-          <p class="quote">« Mon taux de conversion a doublé par rapport à mon ancien site. Le support est au top. »</p>
-          <div class="author">Laura D.</div>
-          <div class="role">E-commerçante</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Offre / CTA final -->
-  <section class="offer" id="offre">
-    <div class="container">
-      <h2 class="section-title">Offre de lancement</h2>
-      <div class="price-box">
-        <div class="price-old">97 € / mois</div>
-        <div class="price-now">47 € / mois</div>
-        <ul>
-          <li>Tunnels de vente illimités</li>
-          <li>Paiement par carte intégré</li>
-          <li>Emails de relance automatiques</li>
-          <li>Statistiques en temps réel</li>
-          <li>Support 7j/7 en français</li>
+      <div class="card-dark" style="max-width: 520px; margin: 0 auto;">
+        <h2 class="section-heading">Pour qui est cette formation ?</h2>
+        <ul class="red-list" style="text-align: left;">
+          <li><span class="dot">🎓</span><span>Les <strong style="color:var(--red);">débutants</strong> qui veulent apprendre depuis zéro avec une méthode claire.</span></li>
+          <li><span class="dot">💼</span><span>Les <strong style="color:var(--red);">salariés</strong> qui veulent monter en compétences sur leur temps libre.</span></li>
+          <li><span class="dot">🚀</span><span>Les <strong style="color:var(--red);">indépendants et entrepreneurs</strong> qui veulent des résultats concrets, rapidement.</span></li>
+          <li><span class="dot">📈</span><span>Et toute personne <strong>ambitieuse</strong> prête à passer à l'action sérieusement.</span></li>
         </ul>
-        <a href="#capture" class="btn btn-primary">Je profite de l'offre -50 %</a>
+        <p class="muted mt-1" style="font-size: 0.85rem;">
+          Tu n'as pas besoin d'être expert. Tu as juste besoin de
+          <strong style="color:#fff;">vouloir avancer sérieusement.</strong>
+        </p>
       </div>
-      <p id="capture">Ou recevez d'abord notre guide gratuit :</p>
-      <form class="capture-form" onsubmit="event.preventDefault(); alert('Merci ! Vérifiez votre boîte mail 📬');">
-        <input type="email" placeholder="Votre adresse email" required>
-        <button type="submit" class="btn btn-primary">Recevoir le guide gratuit</button>
-      </form>
+      <div class="mt-3">
+        <a href="#offre" class="btn-cta">Rejoindre la formation<small>maintenant</small></a>
+      </div>
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section class="faq">
+  <!-- ===== LES ERREURS ===== -->
+  <section class="grid-bg">
     <div class="container">
-      <h2 class="section-title">Questions fréquentes</h2>
-      <details>
-        <summary>Ai-je besoin de compétences techniques ?</summary>
-        <p>Non, aucune. Tout se fait en glisser-déposer et en quelques clics. Si vous savez envoyer un email, vous savez utiliser TunnelInstant.</p>
-      </details>
-      <details>
-        <summary>Puis-je annuler à tout moment ?</summary>
-        <p>Oui, l'abonnement est sans engagement. Vous pouvez annuler en un clic depuis votre espace client.</p>
-      </details>
-      <details>
-        <summary>Comment fonctionne la garantie ?</summary>
-        <p>Vous avez 30 jours pour tester. Si vous n'êtes pas satisfait, nous vous remboursons intégralement, sans question.</p>
-      </details>
-      <details>
-        <summary>Le paiement est-il sécurisé ?</summary>
-        <p>Oui, tous les paiements sont traités par un prestataire certifié PCI-DSS avec chiffrement SSL.</p>
-      </details>
+      <h2 class="section-heading">Les erreurs qui t'empêchent d'avancer aujourd'hui</h2>
+      <p class="muted text-center" style="margin-bottom: 26px;">Tu as sûrement déjà essayé… mais :</p>
+      <ol class="numbered" style="max-width: 480px; margin: 0 auto;">
+        <li><span class="n">1</span><span>Tu <strong>ne sais pas par où commencer.</strong></span></li>
+        <li><span class="n">2</span><span>Tu regardes des tutos gratuits, mais <strong>sans méthode claire.</strong></span></li>
+        <li><span class="n">3</span><span>Tu te perds dans <strong>la technique et les outils.</strong></span></li>
+        <li><span class="n">4</span><span>Tu testes des choses <strong>sans résultats concrets.</strong></span></li>
+        <li><span class="n">5</span><span>Tu <strong>doutes de toi</strong> parce que personne autour de toi ne l'a fait.</span></li>
+      </ol>
+      <p class="text-center mt-2" style="color: var(--red); font-weight: 900; text-transform: uppercase;">Résultat ? Tu stagnes.</p>
+      <div class="text-center mt-2">
+        <a href="#offre" class="btn-cta">Réserver ma place<small>maintenant</small></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LA PROMESSE ===== -->
+  <section>
+    <div class="container">
+      <div class="card-dark">
+        <h2 class="section-heading">La promesse de cette formation</h2>
+        <ul class="red-list">
+          <li><span class="dot">🎯</span><span><strong>Apprends étape par étape</strong> avec des vidéos structurées, du niveau débutant jusqu'au niveau avancé.</span></li>
+          <li><span class="dot">⚡</span><span><strong>Applique immédiatement</strong> grâce à des exercices concrets à la fin de chaque module.</span></li>
+          <li><span class="dot">🏆</span><span><strong>Obtiens des résultats mesurables</strong> avec une méthode simple, efficace et accessible.</span></li>
+        </ul>
+        <p class="muted text-center mt-1" style="font-size: 0.85rem;">
+          Sans compétence technique, sans gros budget. Une méthode pensée pour
+          les réalités du terrain. <strong style="color:#fff;">Simple. Efficace. Accessible.</strong>
+        </p>
+      </div>
+      <div class="text-center mt-3">
+        <a href="#offre" class="btn-cta">Rejoindre la formation<small>maintenant</small></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LES MODULES ===== -->
+  <section class="grid-bg">
+    <div class="container" style="max-width: 900px;">
+      <p class="muted text-center" style="margin-bottom: 8px;">
+        Tu vas suivre un parcours clair, étape par étape —
+        <strong style="color:#fff;">même si tu n'as encore rien commencé.</strong>
+      </p>
+      <h2 class="section-heading">Découvre les modules de la formation</h2>
+
+      <div class="modules-grid">
+        <div class="module-card">
+          <div class="cover">🧱</div>
+          <span class="tag">Module 1</span>
+          <h3>Les Fondations</h3>
+          <ul>
+            <li>Comprendre les bases essentielles</li>
+            <li>Définir ton objectif clairement</li>
+            <li>Préparer tes outils</li>
+            <li>Éviter les pièges du départ</li>
+          </ul>
+        </div>
+        <div class="module-card">
+          <div class="cover">⚙️</div>
+          <span class="tag">Module 2</span>
+          <h3>L'Exécution</h3>
+          <ul>
+            <li>Mettre en pratique la méthode</li>
+            <li>Créer tes premiers livrables</li>
+            <li>Suivre les indicateurs clés</li>
+            <li>Corriger et ajuster</li>
+          </ul>
+        </div>
+        <div class="module-card">
+          <div class="cover">🚀</div>
+          <span class="tag">Module 3</span>
+          <h3>L'Accélération</h3>
+          <ul>
+            <li>Optimiser tes résultats</li>
+            <li>Automatiser ce qui peut l'être</li>
+            <li>Monter en puissance</li>
+            <li>Construire sur le long terme</li>
+          </ul>
+        </div>
+        <div class="module-card">
+          <div class="cover">🎁</div>
+          <span class="tag">Bonus 1</span>
+          <h3>Boîte à outils</h3>
+          <ul>
+            <li>Modèles prêts à l'emploi</li>
+            <li>Check-lists téléchargeables</li>
+            <li>Ressources recommandées</li>
+          </ul>
+        </div>
+        <div class="module-card">
+          <div class="cover">🗺️</div>
+          <span class="tag">Bonus 2</span>
+          <h3>Plan d'action</h3>
+          <ul>
+            <li>Ton planning semaine par semaine</li>
+            <li>Les priorités dans le bon ordre</li>
+            <li>De l'idée au résultat</li>
+          </ul>
+        </div>
+        <div class="module-card">
+          <div class="cover">🔒</div>
+          <span class="tag">Inclus</span>
+          <h3>Espace membre à vie</h3>
+          <ul>
+            <li>Toutes les vidéos en accès sécurisé</li>
+            <li>Disponible 24h/24, 7j/7</li>
+            <li>Mises à jour incluses</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== OFFRE ===== -->
+  <section id="offre" class="text-center">
+    <div class="container">
+      <h2 class="section-heading">Rejoins la formation maintenant</h2>
+      <div class="card-dark" style="max-width: 420px; margin: 0 auto;">
+        <span class="badge">Offre de lancement</span>
+        <div class="mt-2 price-old">97 €</div>
+        <div class="price-now">47 €</div>
+        <p class="muted" style="font-size: 0.8rem;">Paiement unique — accès à vie</p>
+        <ul class="red-list mt-2" style="text-align: left;">
+          <li><span class="dot">✅</span><span>Tous les modules vidéo</span></li>
+          <li><span class="dot">✅</span><span>Espace membre sécurisé à vie</span></li>
+          <li><span class="dot">✅</span><span>Les 2 bonus inclus</span></li>
+          <li><span class="dot">✅</span><span>Mises à jour gratuites</span></li>
+          <li><span class="dot">✅</span><span>Garantie satisfait ou remboursé 7 jours</span></li>
+        </ul>
+        <!-- Remplace le lien href par ton lien de paiement (Stripe, systeme.io, PayPal…) -->
+        <a href="#" class="btn-cta mt-2" style="display:block;">Rejoindre la formation<small>accès immédiat</small></a>
+      </div>
+      <p class="muted mt-2" style="font-size: 0.8rem;">
+        🔒 Paiement sécurisé — Après ton achat, tu reçois immédiatement ton
+        code d'accès à l'espace membre par email.
+      </p>
     </div>
   </section>
 
   <!-- Footer -->
   <footer>
-    <div class="container">
-      <p>© 2026 TunnelInstant — Tous droits réservés</p>
-      <p><a href="#">Mentions légales</a> · <a href="#">CGV</a> · <a href="#">Politique de confidentialité</a></p>
-    </div>
+    <p>© 2026 — Tous droits réservés</p>
+    <p class="mt-1">
+      <a href="espace-membre.html">🔑 Déjà membre ? Accéder à mes vidéos</a>
+    </p>
+    <p class="mt-1"><a href="#">Mentions légales</a> · <a href="#">CGV</a> · <a href="#">Confidentialité</a></p>
   </footer>
 
-  <script>
-    // Compte à rebours de 24 h (persisté dans le navigateur)
-    (function () {
-      const KEY = 'tunnel-countdown-end';
-      let end = parseInt(localStorage.getItem(KEY), 10);
-      if (!end || end < Date.now()) {
-        end = Date.now() + 24 * 60 * 60 * 1000;
-        localStorage.setItem(KEY, end);
-      }
-      const pad = n => String(n).padStart(2, '0');
-      function tick() {
-        const diff = Math.max(0, end - Date.now());
-        const h = Math.floor(diff / 3600000);
-        const m = Math.floor((diff % 3600000) / 60000);
-        const s = Math.floor((diff % 60000) / 1000);
-        document.getElementById('cd-hours').textContent = pad(h);
-        document.getElementById('cd-minutes').textContent = pad(m);
-        document.getElementById('cd-seconds').textContent = pad(s);
-      }
-      tick();
-      setInterval(tick, 1000);
-    })();
-  </script>
 </body>
 </html>

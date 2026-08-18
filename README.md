@@ -4,7 +4,13 @@ Page d'accueil d'un tunnel de vente : capture d'email, présentation de l'offre,
 
 ## Structure
 
-- `index.html` — Page d'accueil complète (HTML/CSS/JS autonome, aucune dépendance)
+- `index.html` — Page d'accueil / page de vente (thème sombre, accents rouges, grille en perspective)
+- `espace-membre.html` — Espace membre sécurisé : portail avec code d'accès + bibliothèque de vidéos
+- `styles.css` — Feuille de style partagée (thème noir/rouge)
+
+## Espace membre
+
+Le code d'accès de démonstration est défini dans `espace-membre.html` (constante `ACCESS_CODE`, valeur actuelle : `FORMATION2026`). C'est une protection côté navigateur pour la maquette — pour une vraie sécurité en production, prévoir un backend avec comptes utilisateurs ou un hébergeur vidéo à accès restreint (Vimeo + domaines autorisés, plateforme de formation, etc.).
 
 ## Utilisation
 
