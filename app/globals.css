@@ -16,12 +16,16 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  /* Poppins est injectée par next/font dans le layout ; ceci est le repli. */
+  font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
   background: var(--bg);
   color: var(--white);
-  line-height: 1.6;
+  line-height: 1.65;
+  font-size: 15px;
   overflow-x: hidden;
 }
+
+h1, h2, h3 { letter-spacing: 0.4px; }
 
 /* Grille rouge en perspective (confinée à sa section) */
 .grid-bg { position: relative; overflow: hidden; }
@@ -72,11 +76,11 @@ body {
 
 .title-red {
   color: var(--red);
-  font-weight: 900;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   font-size: clamp(1.4rem, 4vw, 2rem);
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .section-heading {
@@ -147,9 +151,21 @@ body {
 /* ===== Cartes ===== */
 .card-dark {
   background: var(--bg-card);
-  border: 1.5px solid var(--red);
-  border-radius: var(--radius);
+  border: 2px solid var(--red);
+  border-radius: 18px;
   padding: 28px 24px;
+  box-shadow: 0 0 26px rgba(227, 19, 43, 0.16);
+}
+
+/* Séparateurs rouges entre les items d'une liste dans une carte (style référence) */
+.card-dark .red-list.divided li {
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(227, 19, 43, 0.45);
+}
+.card-dark .red-list.divided li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
 /* ===== Listes ===== */
@@ -290,11 +306,12 @@ section { padding: 56px 0; }
 }
 .module-card {
   background: var(--bg-card);
-  border: 1.5px solid var(--red);
-  border-radius: var(--radius);
+  border: 2px solid var(--red);
+  border-radius: 18px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 0 22px rgba(227, 19, 43, 0.14);
 }
 .module-card .cover {
   aspect-ratio: 3 / 2;
@@ -404,9 +421,10 @@ input:focus { outline: 2px solid var(--pink); }
 }
 .video-item {
   background: var(--bg-card);
-  border: 1.5px solid var(--red);
-  border-radius: var(--radius);
+  border: 2px solid var(--red);
+  border-radius: 18px;
   overflow: hidden;
+  box-shadow: 0 0 22px rgba(227, 19, 43, 0.14);
 }
 .video-item video,
 .video-item iframe {
@@ -463,6 +481,124 @@ input:focus { outline: 2px solid var(--pink); }
   align-items: center;
   justify-content: center;
 }
+
+/* ===== Piliers de la méthode ===== */
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 26px;
+}
+.pillar {
+  background: var(--bg-card);
+  border: 2px solid var(--red);
+  border-radius: 16px;
+  padding: 20px 18px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  box-shadow: 0 0 18px rgba(227, 19, 43, 0.14);
+}
+.pillar .pillar-icon {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--red);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pillar h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 800;
+}
+.pillar p { font-size: 0.8rem; color: var(--gray); margin-top: 4px; }
+
+/* ===== Cadres photo (style référence : bord rouge arrondi + halo) ===== */
+.photo-frame {
+  border: 2.5px solid var(--red);
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1a0004, #3d000c 60%, var(--red-dark));
+  box-shadow: 0 0 26px rgba(227, 19, 43, 0.3);
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+.coach-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  align-items: start;
+}
+@media (max-width: 700px) {
+  .coach-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== Bande de photos (galerie) ===== */
+.gallery-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 26px;
+}
+.gallery-strip .photo-frame { aspect-ratio: 3 / 4; border-radius: 12px; }
+@media (max-width: 700px) {
+  .gallery-strip { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ===== Témoignages / résultats d'élèves ===== */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 22px;
+  margin-top: 30px;
+}
+.result-card {
+  background: linear-gradient(180deg, #b30f22, var(--red-dark));
+  border: 2px solid var(--pink);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: 0 0 26px rgba(227, 19, 43, 0.3);
+}
+.result-card .caption {
+  color: var(--white);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.45;
+  margin-bottom: 10px;
+}
+.result-card .caption strong {
+  color: #ffd7dd;
+  text-transform: uppercase;
+}
+.result-card .media {
+  background: #0a0a0a;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-dark);
+  font-size: 0.8rem;
+}
+.result-card .media iframe { width: 100%; height: 100%; border: 0; }
+.result-card .media img { width: 100%; height: 100%; object-fit: cover; }
+.result-card .media.whatsapp { aspect-ratio: 4 / 5; }
 
 /* ===== Étapes du tunnel (checkout) ===== */
 .funnel-steps {

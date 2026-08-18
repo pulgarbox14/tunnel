@@ -32,6 +32,16 @@ export interface MemberModule {
   lessons: Lesson[];
 }
 
+export interface Testimonial {
+  name: string;
+  /** Résultat / accroche affichée au-dessus de l'avis. */
+  caption: string;
+  /** "vimeo" = vidéo témoignage, "image" = capture d'écran (ex : WhatsApp). */
+  type: "vimeo" | "image";
+  /** URL embed Vimeo (https://player.vimeo.com/video/ID) ou chemin d'image (/avis/xxx.jpg). Vide = emplacement à remplir. */
+  src?: string;
+}
+
 export const site = {
   brand: "Cap sur monAvenir",
   topbar: "Le programme d'orientation n°1 pour les nouveaux bacheliers — Places limitées",
@@ -173,6 +183,88 @@ export const site = {
       ],
     },
   ] as Module[],
+
+  /** La méthode en 3 piliers (section type "LA MÉTHODE Q4" de la référence). */
+  method: {
+    title: "La Méthode Cap sur monAvenir",
+    intro:
+      "La stratégie la plus simple pour réussir ton entrée dans le supérieur. Le programme repose sur 3 piliers essentiels :",
+    pillars: [
+      {
+        icon: "compass" as IconName,
+        title: "L'Orientation",
+        text: "choisir la bonne université et la bonne filière selon ton profil, tes moyens et tes ambitions.",
+      },
+      {
+        icon: "monitor" as IconName,
+        title: "La Stratégie",
+        text: "maîtriser Apremonbac, les régimes d'intégration et le classement des choix pour maximiser tes chances.",
+      },
+      {
+        icon: "trending-up" as IconName,
+        title: "L'Avenir",
+        text: "viser des métiers porteurs et bâtir un plan de carrière solide face à l'IA.",
+      },
+    ],
+  },
+
+  /** Section "Qui est ton formateur ?" — à compléter avec les vraies infos. */
+  coach: {
+    heading: "Qui est ton formateur ?",
+    name: "[Nom du formateur]",
+    intro:
+      "est reconnu pour son accompagnement des nouveaux bacheliers vers les bonnes filières et les bonnes universités.",
+    points: [
+      "À travers ses accompagnements sur WhatsApp, il a déjà aidé de nombreux bacheliers à décrocher leur place et leur bourse.",
+      "Il connaît les réalités du terrain : universités publiques et privées, plateforme Apremonbac, régimes d'intégration.",
+    ],
+    missionTitle: "Avec son programme",
+    missionProgram: "Cap sur monAvenir",
+    mission:
+      "Sa mission : qu'aucun bachelier ne se retrouve sans filière à la rentrée, et que chacun construise un avenir à la hauteur de son potentiel.",
+    /** Photos du formateur (chemins dans /public/photos/). Vide = placeholder. */
+    photos: ["", ""] as string[],
+  },
+
+  /** Bande de photos (événements, sessions, groupes WhatsApp…). */
+  gallery: {
+    title: "Une communauté qui avance ensemble",
+    /** Chemins dans /public/photos/. Vide = placeholder. */
+    images: ["", "", "", ""] as string[],
+  },
+
+  /** Avis et résultats d'élèves (vidéos Vimeo + captures WhatsApp). */
+  results: {
+    title: "Quelques résultats d'élèves",
+    intro:
+      "Ils ont suivi l'accompagnement (d'abord sur WhatsApp) et ont décroché leur filière. Voici leurs retours :",
+    items: [
+      {
+        name: "Élève 1",
+        caption: "Admis dans la filière de son premier choix avec une bourse",
+        type: "vimeo",
+        src: "",
+      },
+      {
+        name: "Élève 2",
+        caption: "A évité une erreur éliminatoire grâce à la stratégie de classement",
+        type: "vimeo",
+        src: "",
+      },
+      {
+        name: "Avis WhatsApp",
+        caption: "Retour reçu après l'accompagnement",
+        type: "image",
+        src: "",
+      },
+      {
+        name: "Avis WhatsApp",
+        caption: "Retour reçu après l'accompagnement",
+        type: "image",
+        src: "",
+      },
+    ] as Testimonial[],
+  },
 
   pricing: {
     badge: "Offre de lancement",

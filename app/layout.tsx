@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
+import { Poppins } from "next/font/google";
 import { site } from "@/content/site";
 import { Icon } from "@/components/Icon";
 import "./globals.css";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: `${site.brand} — ${site.hero.title}`,
@@ -13,7 +20,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="fr">
-      <body>
+      <body className={poppins.className}>
         <div className="topbar">{site.topbar}</div>
         {children}
         <footer>

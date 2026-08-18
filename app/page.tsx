@@ -71,7 +71,7 @@ export default function HomePage() {
         <div className="container">
           <div className="card-dark" style={{ maxWidth: 540, margin: "0 auto" }}>
             <h2 className="section-heading">{site.forWho.title}</h2>
-            <ul className="red-list" style={{ textAlign: "left" }}>
+            <ul className="red-list divided" style={{ textAlign: "left" }}>
               {site.forWho.items.map((item) => (
                 <li key={item.highlight}>
                   <span className="dot">
@@ -145,6 +145,32 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ===== LA MÉTHODE ===== */}
+      <section>
+        <div className="container-wide">
+          <h2 className="section-heading">{site.method.title}</h2>
+          <p className="muted text-center" style={{ maxWidth: 520, margin: "0 auto" }}>
+            {site.method.intro}
+          </p>
+          <div className="pillars">
+            {site.method.pillars.map((p) => (
+              <div className="pillar" key={p.title}>
+                <span className="pillar-icon">
+                  <Icon name={p.icon} size={18} />
+                </span>
+                <div>
+                  <h3>{p.title}</h3>
+                  <p>{p.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-3">
+            <Cta href="/checkout" label="Rejoindre le programme" sub="maintenant" />
+          </div>
+        </div>
+      </section>
+
       {/* ===== LES MODULES ===== */}
       <section className="grid-bg">
         <div className="container-wide">
@@ -170,6 +196,116 @@ export default function HomePage() {
                 </ul>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== LE FORMATEUR ===== */}
+      <section>
+        <div className="container-wide">
+          <div className="coach-grid">
+            <div>
+              <h2 className="title-red" style={{ fontSize: "1.4rem" }}>
+                {site.coach.heading}
+              </h2>
+              <p className="muted mt-1">
+                <span className="strong-white">{site.coach.name}</span> {site.coach.intro}
+              </p>
+              <div className="card-dark mt-2" style={{ padding: "20px 18px" }}>
+                <ul className="red-list divided" style={{ marginBottom: 0 }}>
+                  {site.coach.points.map((p) => (
+                    <li key={p} style={{ marginBottom: 12 }}>
+                      <span className="dot">
+                        <Icon name="check" size={13} />
+                      </span>
+                      <span>{p}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <p className="muted mt-2 small" style={{ textTransform: "uppercase", fontWeight: 700 }}>
+                {site.coach.missionTitle}
+              </p>
+              <p className="title-red" style={{ fontSize: "1rem" }}>
+                {site.coach.missionProgram}
+              </p>
+              <p className="muted mt-1 small">{site.coach.mission}</p>
+            </div>
+            <div style={{ display: "grid", gap: 18 }}>
+              {site.coach.photos.map((photo, i) =>
+                photo ? (
+                  <div className="photo-frame" key={i}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={photo} alt={site.coach.name} />
+                  </div>
+                ) : (
+                  <div className="photo-frame" key={i}>
+                    Photo du formateur
+                  </div>
+                ),
+              )}
+            </div>
+          </div>
+          <div className="text-center mt-3">
+            <Cta href="/checkout" label="Rejoindre le programme" sub="maintenant" />
+          </div>
+        </div>
+      </section>
+
+      {/* ===== GALERIE ===== */}
+      <section className="grid-bg">
+        <div className="container-wide">
+          <h2 className="section-heading">{site.gallery.title}</h2>
+          <div className="gallery-strip">
+            {site.gallery.images.map((img, i) =>
+              img ? (
+                <div className="photo-frame" key={i}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={img} alt="" />
+                </div>
+              ) : (
+                <div className="photo-frame" key={i}>
+                  Photo
+                </div>
+              ),
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== RÉSULTATS D'ÉLÈVES ===== */}
+      <section>
+        <div className="container-wide">
+          <h2 className="section-heading">{site.results.title}</h2>
+          <p className="muted text-center" style={{ maxWidth: 520, margin: "0 auto" }}>
+            {site.results.intro}
+          </p>
+          <div className="results-grid">
+            {site.results.items.map((t, i) => (
+              <div className="result-card" key={i}>
+                <p className="caption">
+                  <strong>{t.name}</strong> : « {t.caption} »
+                </p>
+                <div className={`media${t.type === "image" ? " whatsapp" : ""}`}>
+                  {t.src ? (
+                    t.type === "vimeo" ? (
+                      <iframe src={t.src} allowFullScreen title={t.name} />
+                    ) : (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img src={t.src} alt={`Avis de ${t.name}`} />
+                    )
+                  ) : (
+                    <span className="icon-line">
+                      <Icon name={t.type === "vimeo" ? "video" : "smartphone"} size={16} />
+                      {t.type === "vimeo" ? "Vidéo Vimeo à ajouter" : "Capture WhatsApp à ajouter"}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-3">
+            <Cta href="/checkout" label="Rejoindre le programme" sub="maintenant" />
           </div>
         </div>
       </section>
