@@ -186,7 +186,7 @@ export default async function HomePage() {
               de la découverte des universités jusqu&apos;à ton plan de carrière.
             </span>
           </p>
-          <h2 className="section-heading">Découvre les 5 modules du programme</h2>
+          <h2 className="section-heading">Découvre les 4 modules du programme</h2>
           <div className="modules-grid">
             {site.modules.map((mod) => (
               <div className="module-card" key={mod.title}>

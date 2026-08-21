@@ -72,7 +72,7 @@ export const site = {
     {
       icon: "lock" as IconName,
       title: "Un espace membre sécurisé à vie",
-      text: "les 21 capsules vidéo et les exercices dans un espace privé, accessible uniquement aux membres, avec les mises à jour.",
+      text: "les 13 capsules vidéo et les exercices dans un espace privé, accessible uniquement aux membres, avec les mises à jour.",
     },
   ],
 
@@ -218,66 +218,50 @@ export const site = {
     {
       tag: "Module 1",
       icon: "landmark" as IconName,
-      title: "Comprendre les règles du jeu",
-      duration: "~35 min · 5 capsules",
-      promise: "Savoir comment on est réellement sélectionné au Bénin.",
+      title: "Généralités et Panorama des Universités",
+      duration: "3 capsules",
+      promise: "Choisir l'établissement qui correspond à ton profil et à tes moyens.",
       points: [
-        "Les 4 facteurs qui décident vraiment de ton orientation",
-        "Le paysage : UAC, UP, UNSTIM, UNA — où peux-tu réellement aller ?",
-        "Concours ou classement : deux portes différentes",
-        "Le calendrier officiel 2026 et la création sécurisée de ton compte",
+        "Vue d'ensemble du paysage universitaire",
+        "Universités publiques et réalité du terrain",
+        "Les 05 grands critères qui conditionnent ton choix de filière",
       ],
     },
     {
       tag: "Module 2",
-      icon: "target" as IconName,
-      title: "Connaître son profil et calculer sa moyenne",
-      duration: "~35 min · 4 capsules",
-      promise: "Savoir chiffrer tes chances avant de choisir.",
+      icon: "monitor" as IconName,
+      title: "Intégration, Bourses & Plateforme Apremonbac",
+      duration: "3 capsules",
+      promise: "Naviguer sur la plateforme officielle comme un pro.",
       points: [
-        "Ta série commande tes portes",
-        "La vraie moyenne : celle du classement (formule officielle)",
-        "Trouver les matières retenues pour chaque filière",
-        "Aptitudes, projet et réalité du marché",
+        "Les régimes d'intégration : boursiers, secourus, partiellement et entièrement payants",
+        "Prise en main complète de la plateforme Apremonbac",
+        "Stratégies de classement des choix de filières sur la plateforme",
       ],
     },
     {
       tag: "Module 3",
-      icon: "list" as IconName,
-      title: "Choisir et hiérarchiser ses choix",
-      duration: "~40 min · 4 capsules",
-      promise: "Construire une liste de vœux qui ne se sabote pas.",
+      icon: "target" as IconName,
+      title: "Cas pratique de deux relevés",
+      duration: "3 capsules",
+      promise: "Savoir chiffrer tes chances avant de choisir.",
       points: [
-        "Lire les 7 indicateurs affichés sous chaque filière",
-        "La grille ambition / réaliste / sécurité",
-        "Les filières à petit effectif que personne ne regarde",
-        "Changer d'université sans changer de rêve",
+        "Comprendre comment se fait le choix",
+        "Comment se fait le calcul de la moyenne pondérée",
+        "Les erreurs fatales à éviter et comment faire son choix",
       ],
     },
     {
       tag: "Module 4",
-      icon: "wallet" as IconName,
-      title: "Financer ses études : bourse, FPP, FEP",
-      duration: "~30 min · 4 capsules",
-      promise: "Anticiper le coût réel de l'année.",
+      icon: "briefcase" as IconName,
+      title: "Débouchés, filières et secteurs d'activités",
+      duration: "4 capsules",
+      promise: "Étudier pour un métier qui existera encore demain.",
       points: [
-        "Les trois statuts et comment ils s'attribuent",
-        "Le même diplôme, trois façons de le payer",
-        "La demande d'allocation auprès de la DBAU",
-        "Ton budget annuel réel, poste par poste, avec sources",
-      ],
-    },
-    {
-      tag: "Module 5",
-      icon: "map" as IconName,
-      title: "Après le résultat : inscription, plan B, étranger",
-      duration: "~35 min · 4 capsules",
-      promise: "Ne jamais rester bloqué, quel que soit le résultat.",
-      points: [
-        "Le dossier physique prêt avant la publication",
-        "Pas classé ? Les quatre voies du plan B",
-        "Étudier à l'étranger sans se faire arnaquer (5 signaux d'alerte)",
-        "Réussir ses trois premières semaines en LMD",
+        "Les branches de filières possibles pour chaque série de BAC",
+        "Les débouchés pour chaque filière",
+        "Les secteurs d'activités en voie de disparition",
+        "Les secteurs d'activités prometteurs à privilégier dans tes choix",
       ],
     },
     {
@@ -285,8 +269,8 @@ export const site = {
       icon: "lock" as IconName,
       title: "Espace membre à vie",
       points: [
-        "Les 21 capsules vidéo en accès sécurisé",
-        "Exercices et tableaux de suivi à chaque module",
+        "Les 13 capsules vidéo en accès sécurisé",
+        "Exercices et cas pratiques",
         "Disponible 24h/24, 7j/7 — mises à jour incluses",
       ],
     },
@@ -299,8 +283,8 @@ export const site = {
     currency: "FCFA",
     note: "Paiement unique — accès à vie",
     features: [
-      "Les 5 modules complets — 21 capsules vidéo",
-      "Exercices pratiques et fiches à chaque capsule",
+      "Les 4 modules complets — 13 capsules vidéo",
+      "Cas pratiques sur de vrais relevés de notes",
       "Le guide écran par écran de apresmonbac.bj",
       "Espace membre sécurisé à vie",
       "Mises à jour gratuites",
@@ -317,155 +301,93 @@ export const site = {
     { id: "card", label: "Carte bancaire", icon: "credit-card" as IconName },
   ],
 
-  /** Espace membre : les 5 modules avec pitchs et capsules. */
+  /** Espace membre : les 4 modules avec pitchs et capsules. */
   memberModules: [
     {
       tag: "Module 1",
       icon: "landmark" as IconName,
-      title: "Comprendre les règles du jeu",
+      title: "Généralités et Panorama des Universités",
       pitch:
-        "Bienvenue dans ce premier module ! L'orientation au Bénin n'est pas un « choix libre » : c'est une procédure de classement et de sélection, en place depuis 2007. Le BAC ouvre la porte de l'université — il ne choisit pas ta salle. Ici, tu découvres les 4 facteurs qui décident réellement de ton affectation, les deux portes d'entrée (classement ou concours), le calendrier officiel de ta catégorie et la création sécurisée de ton compte sur apresmonbac.bj.",
+        "Bienvenue dans ce premier module ! Choisir son université, c'est comme choisir le terrain sur lequel tu vas bâtir ton avenir. Entre le secteur public et le privé, les réalités sont totalement différentes : coûts, reconnaissance des diplômes, encadrement et opportunités. Dans ce module, nous allons décortiquer les avantages et inconvénients de chaque option pour que tu puisses choisir l'établissement qui correspond exactement à ton profil et à tes moyens.",
       lessons: [
         {
-          title: "Capsule 1.1 — Ce qui décide vraiment de ton orientation (6 min)",
-          description:
-            "Les 4 facteurs : filières choisies, performances au BAC, capacité d'accueil, places disponibles. Choix + Notes + Capacité = Affectation.",
+          title: "Leçon 1.1 — Vue d'ensemble du paysage universitaire",
+          description: "Le panorama complet des établissements pour partir sur de bonnes bases.",
         },
         {
-          title: "Capsule 1.2 — Le paysage : où peux-tu réellement aller ? (8 min)",
-          description:
-            "UAC, UP, UNSTIM, UNA et leurs établissements, les écoles inter-États, le privé autorisé. La plateforme ne concerne que le public.",
+          title: "Leçon 1.2 — Universités publiques et réalité du terrain",
+          description: "Coûts, encadrement, reconnaissance des diplômes : ce qui t'attend vraiment.",
         },
         {
-          title: "Capsule 1.3 — Concours ou classement : deux portes différentes (6 min)",
-          description:
-            "Les filières à concours (INMeS, IFSIO, ENEAM, ENSTIC, INJEPS, ENS, INSPEI…) et celles où le quota partiellement payant est de zéro.",
-        },
-        {
-          title: "Capsule 1.4 — Le calendrier officiel et la plateforme (8 min)",
-          description:
-            "Boursiers : 14 → 24 août · Non-boursiers : 11 → 22 septembre · DEAT/DT : 30 sept → 6 oct. Rétroplanning J-7 / J-3 / dernier jour.",
-        },
-        {
-          title: "Capsule 1.5 — Créer et sécuriser son compte (5 min)",
-          description:
-            "Pas à pas sur apresmonbac.bj : numéro de table, vérification d'identité, activation. Mot de passe confidentiel, captures d'écran à chaque étape.",
+          title: "Leçon 1.3 — Les 05 grands critères qui conditionnent ton choix de filière",
+          description: "La grille de décision pour choisir selon ton profil et tes moyens.",
         },
       ],
     },
     {
       tag: "Module 2",
-      icon: "target" as IconName,
-      title: "Connaître son profil et calculer sa moyenne de classement",
+      icon: "monitor" as IconName,
+      title: "Systèmes d'Intégration, Bourses & Plateforme Apremonbac",
       pitch:
-        "On passe de « j'espère » à « je sais où je me situe ». On ne te classe pas sur ta moyenne générale : on te classe sur trois matières fondamentales affectées de leurs coefficients. Dans ce module, tu apprends la formule officielle M = (m₁×x + m₂×y + m₃×z) / (x + y + z) et tu calcules ta vraie moyenne de classement, filière par filière. La même personne n'a pas la même moyenne selon la filière visée.",
+        "Dans ce deuxième module, on entre dans le cœur du système. Avoir de bonnes notes ne suffit pas si tu ne sais pas naviguer sur les plateformes officielles. Je te montre exactement comment fonctionne le classement des choix, quelles sont les conditions pour obtenir une bourse ou un statut partiellement payant, et la stratégie exacte à adopter pour ne pas te retrouver sans filière à la rentrée.",
       lessons: [
         {
-          title: "Capsule 2.1 — Ta série commande tes portes (7 min)",
-          description:
-            "C, D, B, A1/A2, G1-G3, E, F1-F4, EA, DT/DEAT : quelles familles de filières s'ouvrent à ta série — et lesquelles sont fermées.",
+          title: "Leçon 2.1 — Les régimes d'intégration",
+          description: "Boursiers, secourus, partiellement payants, entièrement payants.",
         },
         {
-          title: "Capsule 2.2 — La vraie moyenne : celle du classement (10 min) ⭐",
-          description:
-            "La formule officielle avec exemples réels : Médecine BAC D = (SVT×5 + Maths×4 + PCT×4)/13. Un même bulletin, deux calculs, deux résultats.",
+          title: "Leçon 2.2 — Prise en main complète de la plateforme Apremonbac",
+          description: "La plateforme officielle expliquée écran par écran.",
         },
         {
-          title: "Capsule 2.3 — Trouver les matières retenues pour chaque filière (6 min)",
-          description:
-            "Lire la ligne de sa filière dans le guide officiel : Génie civil, ENEAM, FASEG, FADESP… — pas la rumeur du quartier.",
-        },
-        {
-          title: "Capsule 2.4 — Aptitudes, projet et réalité du marché (7 min)",
-          description:
-            "Croiser aptitudes réelles, préférences et employabilité. Les 3 questions honnêtes et le projet rédigé en 5 lignes.",
+          title: "Leçon 2.3 — Stratégies de classement des choix de filières",
+          description: "Comment ordonner tes filières sur la plateforme pour maximiser tes chances.",
         },
       ],
     },
     {
       tag: "Module 3",
-      icon: "list" as IconName,
-      title: "Choisir et hiérarchiser ses choix",
+      icon: "target" as IconName,
+      title: "Cas pratique de deux relevés",
       pitch:
-        "Dans ce module, on transforme une envie en liste de vœux stratégique. Tu vas apprendre à lire les 7 indicateurs affichés sous chaque filière (bourses, partiellement payant, inscrits par mention, total), à construire ta grille ambition / réaliste / sécurité, et à repérer les filières à petit effectif que personne ne regarde — souvent ton meilleur classement. Ta liste de vœux n'est pas un brouillon : c'est un contrat avec ton année.",
+        "Place à la pratique ! Dans ce module, on prend deux vrais relevés de notes et on déroule tout le processus sous tes yeux : comment se fait le choix, comment se calcule la moyenne pondérée, et surtout les erreurs fatales qui éliminent des candidats chaque année. À la fin, tu sauras faire exactement le même travail avec ton propre relevé.",
       lessons: [
         {
-          title: "Capsule 3.1 — Lire les chiffres affichés sous chaque filière (9 min) ⭐",
-          description:
-            "Les 7 indicateurs décodés : combien de candidats sont au-dessus de ta mention ? Les chiffres bougent pendant toute la fenêtre — reviens les consulter.",
+          title: "Leçon 3.1 — Comprendre comment se fait le choix",
+          description: "Le processus de sélection déroulé pas à pas sur deux cas réels.",
         },
         {
-          title: "Capsule 3.2 — La grille ambition / réaliste / sécurité (8 min)",
-          description:
-            "Un choix = un rôle. Et la recommandation officielle : au moins une faculté classique dans sa liste. Zéro affectation = erreur de hiérarchisation, pas de niveau.",
+          title: "Leçon 3.2 — Le calcul de la moyenne pondérée",
+          description: "La méthode de calcul appliquée en direct sur les deux relevés.",
         },
         {
-          title: "Capsule 3.3 — Les filières que personne ne regarde (7 min)",
-          description:
-            "Hydrologie, géomatique, biotechnologies, aquaculture… 9 à 30 places, peu de candidats, débouchés listés noir sur blanc dans le guide.",
-        },
-        {
-          title: "Capsule 3.4 — Changer d'université sans changer de rêve (6 min)",
-          description:
-            "La même famille de filière à Parakou, à l'UNSTIM ou à l'UNA : moins de pression, meilleur rang, meilleur statut de financement. Attention : changer de filière en cours d'année = perte de l'allocation.",
+          title: "Leçon 3.3 — Les erreurs fatales à éviter et comment faire son choix",
+          description: "Les pièges qui éliminent des candidats chaque année, et la bonne méthode.",
         },
       ],
     },
     {
       tag: "Module 4",
-      icon: "wallet" as IconName,
-      title: "Financer ses études : bourse, FPP, FEP",
+      icon: "briefcase" as IconName,
+      title: "Débouchés, filières et secteurs d'activités",
       pitch:
-        "Classé ne veut pas dire boursier. Le classement attribue trois statuts : bourse d'État, partiellement payant (FPP), entièrement payant (FEP) — et l'ordre est mécanique. Dans ce module, tu lis ton statut probable à l'avance dans les chiffres de la plateforme, tu anticipes le coût réel de ton année poste par poste, et tu prépares la demande d'allocation auprès de la DBAU. Le bon moment pour découvrir le coût, c'est en août — pas à la scolarité en novembre.",
+        "Félicitations d'être arrivé jusqu'ici ! Étudier c'est bien, mais étudier pour un métier qui existera encore demain, c'est mieux. Dans ce dernier module, nous passons en revue les branches de filières possibles pour chaque série de BAC, leurs débouchés réels, les secteurs en voie de disparition à éviter et les secteurs prometteurs à privilégier dans tes choix.",
       lessons: [
         {
-          title: "Capsule 4.1 — Les trois statuts : bourse, FPP, FEP (7 min)",
-          description:
-            "Comment les statuts s'attribuent mécaniquement selon le classement, et comment lire son statut probable avant même de choisir.",
+          title: "Leçon 4.1 — Les branches de filières possibles pour chaque série de BAC",
+          description: "Série par série : ce qui s'ouvre à toi.",
         },
         {
-          title: "Capsule 4.2 — Le même diplôme, trois façons de le payer (6 min)",
-          description:
-            "Boursier, FPP ou FEP : c'est la même formation et le même diplôme. Le statut change ce que la famille paie, pas la valeur du parchemin.",
+          title: "Leçon 4.2 — Les débouchés pour chaque filière",
+          description: "Les métiers concrets derrière chaque filière.",
         },
         {
-          title: "Capsule 4.3 — La demande d'allocation auprès de la DBAU (8 min)",
-          description:
-            "L'allocation n'est pas automatique : demande en ligne, fenêtre distincte de l'orientation, conditions d'éligibilité fixées par décret.",
+          title: "Leçon 4.3 — Les secteurs d'activités en voie de disparition",
+          description: "Les pièges : secteurs à éviter dans tes choix.",
         },
         {
-          title: "Capsule 4.4 — Ton budget annuel réel (9 min)",
-          description:
-            "Scolarité, logement, transport, alimentation, matériel : chaque montant a une source écrite. Et les 3 phrases chiffrées à dire à tes parents.",
-        },
-      ],
-    },
-    {
-      tag: "Module 5",
-      icon: "map" as IconName,
-      title: "Après le résultat : inscription, plan B, étranger",
-      pitch:
-        "Félicitations d'être arrivé jusqu'ici ! Quel que soit le résultat, tu ne restes jamais bloqué. Dossier physique prêt avant la publication, quatre voies de plan B si tu n'es pas classé (affectation obtenue, privé autorisé, formation professionnelle courte, télé-enseignement), les 5 signaux d'alerte contre les arnaques aux études à l'étranger, et tes trois premières semaines en LMD pour lancer ton année. On ne paie jamais une admission à un intermédiaire.",
-      lessons: [
-        {
-          title: "Capsule 5.1 — Le dossier physique, prêt avant les résultats (7 min)",
-          description:
-            "Relevé, attestation du BAC, acte de naissance, certificat de nationalité, photos, certificat médical, photocopies légalisées ×3.",
-        },
-        {
-          title: "Capsule 5.2 — Pas classé ? Les quatre voies du plan B (8 min)",
-          description:
-            "Accepter l'affectation, privé autorisé (vérifier l'autorisation avant de payer), formation courte, télé-enseignement. Le plan B s'écrit AVANT le résultat.",
-        },
-        {
-          title: "Capsule 5.3 — L'étranger sans arnaque : les 5 signaux d'alerte (8 min)",
-          description:
-            "Bourses de coopération via la DBAU ou candidature directe. Jamais d'espèces sans reçu, jamais de « place garantie », jamais de pression.",
-        },
-        {
-          title: "Capsule 5.4 — Réussir ses trois premières semaines en LMD (7 min)",
-          description:
-            "On valide des unités d'enseignement, pas une moyenne annuelle. Secrétariat pédagogique, maquette, calendrier des évaluations, groupe de travail.",
+          title: "Leçon 4.4 — Les secteurs d'activités prometteurs à privilégier",
+          description: "Où se trouvent les vraies opportunités de demain.",
         },
       ],
     },
