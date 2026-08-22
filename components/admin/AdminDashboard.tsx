@@ -21,6 +21,7 @@ interface StatsData {
       email: string;
       phone: string;
       method: string;
+      product?: string;
       amount: number;
       status: string;
       accessCode?: string;
@@ -270,6 +271,7 @@ export function AdminDashboard() {
                     <th>Date</th>
                     <th>Nom</th>
                     <th>Contact</th>
+                    <th>Produit</th>
                     <th>Moyen</th>
                     <th>Montant</th>
                     <th>Statut</th>
@@ -287,6 +289,7 @@ export function AdminDashboard() {
                         <br />
                         {o.phone}
                       </td>
+                      <td>{o.product === "bonus" ? "🎁 bonus" : "🎓 programme"}</td>
                       <td>{o.method}</td>
                       <td>{o.amount.toLocaleString("fr-FR")} F</td>
                       <td>
@@ -300,7 +303,7 @@ export function AdminDashboard() {
                   ))}
                   {stats.orders.recent.length === 0 && (
                     <tr>
-                      <td colSpan={8} className="muted">
+                      <td colSpan={9} className="muted">
                         Aucune commande pour l&apos;instant.
                       </td>
                     </tr>

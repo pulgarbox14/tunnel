@@ -5,7 +5,13 @@ import { useRouter } from "next/navigation";
 import { site } from "@/content/site";
 import { Icon } from "@/components/Icon";
 
-export function CheckoutForm() {
+export function CheckoutForm({
+  product = "programme",
+  priceLabel,
+}: {
+  product?: "programme" | "bonus";
+  priceLabel?: string;
+}) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,6 +27,7 @@ export function CheckoutForm() {
       email: form.get("email"),
       phone: form.get("phone"),
       method: form.get("method"),
+      product,
     };
 
     try {
@@ -80,7 +87,7 @@ export function CheckoutForm() {
       <button type="submit" className="btn-cta btn-block" disabled={loading}>
         {loading ? "Traitement…" : "Valider ma commande"}
         <small>
-          {site.pricing.price} {site.pricing.currency} — paiement unique
+          {priceLabel ?? `${site.pricing.price} ${site.pricing.currency}`} — paiement unique
         </small>
       </button>
     </form>

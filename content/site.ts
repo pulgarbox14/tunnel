@@ -279,7 +279,7 @@ export const site = {
   pricing: {
     badge: "Offre de lancement",
     oldPrice: "30 000",
-    price: "15 000",
+    price: "10 000",
     currency: "FCFA",
     note: "Paiement unique — accès à vie",
     features: [
@@ -292,6 +292,47 @@ export const site = {
     ],
     paymentNote:
       "Paiement sécurisé via FeexPay (MTN MoMo, Moov Money, Celtiis Cash, carte bancaire) — Après ton achat, tu reçois immédiatement ton code d'accès personnel par email.",
+  },
+
+  /** BONUS optionnel — page et tarif à part. */
+  bonus: {
+    badge: "Bonus exclusif — en option",
+    title: "Bourses Extérieures & Accompagnement",
+    subtitle:
+      "Tu rêves d'étudier à l'étranger ? Ce bonus te montre exactement comment postuler pour les bourses extérieures (bourses de coopération, universités étrangères, organismes) — avec un accompagnement pour monter un dossier qui passe, sans te faire arnaquer par les intermédiaires.",
+    points: [
+      "Le panorama complet des bourses extérieures accessibles aux bacheliers béninois",
+      "Comment monter un dossier qui passe : formulaire officiel, pièces, quittances au Trésor",
+      "La candidature directe auprès des universités étrangères, sans intermédiaire",
+      "Les 5 signaux d'alerte pour éviter les arnaques « admission garantie »",
+      "Un accompagnement pour tes démarches",
+    ],
+    pitch:
+      "Bienvenue dans le bonus ! Étudier à l'étranger, c'est possible — mais uniquement si tu passes par les bonnes portes. Dans ces capsules, je te montre les deux voies légitimes : les bourses de coopération gérées officiellement, et la candidature directe auprès des établissements. Tu vas apprendre à monter un dossier complet, à repérer les arnaques, et tu seras accompagné dans tes démarches.",
+    lessons: [
+      {
+        title: "Bonus 1 — Le panorama des bourses extérieures",
+        description: "Bourses de coopération, bourses d'universités, organismes : ce qui existe vraiment.",
+      },
+      {
+        title: "Bonus 2 — Monter un dossier qui passe",
+        description: "Formulaire officiel, copies légalisées, certificat médical, quittance au Trésor : la liste complète.",
+      },
+      {
+        title: "Bonus 3 — La candidature directe à l'étranger",
+        description: "Comment postuler toi-même auprès d'une université étrangère, sans intermédiaire.",
+      },
+      {
+        title: "Bonus 4 — Éviter les arnaques + accompagnement",
+        description: "Les 5 signaux d'alerte, et comment se déroule ton accompagnement personnalisé.",
+      },
+    ] as Lesson[],
+    pricing: {
+      oldPrice: "10 000",
+      price: "5 000",
+      currency: "FCFA",
+      note: "Paiement unique — accès à vie · indépendant du programme principal",
+    },
   },
 
   paymentMethods: [

@@ -43,6 +43,7 @@ export async function GET() {
           email: o.email,
           phone: o.phone,
           method: o.method,
+          product: o.product ?? "programme",
           amount: o.amount,
           status: o.status,
           accessCode: o.accessCode,

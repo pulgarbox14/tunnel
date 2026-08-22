@@ -72,6 +72,12 @@ export async function getMergedSite() {
         if (url !== undefined) lesson.url = url;
       });
     });
+    // Les capsules du bonus sont indexées après les modules principaux
+    const bi = merged.memberModules.length;
+    merged.bonus.lessons.forEach((lesson, li) => {
+      const url = o.lessonUrls?.[`${bi}-${li}`];
+      if (url !== undefined) lesson.url = url;
+    });
   }
   return merged;
 }

@@ -9,6 +9,8 @@ export interface Order {
   email: string;
   phone: string;
   method: string;
+  /** "programme" (offre principale) ou "bonus" (bourses extérieures). */
+  product: "programme" | "bonus";
   amount: number;
   currency: string;
   status: "pending" | "paid" | "failed";
@@ -71,7 +73,7 @@ export async function markOrderPaid(ref: string): Promise<Order | undefined> {
   if (!order) return undefined;
   if (order.status === "paid" && order.accessCode) return order;
 
-  const rec = await createCodeForOrder(order);
+  const rec = await createCodeForOrder({ ...order, product: order.product });
   const mail = await sendAccessCodeEmail({ to: order.email, name: order.name, code: rec.code });
 
   return updateOrder(ref, {

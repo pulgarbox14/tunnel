@@ -15,6 +15,8 @@ export interface AccessCodeRec {
   name: string;
   email: string;
   orderRef: string;
+  /** Produit acheté : accès au programme principal ou au bonus. */
+  product: "programme" | "bonus";
   devices: string[];
   maxDevices: number;
   createdAt: number;
@@ -48,6 +50,7 @@ export async function createCodeForOrder(order: {
   ref: string;
   name: string;
   email: string;
+  product?: "programme" | "bonus";
 }): Promise<AccessCodeRec> {
   const codes = await listCodes();
   const existing = codes.find((c) => c.orderRef === order.ref);
@@ -63,6 +66,7 @@ export async function createCodeForOrder(order: {
     name: order.name,
     email: order.email,
     orderRef: order.ref,
+    product: order.product ?? "programme",
     devices: [],
     maxDevices: MAX_DEVICES,
     createdAt: Date.now(),

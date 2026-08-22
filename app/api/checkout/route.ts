@@ -12,7 +12,13 @@ import { site } from "@/content/site";
  *   pour tester le tunnel de bout en bout.
  */
 export async function POST(request: Request) {
-  let data: { name?: string; email?: string; phone?: string; method?: string };
+  let data: {
+    name?: string;
+    email?: string;
+    phone?: string;
+    method?: string;
+    product?: string;
+  };
   try {
     data = await request.json();
   } catch {
@@ -23,6 +29,7 @@ export async function POST(request: Request) {
   const email = (data.email ?? "").trim();
   const phone = (data.phone ?? "").trim();
   const method = (data.method ?? "").trim();
+  const product = data.product === "bonus" ? "bonus" : "programme";
 
   if (!name || !email || !phone || !method) {
     return NextResponse.json(
@@ -31,14 +38,17 @@ export async function POST(request: Request) {
     );
   }
 
-  const amount = parseInt(site.pricing.price.replace(/\D/g, ""), 10);
+  // Le montant est TOUJOURS déterminé côté serveur selon le produit.
+  const priceSource = product === "bonus" ? site.bonus.pricing : site.pricing;
+  const amount = parseInt(priceSource.price.replace(/\D/g, ""), 10);
   const order = await createOrder({
     name,
     email,
     phone,
     method,
+    product,
     amount,
-    currency: site.pricing.currency,
+    currency: priceSource.currency,
   });
 
   // Mode simulation tant que FeexPay n'est pas configuré

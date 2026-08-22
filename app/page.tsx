@@ -327,6 +327,24 @@ export default async function HomePage() {
           </p>
         </div>
       </section>
+
+      {/* ===== TEASER BONUS ===== */}
+      <section className="grid-bg text-center">
+        <div className="container">
+          <span className="badge badge-yellow">
+            <Icon name="gift" size={13} /> {site.bonus.badge}
+          </span>
+          <h2 className="section-heading mt-2">{site.bonus.title}</h2>
+          <p className="muted" style={{ maxWidth: 520, margin: "0 auto" }}>
+            Tu vises l&apos;étranger ? En option, apprends à postuler pour les{" "}
+            <span className="strong-white">bourses extérieures</span> avec un accompagnement dans
+            tes démarches — seulement {site.bonus.pricing.price} {site.bonus.pricing.currency}.
+          </p>
+          <div className="mt-2">
+            <Cta href="/bonus" label="Découvrir le bonus" sub={`${site.bonus.pricing.price} ${site.bonus.pricing.currency}`} />
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
