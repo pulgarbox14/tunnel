@@ -294,36 +294,41 @@ export const site = {
       "Paiement sécurisé via FeexPay (MTN MoMo, Moov Money, Celtiis Cash, carte bancaire) — Après ton achat, tu reçois immédiatement ton code d'accès personnel par email.",
   },
 
-  /** BONUS optionnel — page et tarif à part. */
+  /** BONUS optionnel — proposé en upsell après la fin de la formation. */
   bonus: {
-    badge: "Bonus exclusif — en option",
-    title: "Bourses Extérieures & Accompagnement",
+    badge: "Bonus exclusif — réservé aux finissants",
+    title: "Candidatures & Accompagnement — Bénin et Étranger",
     subtitle:
-      "Tu rêves d'étudier à l'étranger ? Ce bonus te montre exactement comment postuler pour les bourses extérieures (bourses de coopération, universités étrangères, organismes) — avec un accompagnement pour monter un dossier qui passe, sans te faire arnaquer par les intermédiaires.",
+      "Savoir choisir, c'est bien. Savoir postuler, c'est décisif. Ce bonus t'accompagne concrètement dans toutes tes candidatures : les universités du Bénin (publiques et privées) comme les bourses extérieures et les universités étrangères — avec un accompagnement dans tes démarches, sans te faire arnaquer par les intermédiaires.",
     points: [
+      "Comment postuler dans les universités du Bénin, publiques et privées, étape par étape",
       "Le panorama complet des bourses extérieures accessibles aux bacheliers béninois",
-      "Comment monter un dossier qui passe : formulaire officiel, pièces, quittances au Trésor",
+      "Monter un dossier qui passe : formulaire officiel, pièces, quittances au Trésor",
       "La candidature directe auprès des universités étrangères, sans intermédiaire",
       "Les 5 signaux d'alerte pour éviter les arnaques « admission garantie »",
-      "Un accompagnement pour tes démarches",
+      "Un accompagnement dans tes démarches",
     ],
     pitch:
-      "Bienvenue dans le bonus ! Étudier à l'étranger, c'est possible — mais uniquement si tu passes par les bonnes portes. Dans ces capsules, je te montre les deux voies légitimes : les bourses de coopération gérées officiellement, et la candidature directe auprès des établissements. Tu vas apprendre à monter un dossier complet, à repérer les arnaques, et tu seras accompagné dans tes démarches.",
+      "Bienvenue dans le bonus ! Choisir sa filière, c'était la première étape — maintenant il faut décrocher ta place. Dans ces capsules, je t'accompagne dans toutes tes candidatures : d'abord les universités du Bénin, publiques et privées, dossier par dossier ; puis les portes de l'étranger — bourses de coopération et candidature directe auprès des établissements. Tu vas apprendre à monter des dossiers complets, à repérer les arnaques, et tu seras accompagné dans tes démarches.",
     lessons: [
       {
-        title: "Bonus 1 — Le panorama des bourses extérieures",
+        title: "Bonus 1 — Postuler dans les universités du Bénin",
+        description: "Publiques et privées : les démarches, les dossiers et les délais, étape par étape.",
+      },
+      {
+        title: "Bonus 2 — Le panorama des bourses extérieures",
         description: "Bourses de coopération, bourses d'universités, organismes : ce qui existe vraiment.",
       },
       {
-        title: "Bonus 2 — Monter un dossier qui passe",
-        description: "Formulaire officiel, copies légalisées, certificat médical, quittance au Trésor : la liste complète.",
+        title: "Bonus 3 — Monter un dossier qui passe",
+        description: "Formulaire officiel, copies légalisées, certificat médical, quittance au Trésor : la liste complète, pour le Bénin comme pour l'étranger.",
       },
       {
-        title: "Bonus 3 — La candidature directe à l'étranger",
+        title: "Bonus 4 — La candidature directe à l'étranger",
         description: "Comment postuler toi-même auprès d'une université étrangère, sans intermédiaire.",
       },
       {
-        title: "Bonus 4 — Éviter les arnaques + accompagnement",
+        title: "Bonus 5 — Éviter les arnaques + accompagnement",
         description: "Les 5 signaux d'alerte, et comment se déroule ton accompagnement personnalisé.",
       },
     ] as Lesson[],

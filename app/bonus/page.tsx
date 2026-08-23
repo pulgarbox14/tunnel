@@ -89,7 +89,7 @@ export default function BonusPage() {
                 <span className="dot dot-green">
                   <Icon name="check" size={14} />
                 </span>
-                <span>Les 4 capsules vidéo du bonus</span>
+                <span>Les 5 capsules vidéo du bonus</span>
               </li>
               <li>
                 <span className="dot dot-green">

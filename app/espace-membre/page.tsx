@@ -156,8 +156,8 @@ export default async function EspaceMembrePage() {
                 </h2>
                 <p className="muted mt-1" style={{ maxWidth: 520, margin: "12px auto 0" }}>
                   Tu as maintenant accès à une offre réservée aux membres qui vont au bout :{" "}
-                  <span className="strong-white">{site.bonus.title}</span> — comment postuler pour
-                  les bourses extérieures, avec un accompagnement dans tes démarches.
+                  <span className="strong-white">{site.bonus.title}</span> — on t&apos;accompagne
+                  pour postuler dans les universités du Bénin comme à l&apos;étranger.
                 </p>
                 <div className="mt-1 price-old">
                   {site.bonus.pricing.oldPrice} {site.bonus.pricing.currency}
