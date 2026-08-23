@@ -40,7 +40,7 @@ export function LessonDone({
       disabled={busy}
       type="button"
     >
-      {done ? "✓ Leçon terminée" : "Marquer comme terminée"}
+      {done ? "✓ Vidéo terminée" : "Marquer comme terminée"}
     </button>
   );
 }

@@ -51,7 +51,7 @@ export const site = {
     badge: "Spécial nouveaux bacheliers — Bénin 2026",
     title: "Réussir Son Post-BAC",
     subtitle:
-      "Tu viens d'avoir ton BAC ? Félicitations. Maintenant, tout se joue : classement, choix de filières sur apresmonbac.bj, bourses, budget de l'année. Ce programme t'accompagne capsule par capsule pour la rentrée 2026-2027, avec un accès membre sécurisé à vie.",
+      "Tu viens d'avoir ton BAC ? Félicitations. Maintenant, tout se joue : classement, choix de filières sur apresmonbac.bj, bourses, budget de l'année. Ce programme t'accompagne module par module pour la rentrée 2026-2027, avec un accès membre sécurisé à vie.",
     videoLabel: "Regarde la vidéo ci-dessous",
     videoUrl: "",
   },
@@ -72,7 +72,7 @@ export const site = {
     {
       icon: "lock" as IconName,
       title: "Un espace membre sécurisé à vie",
-      text: "les 13 capsules vidéo et les exercices dans un espace privé, accessible uniquement aux membres, avec les mises à jour.",
+      text: "les 4 vidéos de formation dans un espace privé, accessible uniquement aux membres, avec les mises à jour.",
     },
   ],
 
@@ -219,7 +219,7 @@ export const site = {
       tag: "Module 1",
       icon: "landmark" as IconName,
       title: "Généralités et Panorama des Universités",
-      duration: "3 capsules",
+      duration: "1 vidéo complète",
       promise: "Choisir l'établissement qui correspond à ton profil et à tes moyens.",
       points: [
         "Vue d'ensemble du paysage universitaire",
@@ -231,7 +231,7 @@ export const site = {
       tag: "Module 2",
       icon: "monitor" as IconName,
       title: "Intégration, Bourses & Plateforme Apremonbac",
-      duration: "3 capsules",
+      duration: "1 vidéo complète",
       promise: "Naviguer sur la plateforme officielle comme un pro.",
       points: [
         "Les régimes d'intégration : boursiers, secourus, partiellement et entièrement payants",
@@ -243,7 +243,7 @@ export const site = {
       tag: "Module 3",
       icon: "target" as IconName,
       title: "Cas pratique de deux relevés",
-      duration: "3 capsules",
+      duration: "1 vidéo complète",
       promise: "Savoir chiffrer tes chances avant de choisir.",
       points: [
         "Comprendre comment se fait le choix",
@@ -255,7 +255,7 @@ export const site = {
       tag: "Module 4",
       icon: "briefcase" as IconName,
       title: "Débouchés, filières et secteurs d'activités",
-      duration: "4 capsules",
+      duration: "1 vidéo complète",
       promise: "Étudier pour un métier qui existera encore demain.",
       points: [
         "Les branches de filières possibles pour chaque série de BAC",
@@ -269,7 +269,7 @@ export const site = {
       icon: "lock" as IconName,
       title: "Espace membre à vie",
       points: [
-        "Les 13 capsules vidéo en accès sécurisé",
+        "Les 4 vidéos de formation en accès sécurisé",
         "Exercices et cas pratiques",
         "Disponible 24h/24, 7j/7 — mises à jour incluses",
       ],
@@ -283,7 +283,7 @@ export const site = {
     currency: "FCFA",
     note: "Paiement unique — accès à vie",
     features: [
-      "Les 4 modules complets — 13 capsules vidéo",
+      "Les 4 modules — une vidéo complète par module",
       "Cas pratiques sur de vrais relevés de notes",
       "Le guide écran par écran de apresmonbac.bj",
       "Espace membre sécurisé à vie",
@@ -312,24 +312,9 @@ export const site = {
       "Bienvenue dans le bonus ! Choisir sa filière, c'était la première étape — maintenant il faut décrocher ta place. Dans ces capsules, je t'accompagne dans toutes tes candidatures : d'abord les universités du Bénin, publiques et privées, dossier par dossier ; puis les portes de l'étranger — bourses de coopération et candidature directe auprès des établissements. Tu vas apprendre à monter des dossiers complets, à repérer les arnaques, et tu seras accompagné dans tes démarches.",
     lessons: [
       {
-        title: "Bonus 1 — Postuler dans les universités du Bénin",
-        description: "Publiques et privées : les démarches, les dossiers et les délais, étape par étape.",
-      },
-      {
-        title: "Bonus 2 — Le panorama des bourses extérieures",
-        description: "Bourses de coopération, bourses d'universités, organismes : ce qui existe vraiment.",
-      },
-      {
-        title: "Bonus 3 — Monter un dossier qui passe",
-        description: "Formulaire officiel, copies légalisées, certificat médical, quittance au Trésor : la liste complète, pour le Bénin comme pour l'étranger.",
-      },
-      {
-        title: "Bonus 4 — La candidature directe à l'étranger",
-        description: "Comment postuler toi-même auprès d'une université étrangère, sans intermédiaire.",
-      },
-      {
-        title: "Bonus 5 — Éviter les arnaques + accompagnement",
-        description: "Les 5 signaux d'alerte, et comment se déroule ton accompagnement personnalisé.",
+        title: "La vidéo du bonus — Candidatures Bénin & Étranger",
+        description:
+          "Postuler dans les universités du Bénin (publiques et privées) · Le panorama des bourses extérieures · Monter un dossier qui passe · La candidature directe à l'étranger · Éviter les arnaques + ton accompagnement.",
       },
     ] as Lesson[],
     pricing: {
@@ -347,7 +332,7 @@ export const site = {
     { id: "card", label: "Carte bancaire", icon: "credit-card" as IconName },
   ],
 
-  /** Espace membre : les 4 modules avec pitchs et capsules. */
+  /** Espace membre : les 4 modules — une vidéo complète par module. */
   memberModules: [
     {
       tag: "Module 1",
@@ -357,16 +342,9 @@ export const site = {
         "Bienvenue dans ce premier module ! Choisir son université, c'est comme choisir le terrain sur lequel tu vas bâtir ton avenir. Entre le secteur public et le privé, les réalités sont totalement différentes : coûts, reconnaissance des diplômes, encadrement et opportunités. Dans ce module, nous allons décortiquer les avantages et inconvénients de chaque option pour que tu puisses choisir l'établissement qui correspond exactement à ton profil et à tes moyens.",
       lessons: [
         {
-          title: "Leçon 1.1 — Vue d'ensemble du paysage universitaire",
-          description: "Le panorama complet des établissements pour partir sur de bonnes bases.",
-        },
-        {
-          title: "Leçon 1.2 — Universités publiques et réalité du terrain",
-          description: "Coûts, encadrement, reconnaissance des diplômes : ce qui t'attend vraiment.",
-        },
-        {
-          title: "Leçon 1.3 — Les 05 grands critères qui conditionnent ton choix de filière",
-          description: "La grille de décision pour choisir selon ton profil et tes moyens.",
+          title: "Vidéo du Module 1",
+          description:
+            "Vue d'ensemble du paysage universitaire · Universités publiques et réalité du terrain · Les 05 grands critères qui conditionnent ton choix de filière.",
         },
       ],
     },
@@ -378,16 +356,9 @@ export const site = {
         "Dans ce deuxième module, on entre dans le cœur du système. Avoir de bonnes notes ne suffit pas si tu ne sais pas naviguer sur les plateformes officielles. Je te montre exactement comment fonctionne le classement des choix, quelles sont les conditions pour obtenir une bourse ou un statut partiellement payant, et la stratégie exacte à adopter pour ne pas te retrouver sans filière à la rentrée.",
       lessons: [
         {
-          title: "Leçon 2.1 — Les régimes d'intégration",
-          description: "Boursiers, secourus, partiellement payants, entièrement payants.",
-        },
-        {
-          title: "Leçon 2.2 — Prise en main complète de la plateforme Apremonbac",
-          description: "La plateforme officielle expliquée écran par écran.",
-        },
-        {
-          title: "Leçon 2.3 — Stratégies de classement des choix de filières",
-          description: "Comment ordonner tes filières sur la plateforme pour maximiser tes chances.",
+          title: "Vidéo du Module 2",
+          description:
+            "Les régimes d'intégration (boursiers, secourus, partiellement et entièrement payants) · Prise en main complète de la plateforme Apremonbac · Stratégies de classement des choix de filières.",
         },
       ],
     },
@@ -399,16 +370,9 @@ export const site = {
         "Place à la pratique ! Dans ce module, on prend deux vrais relevés de notes et on déroule tout le processus sous tes yeux : comment se fait le choix, comment se calcule la moyenne pondérée, et surtout les erreurs fatales qui éliminent des candidats chaque année. À la fin, tu sauras faire exactement le même travail avec ton propre relevé.",
       lessons: [
         {
-          title: "Leçon 3.1 — Comprendre comment se fait le choix",
-          description: "Le processus de sélection déroulé pas à pas sur deux cas réels.",
-        },
-        {
-          title: "Leçon 3.2 — Le calcul de la moyenne pondérée",
-          description: "La méthode de calcul appliquée en direct sur les deux relevés.",
-        },
-        {
-          title: "Leçon 3.3 — Les erreurs fatales à éviter et comment faire son choix",
-          description: "Les pièges qui éliminent des candidats chaque année, et la bonne méthode.",
+          title: "Vidéo du Module 3",
+          description:
+            "Comprendre comment se fait le choix · Le calcul de la moyenne pondérée · Les erreurs fatales à éviter et comment faire son choix.",
         },
       ],
     },
@@ -420,20 +384,9 @@ export const site = {
         "Félicitations d'être arrivé jusqu'ici ! Étudier c'est bien, mais étudier pour un métier qui existera encore demain, c'est mieux. Dans ce dernier module, nous passons en revue les branches de filières possibles pour chaque série de BAC, leurs débouchés réels, les secteurs en voie de disparition à éviter et les secteurs prometteurs à privilégier dans tes choix.",
       lessons: [
         {
-          title: "Leçon 4.1 — Les branches de filières possibles pour chaque série de BAC",
-          description: "Série par série : ce qui s'ouvre à toi.",
-        },
-        {
-          title: "Leçon 4.2 — Les débouchés pour chaque filière",
-          description: "Les métiers concrets derrière chaque filière.",
-        },
-        {
-          title: "Leçon 4.3 — Les secteurs d'activités en voie de disparition",
-          description: "Les pièges : secteurs à éviter dans tes choix.",
-        },
-        {
-          title: "Leçon 4.4 — Les secteurs d'activités prometteurs à privilégier",
-          description: "Où se trouvent les vraies opportunités de demain.",
+          title: "Vidéo du Module 4",
+          description:
+            "Les branches de filières possibles pour chaque série de BAC · Les débouchés pour chaque filière · Les secteurs en voie de disparition · Les secteurs prometteurs à privilégier.",
         },
       ],
     },

@@ -57,7 +57,7 @@ export default async function EspaceMembrePage() {
               <Icon name="check" size={13} /> Membre connecté{rec ? ` — ${rec.name}` : ""}
             </span>
             <h1 className="title-red mt-1" style={{ fontSize: "1.4rem" }}>
-              {site.brand} — Mes leçons vidéo
+              {site.brand} — Mes vidéos de formation
             </h1>
           </div>
           <LogoutButton />
@@ -70,7 +70,7 @@ export default async function EspaceMembrePage() {
               <span>
                 Ta progression :{" "}
                 <span className="strong-white">
-                  {doneCount}/{totalLessons} leçons terminées
+                  {doneCount}/{totalLessons} vidéos terminées
                 </span>
               </span>
               {!allDone && (
@@ -89,7 +89,7 @@ export default async function EspaceMembrePage() {
         )}
 
         <p className="muted">
-          Bienvenue dans ton espace ! Suis les modules dans l&apos;ordre, et marque chaque leçon
+          Bienvenue dans ton espace ! Suis les modules dans l&apos;ordre, et marque chaque vidéo
           terminée pour suivre ta progression.
         </p>
 
@@ -182,7 +182,7 @@ export default async function EspaceMembrePage() {
                 <p className="muted mt-1 small">
                   Un bonus exclusif t&apos;attend à la fin de la formation. Termine les{" "}
                   <span className="strong-white">
-                    {totalLessons - doneCount} leçon(s) restante(s)
+                    {totalLessons - doneCount} vidéo(s) restante(s)
                   </span>{" "}
                   pour le débloquer.
                 </p>

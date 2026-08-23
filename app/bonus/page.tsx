@@ -54,7 +54,7 @@ export default function BonusPage() {
       {/* ===== LES CAPSULES DU BONUS ===== */}
       <section className="grid-bg">
         <div className="container-wide">
-          <h2 className="section-heading">Les capsules du bonus</h2>
+          <h2 className="section-heading">Le contenu du bonus</h2>
           <div className="modules-grid">
             {b.lessons.map((lesson) => (
               <div className="module-card" key={lesson.title}>
@@ -89,7 +89,7 @@ export default function BonusPage() {
                 <span className="dot dot-green">
                   <Icon name="check" size={14} />
                 </span>
-                <span>Les 5 capsules vidéo du bonus</span>
+                <span>La vidéo complète du bonus</span>
               </li>
               <li>
                 <span className="dot dot-green">
