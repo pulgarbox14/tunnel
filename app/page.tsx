@@ -29,7 +29,17 @@ export default async function HomePage() {
             </div>
             <div className="video-inner">
               {site.hero.videoUrl ? (
-                <iframe src={site.hero.videoUrl} allowFullScreen title="Vidéo de présentation" />
+                site.hero.videoUrl.startsWith("/api/video/") ||
+                site.hero.videoUrl.endsWith(".mp4") ? (
+                  <video
+                    controls
+                    controlsList="nodownload"
+                    src={site.hero.videoUrl}
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                ) : (
+                  <iframe src={site.hero.videoUrl} allowFullScreen title="Vidéo de présentation" />
+                )
               ) : (
                 <div className="play-btn" />
               )}

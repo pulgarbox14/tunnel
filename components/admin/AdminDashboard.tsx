@@ -67,6 +67,70 @@ async function uploadImage(file: File): Promise<string> {
   return json.url as string;
 }
 
+/** Upload de vidéo par morceaux de 4 Mo, avec progression. */
+async function uploadVideo(file: File, onPct: (pct: number) => void): Promise<string> {
+  const CHUNK = 4 * 1024 * 1024;
+  const total = Math.max(1, Math.ceil(file.size / CHUNK));
+  let id = "";
+  for (let i = 0; i < total; i++) {
+    const blob = file.slice(i * CHUNK, (i + 1) * CHUNK);
+    const res = await fetch(
+      `/api/admin/video-upload?name=${encodeURIComponent(file.name)}&chunk=${i}&total=${total}&id=${id}`,
+      { method: "POST", body: blob },
+    );
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error ?? "Échec de l'upload");
+    id = json.id;
+    onPct(Math.round(((i + 1) / total) * 100));
+    if (json.url) return json.url as string;
+  }
+  throw new Error("Upload incomplet");
+}
+
+/** Champ vidéo : lien (Vimeo/mp4) OU upload du fichier vers le serveur. */
+function VideoField({
+  value,
+  onChange,
+  placeholder,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+}) {
+  const [pct, setPct] = useState<number | null>(null);
+  return (
+    <div className="img-field">
+      <input
+        type="text"
+        value={value}
+        placeholder={placeholder ?? "Lien vidéo (Vimeo, mp4…) ou upload →"}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      <label className="btn-ghost upload-btn">
+        {pct !== null ? `⬆ ${pct}%` : "🎬 Uploader"}
+        <input
+          type="file"
+          accept="video/mp4,video/webm,video/x-m4v"
+          hidden
+          onChange={async (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            setPct(0);
+            try {
+              const url = await uploadVideo(file, setPct);
+              onChange(url);
+            } catch (err) {
+              alert(String(err));
+            } finally {
+              setPct(null);
+            }
+          }}
+        />
+      </label>
+    </div>
+  );
+}
+
 /** Champ image : URL + bouton d'upload de fichier. */
 function ImageField({
   value,
@@ -128,13 +192,18 @@ export function AdminDashboard() {
   const [coachName, setCoachName] = useState("");
   const [coachPhotos, setCoachPhotos] = useState<string[]>(["", ""]);
   const [gallery, setGallery] = useState<string[]>(["", "", "", ""]);
+  const [hosted, setHosted] = useState<
+    { id: string; url: string; sizeMb: number; used: boolean }[]
+  >([]);
 
   const load = useCallback(async () => {
-    const [statsRes, contentRes] = await Promise.all([
+    const [statsRes, contentRes, videosRes] = await Promise.all([
       fetch("/api/admin/stats").then((r) => r.json()),
       fetch("/api/admin/content").then((r) => r.json()),
+      fetch("/api/admin/videos").then((r) => r.json()),
     ]);
     if (statsRes.ok) setStats(statsRes);
+    if (videosRes.ok) setHosted(videosRes.videos);
     if (contentRes.ok) {
       setContent(contentRes);
       const o = contentRes.overrides ?? {};
@@ -169,6 +238,19 @@ export function AdminDashboard() {
     const json = await res.json();
     setSaved(json.ok ? "✅ Enregistré ! Le site est à jour." : "❌ Erreur d'enregistrement.");
     if (json.ok) load();
+  }
+
+  async function deleteVideo(id: string, used: boolean) {
+    if (
+      !confirm(
+        used
+          ? `⚠️ Cette vidéo est UTILISÉE sur le site ! La supprimer cassera sa lecture. Supprimer quand même ${id} ?`
+          : `Supprimer définitivement la vidéo ${id} du serveur ?`,
+      )
+    )
+      return;
+    await fetch(`/api/admin/videos?id=${encodeURIComponent(id)}`, { method: "DELETE" });
+    load();
   }
 
   async function resetCodeDevices(code: string) {
@@ -359,17 +441,16 @@ export function AdminDashboard() {
         {tab === "videos" && content && (
           <div className="mt-2">
             <p className="muted small">
-              Colle un <strong>lien Vimeo</strong> (ex : vimeo.com/123456) ou le{" "}
-              <strong>script &lt;iframe&gt;</strong> complet — les deux fonctionnent, tout est
-              converti automatiquement.
+              Pour chaque vidéo : clique <strong>🎬 Uploader</strong> pour envoyer le fichier
+              mp4 directement sur ton serveur (protégé, réservé aux membres), ou colle un lien
+              (Vimeo / mp4) si tu préfères.
             </p>
 
             <h2 className="admin-h2">Vidéo de vente (page d&apos;accueil)</h2>
-            <input
-              type="text"
+            <VideoField
               value={heroVideo}
-              placeholder="Lien ou script iframe de la vidéo de vente"
-              onChange={(e) => setHeroVideo(e.target.value)}
+              onChange={setHeroVideo}
+              placeholder="Vidéo de vente : lien ou upload →"
             />
 
             {content.defaults.modules.map((mod, mi) => (
@@ -380,13 +461,9 @@ export function AdminDashboard() {
                 {mod.lessons.map((lesson, li) => (
                   <div className="lesson-row" key={li}>
                     <label>{lesson.title}</label>
-                    <input
-                      type="text"
+                    <VideoField
                       value={lessonUrls[`${mi}-${li}`] ?? ""}
-                      placeholder="Lien ou script iframe Vimeo"
-                      onChange={(e) =>
-                        setLessonUrls({ ...lessonUrls, [`${mi}-${li}`]: e.target.value })
-                      }
+                      onChange={(v) => setLessonUrls({ ...lessonUrls, [`${mi}-${li}`]: v })}
                     />
                   </div>
                 ))}
@@ -400,6 +477,44 @@ export function AdminDashboard() {
               Enregistrer les vidéos
               <small>mise à jour immédiate</small>
             </button>
+
+            <h2 className="admin-h2">Vidéos hébergées sur le serveur</h2>
+            <div className="table-scroll">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Fichier</th>
+                    <th>Taille</th>
+                    <th>Utilisée ?</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {hosted.map((v) => (
+                    <tr key={v.id}>
+                      <td className="mono">{v.id}</td>
+                      <td>{v.sizeMb} Mo</td>
+                      <td>{v.used ? "✅ sur le site" : "—"}</td>
+                      <td>
+                        <button
+                          className="btn-ghost small-btn"
+                          onClick={() => deleteVideo(v.id, v.used)}
+                        >
+                          🗑 Supprimer
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                  {hosted.length === 0 && (
+                    <tr>
+                      <td colSpan={4} className="muted">
+                        Aucune vidéo sur le serveur pour l&apos;instant.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
@@ -432,7 +547,7 @@ export function AdminDashboard() {
                     }}
                   >
                     <option value="image">📷 Capture WhatsApp</option>
-                    <option value="vimeo">🎬 Vidéo Vimeo</option>
+                    <option value="vimeo">🎬 Vidéo (serveur ou Vimeo)</option>
                   </select>
                   <button
                     className="btn-ghost small-btn"
@@ -463,16 +578,14 @@ export function AdminDashboard() {
                     placeholder="Capture WhatsApp : URL ou upload →"
                   />
                 ) : (
-                  <input
-                    type="text"
-                    className="mt-1"
+                  <VideoField
                     value={t.src ?? ""}
-                    placeholder="Lien ou script iframe Vimeo du témoignage"
-                    onChange={(e) => {
+                    onChange={(v) => {
                       const next = [...testimonials];
-                      next[i] = { ...t, src: e.target.value };
+                      next[i] = { ...t, src: v };
                       setTestimonials(next);
                     }}
+                    placeholder="Vidéo témoignage : lien ou upload →"
                   />
                 )}
               </div>

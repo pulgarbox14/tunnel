@@ -27,7 +27,11 @@ export function ResultsCarousel({ items }: { items: Testimonial[] }) {
             <div className={`media${t.type === "image" ? " whatsapp" : ""}`}>
               {t.src ? (
                 t.type === "vimeo" ? (
-                  <iframe src={t.src} allowFullScreen title={t.name} />
+                  t.src.startsWith("/api/video/") || t.src.endsWith(".mp4") ? (
+                    <video controls controlsList="nodownload" src={t.src} />
+                  ) : (
+                    <iframe src={t.src} allowFullScreen title={t.name} />
+                  )
                 ) : (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={t.src} alt={`Avis de ${t.name}`} loading="lazy" />

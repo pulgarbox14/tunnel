@@ -118,7 +118,7 @@ export default async function EspaceMembrePage() {
                 {mod.lessons.map((lesson, li) => (
                   <div className="video-item" key={lesson.title}>
                     {lesson.url ? (
-                      lesson.url.endsWith(".mp4") ? (
+                      lesson.url.startsWith("/api/video/") || lesson.url.endsWith(".mp4") || lesson.url.endsWith(".webm") ? (
                         <video controls controlsList="nodownload" src={lesson.url} />
                       ) : (
                         <iframe src={lesson.url} allowFullScreen title={lesson.title} />
@@ -215,7 +215,7 @@ export default async function EspaceMembrePage() {
               {site.bonus.lessons.map((lesson) => (
                 <div className="video-item" key={lesson.title}>
                   {lesson.url ? (
-                    lesson.url.endsWith(".mp4") ? (
+                    lesson.url.startsWith("/api/video/") || lesson.url.endsWith(".mp4") || lesson.url.endsWith(".webm") ? (
                       <video controls controlsList="nodownload" src={lesson.url} />
                     ) : (
                       <iframe src={lesson.url} allowFullScreen title={lesson.title} />

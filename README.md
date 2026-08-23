@@ -21,8 +21,10 @@ renommer le dossier `app/gestion-cap-x7k9`.
 
 - 📊 **Statistiques** : visites (total + 14 jours), commandes, paiements, revenu,
   codes d'accès émis (avec bouton « libérer les appareils »)
-- 🎬 **Vidéos** : vidéo de vente + les 21 capsules — colle un lien Vimeo OU le
-  script `<iframe>` complet, conversion automatique
+- 🎬 **Vidéos** : vidéo de vente + les 4 modules + le bonus — **upload direct
+  du fichier mp4 sur le serveur** (par morceaux de 4 Mo, avec progression) ou
+  lien externe (Vimeo, mp4). Liste des vidéos hébergées avec taille,
+  indicateur « utilisée sur le site » et bouton de suppression
 - ⭐ **Avis clients** : carrousel de la page d'accueil — captures WhatsApp
   (upload direct) ou vidéos témoignages Vimeo, ajout/suppression
 - 📷 **Photos** : nom + photos du formateur, galerie communauté
@@ -35,8 +37,15 @@ renommer le dossier `app/gestion-cap-x7k9`.
   utilisés (`MAX_DEVICES`) — un 3ᵉ téléphone est refusé. L'admin peut libérer
   les appareils d'un client depuis le panel.
 - Sessions signées HMAC en cookies httpOnly ; vidéos en lecture seule
-  (pas de téléchargement). Pour un blocage total du partage de liens vidéo :
-  activer sur Vimeo « masquer sur Vimeo » + domaines autorisés.
+  (pas de téléchargement).
+- **Vidéos auto-hébergées protégées** : stockées dans `data/videos/` (hors
+  de `public/`), diffusées uniquement via `/api/video/<id>` qui exige une
+  session membre valide (support des requêtes Range pour la lecture
+  progressive). Seules la vidéo de vente et les vidéos d'avis de la page
+  d'accueil sont publiques.
+- 💡 Conseil serveur : encoder les vidéos en **720p H.264 ~1-1,5 Mbit/s**
+  (`ffmpeg -i in.mp4 -vf scale=-2:720 -c:v libx264 -b:v 1200k -c:a aac out.mp4`)
+  pour une lecture fluide sur les connexions mobiles béninoises.
 - Le code maître (env `ACCESS_CODE`) ouvre l'espace membre sans limite —
   pour le formateur.
 
