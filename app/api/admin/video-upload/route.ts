@@ -14,7 +14,8 @@ import { VIDEOS_DIR, ensureVideosDir } from "@/lib/videos";
  */
 
 const ALLOWED = new Set(["mp4", "webm", "m4v"]);
-const MAX_MB = Number(process.env.MAX_VIDEO_MB ?? 2048);
+/** Taille maximale en Mo. 0 (défaut) = AUCUNE limite. */
+const MAX_MB = Number(process.env.MAX_VIDEO_MB ?? 0);
 
 export async function POST(request: Request) {
   if (!(await isAdminAuthenticated())) {
@@ -49,14 +50,17 @@ export async function POST(request: Request) {
   const partFile = path.join(VIDEOS_DIR, `${id}.part`);
   const buffer = Buffer.from(await request.arrayBuffer());
 
-  // Garde-fou taille totale
-  const currentSize = chunk === 0 ? 0 : (await fs.stat(partFile).catch(() => ({ size: 0 }))).size;
-  if (currentSize + buffer.length > MAX_MB * 1024 * 1024) {
-    await fs.rm(partFile, { force: true });
-    return NextResponse.json(
-      { ok: false, error: `Vidéo trop lourde (maximum ${MAX_MB} Mo).` },
-      { status: 400 },
-    );
+  // Garde-fou optionnel (MAX_VIDEO_MB) — désactivé par défaut : aucune limite
+  if (MAX_MB > 0) {
+    const currentSize =
+      chunk === 0 ? 0 : (await fs.stat(partFile).catch(() => ({ size: 0 }))).size;
+    if (currentSize + buffer.length > MAX_MB * 1024 * 1024) {
+      await fs.rm(partFile, { force: true });
+      return NextResponse.json(
+        { ok: false, error: `Vidéo trop lourde (maximum ${MAX_MB} Mo).` },
+        { status: 400 },
+      );
+    }
   }
 
   if (chunk === 0) {

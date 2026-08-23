@@ -77,6 +77,7 @@ délivrabilité. Sans clé : le code reste affiché sur la page `/merci`.
 | `ADMIN_PASSWORD` | Mot de passe du panel admin | `capadmin2026` |
 | `AUTH_SECRET` | Secret de signature des sessions | valeur de dev |
 | `MAX_DEVICES` | Appareils autorisés par code | `2` |
+| `MAX_VIDEO_MB` | Taille max d'une vidéo uploadée (0 = illimité) | `0` (illimité) |
 | `FEEXPAY_API_KEY` | Clé API FeexPay | — (simulation) |
 | `FEEXPAY_SHOP_ID` | Boutique FeexPay | — |
 | `BREVO_API_KEY` / `RESEND_API_KEY` | Envoi des emails | — |
