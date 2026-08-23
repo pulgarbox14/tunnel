@@ -36,18 +36,18 @@ Créer `/var/www/orientation/.env.production` :
 ```env
 APP_URL=https://orientation.digitafrik.com
 
-# SÉCURITÉ — à personnaliser absolument
+# SÉCURITÉ — à personnaliser absolument (panel verrouillé sinon)
+ADMIN_EMAIL=ton-email@digitafrik.com
 ADMIN_PASSWORD=TON_MOT_DE_PASSE_ADMIN_FORT
-ACCESS_CODE=TON_CODE_MAITRE
 AUTH_SECRET=une-longue-phrase-aleatoire-de-50-caracteres-minimum
 
 # Paiements FeexPay
 FEEXPAY_API_KEY=ta_cle_api
 FEEXPAY_SHOP_ID=ton_shop_id
 
-# Emails (un des deux)
-BREVO_API_KEY=ta_cle_brevo
-MAIL_FROM_EMAIL=contact@digitafrik.com
+# Emails via Resend
+RESEND_API_KEY=ta_cle_resend
+MAIL_FROM_EMAIL=no-reply@digitafrik.com
 MAIL_FROM_NAME=Cap sur monAvenir
 ```
 

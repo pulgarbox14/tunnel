@@ -13,7 +13,6 @@ import { cookies } from "next/headers";
  *   AUTH_SECRET  — un secret long et aléatoire pour signer les sessions
  */
 
-const ACCESS_CODE = process.env.ACCESS_CODE ?? "FORMATION2026";
 const AUTH_SECRET = process.env.AUTH_SECRET ?? "dev-secret-a-changer-en-production";
 
 export const SESSION_COOKIE = "member_session";
@@ -21,13 +20,6 @@ const SESSION_DURATION_MS = 1000 * 60 * 60 * 24 * 30; // 30 jours
 
 function sign(payload: string): string {
   return createHmac("sha256", AUTH_SECRET).update(payload).digest("hex");
-}
-
-/** Vérifie le code d'accès saisi par l'utilisateur. */
-export function verifyAccessCode(code: string): boolean {
-  const a = Buffer.from(code.trim().toUpperCase());
-  const b = Buffer.from(ACCESS_CODE.toUpperCase());
-  return a.length === b.length && timingSafeEqual(a, b);
 }
 
 /** Crée un jeton de session signé portant le code du membre : "member|<code>|<exp>.<signature>". */
@@ -66,20 +58,28 @@ export async function getSessionCode(): Promise<string | null> {
   return verifySessionToken(store.get(SESSION_COOKIE)?.value);
 }
 
-/** Code d'accès affiché à l'acheteur après paiement confirmé. */
-export function getAccessCode(): string {
-  return ACCESS_CODE;
-}
-
 /* ===================== Administration ===================== */
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "capadmin2026";
+/**
+ * Identifiants admin : UNIQUEMENT via variables d'environnement.
+ * En production, si ADMIN_EMAIL / ADMIN_PASSWORD ne sont pas définis,
+ * le panel est verrouillé (aucune valeur par défaut dans le code).
+ * En développement local, un repli permet de tester.
+ */
+const IS_PROD = process.env.NODE_ENV === "production";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? (IS_PROD ? "" : "admin@test.local");
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? (IS_PROD ? "" : "capadmin2026");
 export const ADMIN_COOKIE = "admin_session";
 
-export function verifyAdminPassword(password: string): boolean {
-  const a = Buffer.from(password);
-  const b = Buffer.from(ADMIN_PASSWORD);
-  return a.length === b.length && timingSafeEqual(a, b);
+function safeEqual(a: string, b: string): boolean {
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  return bufA.length === bufB.length && timingSafeEqual(bufA, bufB);
+}
+
+export function verifyAdminCredentials(email: string, password: string): boolean {
+  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) return false;
+  return safeEqual(email.trim().toLowerCase(), ADMIN_EMAIL.toLowerCase()) && safeEqual(password, ADMIN_PASSWORD);
 }
 
 export function createAdminToken(): string {

@@ -46,8 +46,8 @@ renommer le dossier `app/gestion-cap-x7k9`.
 - 💡 Conseil serveur : encoder les vidéos en **720p H.264 ~1-1,5 Mbit/s**
   (`ffmpeg -i in.mp4 -vf scale=-2:720 -c:v libx264 -b:v 1200k -c:a aac out.mp4`)
   pour une lecture fluide sur les connexions mobiles béninoises.
-- Le code maître (env `ACCESS_CODE`) ouvre l'espace membre sans limite —
-  pour le formateur.
+- **Pas de code maître** : le formateur accède à l'espace membre via sa
+  session admin (bouton « Voir l'espace membre » dans le panel).
 
 ## Paiements — FeexPay
 
@@ -62,19 +62,24 @@ marchand FeexPay. Le paiement par carte reste à brancher (TODO dans
 
 ## Emails (code d'accès)
 
-`lib/mailer.ts` supporte deux fournisseurs — définir UNE clé :
-- `BREVO_API_KEY` (brevo.com — 300 emails/jour gratuits)
-- `RESEND_API_KEY` (resend.com)
+Fournisseur recommandé : **Resend** (resend.com — gratuit jusqu'à
+3 000 emails/mois). Étapes : créer un compte → ajouter le domaine
+`digitafrik.com` (2 enregistrements DNS à copier) → créer une clé API →
+renseigner `RESEND_API_KEY` et `MAIL_FROM_EMAIL=no-reply@digitafrik.com`.
+(`BREVO_API_KEY` reste supporté en alternative.)
 
 Vérifier l'adresse expéditrice chez le fournisseur pour une bonne
 délivrabilité. Sans clé : le code reste affiché sur la page `/merci`.
 
 ## Variables d'environnement
 
+Voir `.env.example`. Aucun identifiant n'est codé en dur : en production,
+sans `ADMIN_EMAIL` / `ADMIN_PASSWORD`, le panel admin est verrouillé.
+
 | Variable | Rôle | Défaut (dev) |
 |---|---|---|
-| `ACCESS_CODE` | Code maître espace membre | `FORMATION2026` |
-| `ADMIN_PASSWORD` | Mot de passe du panel admin | `capadmin2026` |
+| `ADMIN_EMAIL` | Email de connexion admin | `admin@test.local` (dev uniquement) |
+| `ADMIN_PASSWORD` | Mot de passe admin | `capadmin2026` (dev uniquement) |
 | `AUTH_SECRET` | Secret de signature des sessions | valeur de dev |
 | `MAX_DEVICES` | Appareils autorisés par code | `2` |
 | `MAX_VIDEO_MB` | Taille max d'une vidéo uploadée (0 = illimité) | `0` (illimité) |

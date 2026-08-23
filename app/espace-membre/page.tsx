@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getSessionCode } from "@/lib/auth";
+import { getSessionCode, isAdminAuthenticated } from "@/lib/auth";
 import { findCode, listCodes } from "@/lib/codes";
 import { getProgress } from "@/lib/progress";
 import { LogoutButton } from "@/components/LogoutButton";
@@ -17,14 +17,15 @@ export const metadata = {
 };
 
 export default async function EspaceMembrePage() {
-  // Protection côté serveur : sans session valide, retour à la connexion.
-  const sessionCode = await getSessionCode();
-  if (!sessionCode) {
+  // Protection côté serveur : session membre OU session admin (le
+  // formateur accède à tout depuis son panel, sans code).
+  const memberCode = await getSessionCode();
+  const isMaster = await isAdminAuthenticated();
+  if (!memberCode && !isMaster) {
     redirect("/connexion");
   }
+  const sessionCode = memberCode ?? "ADMIN";
 
-  // Accès selon le produit acheté (le code maître voit tout)
-  const isMaster = sessionCode === "MASTER";
   const rec = isMaster ? undefined : await findCode(sessionCode);
   const product = rec?.product ?? "programme";
   const showProgramme = isMaster || product === "programme";

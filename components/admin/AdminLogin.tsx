@@ -13,12 +13,12 @@ export function AdminLogin() {
     e.preventDefault();
     setError("");
     setLoading(true);
-    const password = new FormData(e.currentTarget).get("password");
+    const form = new FormData(e.currentTarget);
     try {
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ email: form.get("email"), password: form.get("password") }),
       });
       const data = await res.json();
       if (data.ok) {
@@ -44,6 +44,9 @@ export function AdminLogin() {
         </h1>
         <p className="muted mt-1 small">Accès réservé à l&apos;équipe.</p>
         <form onSubmit={handleSubmit}>
+          <div className="form-field">
+            <input name="email" type="email" placeholder="Email admin" required />
+          </div>
           <div className="form-field">
             <input name="password" type="password" placeholder="Mot de passe admin" required />
           </div>

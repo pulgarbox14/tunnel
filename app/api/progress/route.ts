@@ -1,16 +1,22 @@
 import { NextResponse } from "next/server";
-import { getSessionCode } from "@/lib/auth";
+import { getSessionCode, isAdminAuthenticated } from "@/lib/auth";
 import { getProgress, setLessonDone } from "@/lib/progress";
 
-/** Progression du membre connecté (leçons terminées). */
-export async function GET() {
+async function resolveCode(): Promise<string | null> {
   const code = await getSessionCode();
+  if (code) return code;
+  return (await isAdminAuthenticated()) ? "ADMIN" : null;
+}
+
+/** Progression du membre connecté (vidéos terminées). */
+export async function GET() {
+  const code = await resolveCode();
   if (!code) return NextResponse.json({ ok: false }, { status: 401 });
   return NextResponse.json({ ok: true, completed: await getProgress(code) });
 }
 
 export async function POST(request: Request) {
-  const code = await getSessionCode();
+  const code = await resolveCode();
   if (!code) return NextResponse.json({ ok: false }, { status: 401 });
 
   let body: { lessonKey?: string; done?: boolean };

@@ -1,17 +1,22 @@
 import { NextResponse } from "next/server";
-import { verifyAdminPassword, createAdminToken, ADMIN_COOKIE } from "@/lib/auth";
+import { verifyAdminCredentials, createAdminToken, ADMIN_COOKIE } from "@/lib/auth";
 
 export async function POST(request: Request) {
+  let email = "";
   let password = "";
   try {
     const body = await request.json();
+    email = typeof body.email === "string" ? body.email : "";
     password = typeof body.password === "string" ? body.password : "";
   } catch {
     return NextResponse.json({ ok: false, error: "Requête invalide." }, { status: 400 });
   }
 
-  if (!verifyAdminPassword(password)) {
-    return NextResponse.json({ ok: false, error: "Mot de passe incorrect." }, { status: 401 });
+  if (!verifyAdminCredentials(email, password)) {
+    return NextResponse.json(
+      { ok: false, error: "Email ou mot de passe incorrect." },
+      { status: 401 },
+    );
   }
 
   const response = NextResponse.json({ ok: true });

@@ -288,9 +288,19 @@ export function AdminDashboard() {
               Cap sur monAvenir — Gestion
             </h1>
           </div>
-          <button className="btn-ghost" onClick={logout}>
-            Se déconnecter
-          </button>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <a
+              href="/espace-membre"
+              target="_blank"
+              rel="noreferrer"
+              className="btn-ghost icon-line"
+            >
+              <Icon name="video" size={13} /> Voir l&apos;espace membre
+            </a>
+            <button className="btn-ghost" onClick={logout}>
+              Se déconnecter
+            </button>
+          </div>
         </div>
 
         <div className="admin-tabs">

@@ -1,17 +1,17 @@
 import { randomBytes } from "crypto";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { createSessionToken, verifyAccessCode, SESSION_COOKIE } from "@/lib/auth";
+import { createSessionToken, SESSION_COOKIE } from "@/lib/auth";
 import { tryUseCode } from "@/lib/codes";
 
 const DEVICE_COOKIE = "cap_did";
 
 /**
- * Connexion à l'espace membre.
+ * Connexion à l'espace membre — uniquement par code personnel.
  *
- * - Le code maître (env ACCESS_CODE) fonctionne toujours — pour le formateur.
- * - Les codes personnels (CAP-XXXX-XXXX) se lient à l'appareil dès la
- *   première connexion : au-delà du nombre d'appareils autorisés, refus.
+ * Les codes (CAP-XXXX-XXXX) se lient à l'appareil dès la première
+ * connexion : au-delà du nombre d'appareils autorisés, refus.
+ * (Le formateur accède à l'espace membre via sa session admin.)
  */
 export async function POST(request: Request) {
   let code = "";
@@ -28,27 +28,14 @@ export async function POST(request: Request) {
   const isNewDevice = !deviceId;
   if (!deviceId) deviceId = randomBytes(16).toString("hex");
 
-  let granted = false;
-  let error = "Code incorrect. Vérifie l'email reçu après ton achat.";
-  let sessionCode = "";
-
-  if (verifyAccessCode(code)) {
-    // Code maître (formateur / administration)
-    granted = true;
-    sessionCode = "MASTER";
-  } else {
-    const result = await tryUseCode(code, deviceId);
-    if (result.ok && result.rec) {
-      granted = true;
-      sessionCode = result.rec.code;
-    } else if (result.reason) {
-      error = result.reason;
-    }
+  const result = await tryUseCode(code, deviceId);
+  if (!result.ok || !result.rec) {
+    return NextResponse.json(
+      { ok: false, error: result.reason ?? "Code incorrect. Vérifie l'email reçu après ton achat." },
+      { status: 401 },
+    );
   }
-
-  if (!granted) {
-    return NextResponse.json({ ok: false, error }, { status: 401 });
-  }
+  const sessionCode = result.rec.code;
 
   const response = NextResponse.json({ ok: true });
   response.cookies.set(SESSION_COOKIE, createSessionToken(sessionCode), {
