@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSessionCode } from "@/lib/auth";
-import { findCode } from "@/lib/codes";
+import { findCode, listCodes } from "@/lib/codes";
+import { getProgress } from "@/lib/progress";
 import { LogoutButton } from "@/components/LogoutButton";
+import { LessonDone } from "@/components/LessonDone";
 import { Icon } from "@/components/Icon";
 import { site as staticSite } from "@/content/site";
 import { getMergedSite } from "@/lib/content";
@@ -26,9 +28,25 @@ export default async function EspaceMembrePage() {
   const rec = isMaster ? undefined : await findCode(sessionCode);
   const product = rec?.product ?? "programme";
   const showProgramme = isMaster || product === "programme";
-  const showBonus = isMaster || product === "bonus";
+
+  // Le bonus est déjà acheté ? (un autre code du même email, produit bonus)
+  const allCodes = rec ? await listCodes() : [];
+  const hasBonus =
+    isMaster ||
+    product === "bonus" ||
+    (rec ? allCodes.some((c) => c.email === rec.email && c.product === "bonus") : false);
 
   const site = await getMergedSite();
+
+  // Progression : toutes les leçons du programme principal terminées ?
+  const completed = await getProgress(sessionCode);
+  const totalLessons = site.memberModules.reduce((sum, m) => sum + m.lessons.length, 0);
+  const doneCount = site.memberModules.reduce(
+    (sum, m, mi) =>
+      sum + m.lessons.filter((_, li) => completed.includes(`${mi}-${li}`)).length,
+    0,
+  );
+  const allDone = showProgramme && doneCount >= totalLessons;
 
   return (
     <main>
@@ -45,14 +63,39 @@ export default async function EspaceMembrePage() {
           <LogoutButton />
         </div>
 
+        {/* ===== BARRE DE PROGRESSION ===== */}
+        {showProgramme && (
+          <div className="progress-wrap">
+            <div className="progress-info">
+              <span>
+                Ta progression :{" "}
+                <span className="strong-white">
+                  {doneCount}/{totalLessons} leçons terminées
+                </span>
+              </span>
+              {!allDone && (
+                <span className="muted small icon-line">
+                  <Icon name="gift" size={12} /> Termine tout pour débloquer le bonus
+                </span>
+              )}
+            </div>
+            <div className="progress-bar">
+              <div
+                className="progress-fill"
+                style={{ width: `${totalLessons ? Math.round((doneCount / totalLessons) * 100) : 0}%` }}
+              />
+            </div>
+          </div>
+        )}
+
         <p className="muted">
-          Bienvenue dans ton espace ! Suis les modules dans l&apos;ordre pour de meilleurs
-          résultats.
+          Bienvenue dans ton espace ! Suis les modules dans l&apos;ordre, et marque chaque leçon
+          terminée pour suivre ta progression.
         </p>
 
         {/* ===== PROGRAMME PRINCIPAL ===== */}
         {showProgramme &&
-          site.memberModules.map((mod) => (
+          site.memberModules.map((mod, mi) => (
             <section key={mod.tag} style={{ paddingBottom: 20 }}>
               <div className="card-dark">
                 <div className="module-title-row">
@@ -72,7 +115,7 @@ export default async function EspaceMembrePage() {
               </div>
 
               <div className="video-list">
-                {mod.lessons.map((lesson) => (
+                {mod.lessons.map((lesson, li) => (
                   <div className="video-item" key={lesson.title}>
                     {lesson.url ? (
                       lesson.url.endsWith(".mp4") ? (
@@ -89,6 +132,10 @@ export default async function EspaceMembrePage() {
                     <div className="info">
                       <h3>{lesson.title}</h3>
                       <p>{lesson.description}</p>
+                      <LessonDone
+                        lessonKey={`${mi}-${li}`}
+                        initialDone={completed.includes(`${mi}-${li}`)}
+                      />
                     </div>
                   </div>
                 ))}
@@ -96,8 +143,56 @@ export default async function EspaceMembrePage() {
             </section>
           ))}
 
-        {/* ===== BONUS ===== */}
-        {showBonus && (
+        {/* ===== BONUS : verrouillé tant que la formation n'est pas terminée ===== */}
+        {showProgramme && !hasBonus && (
+          allDone ? (
+            <section className="bonus-unlock" style={{ paddingBottom: 30 }}>
+              <div className="card-dark text-center bonus-card">
+                <span className="badge badge-yellow">
+                  <Icon name="gift" size={13} /> Bonus débloqué !
+                </span>
+                <h2 className="title-red mt-2" style={{ fontSize: "1.3rem" }}>
+                  Félicitations, tu as terminé la formation ! 🎉
+                </h2>
+                <p className="muted mt-1" style={{ maxWidth: 520, margin: "12px auto 0" }}>
+                  Tu as maintenant accès à une offre réservée aux membres qui vont au bout :{" "}
+                  <span className="strong-white">{site.bonus.title}</span> — comment postuler pour
+                  les bourses extérieures, avec un accompagnement dans tes démarches.
+                </p>
+                <div className="mt-1 price-old">
+                  {site.bonus.pricing.oldPrice} {site.bonus.pricing.currency}
+                </div>
+                <div className="price-now">
+                  {site.bonus.pricing.price} {site.bonus.pricing.currency}
+                </div>
+                <div className="mt-2">
+                  <Link href="/bonus" className="btn-cta">
+                    Découvrir le bonus
+                    <small>offre réservée aux finissants</small>
+                  </Link>
+                </div>
+              </div>
+            </section>
+          ) : (
+            <section style={{ paddingBottom: 30 }}>
+              <div className="card-dark text-center bonus-locked">
+                <span className="badge">
+                  <Icon name="lock" size={13} /> Bonus verrouillé
+                </span>
+                <p className="muted mt-1 small">
+                  Un bonus exclusif t&apos;attend à la fin de la formation. Termine les{" "}
+                  <span className="strong-white">
+                    {totalLessons - doneCount} leçon(s) restante(s)
+                  </span>{" "}
+                  pour le débloquer.
+                </p>
+              </div>
+            </section>
+          )
+        )}
+
+        {/* ===== CONTENU DU BONUS (acheté) ===== */}
+        {hasBonus && (
           <section style={{ paddingBottom: 20 }}>
             <div className="card-dark">
               <div className="module-title-row">
@@ -139,42 +234,6 @@ export default async function EspaceMembrePage() {
               ))}
             </div>
           </section>
-        )}
-
-        {/* ===== PROPOSITION CROISÉE ===== */}
-        {!isMaster && !showBonus && (
-          <div className="card-dark text-center mt-2" style={{ maxWidth: 520, margin: "24px auto" }}>
-            <span className="badge badge-yellow">
-              <Icon name="gift" size={13} /> Bonus disponible
-            </span>
-            <p className="muted mt-1 small">
-              <span className="strong-white">{site.bonus.title}</span> — {site.bonus.pricing.price}{" "}
-              {site.bonus.pricing.currency}. Apprends à postuler pour les bourses extérieures, avec
-              accompagnement.
-            </p>
-            <div className="mt-1">
-              <Link href="/bonus" className="btn-ghost">
-                Découvrir le bonus
-              </Link>
-            </div>
-          </div>
-        )}
-        {!isMaster && !showProgramme && (
-          <div className="card-dark text-center mt-2" style={{ maxWidth: 520, margin: "24px auto" }}>
-            <span className="badge badge-yellow">
-              <Icon name="graduation-cap" size={13} /> Programme complet disponible
-            </span>
-            <p className="muted mt-1 small">
-              <span className="strong-white">Réussir Son Post-BAC</span> — {site.pricing.price}{" "}
-              {site.pricing.currency}. Les {site.memberModules.length} modules pour réussir ton
-              orientation.
-            </p>
-            <div className="mt-1">
-              <Link href="/" className="btn-ghost">
-                Découvrir le programme
-              </Link>
-            </div>
-          </div>
         )}
       </div>
     </main>

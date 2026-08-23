@@ -728,6 +728,52 @@ input:focus { outline: 2px solid var(--yellow-light); }
   color: var(--yellow);
 }
 
+/* ===== Progression & bonus ===== */
+.progress-wrap { margin: 6px 0 18px; }
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  color: var(--gray);
+  margin-bottom: 8px;
+}
+.progress-bar {
+  height: 12px;
+  background: #1a1a1a;
+  border: 1.5px solid var(--yellow);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green-dark), var(--yellow));
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+.lesson-done {
+  margin-top: 10px;
+  background: transparent;
+  border: 1.5px solid var(--gray-dark);
+  color: var(--gray);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.lesson-done.done {
+  border-color: var(--green-dark);
+  background: var(--green-dark);
+  color: var(--white);
+}
+.bonus-card { box-shadow: 0 0 40px rgba(252, 209, 22, 0.3); }
+.bonus-locked { opacity: 0.75; }
+
 /* ===== Panel admin ===== */
 .admin-wrap { padding-bottom: 60px; }
 .admin-tabs {
