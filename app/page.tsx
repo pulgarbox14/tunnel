@@ -252,12 +252,12 @@ export default async function HomePage() {
             <div style={{ display: "grid", gap: 18 }}>
               {site.coach.photos.map((photo, i) =>
                 photo ? (
-                  <div className="photo-frame" key={i}>
+                  <div className="photo-frame coach-photo" key={i}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={photo} alt={site.coach.name} />
                   </div>
                 ) : (
-                  <div className="photo-frame" key={i}>
+                  <div className="photo-frame coach-photo" key={i}>
                     Photo du formateur
                   </div>
                 ),

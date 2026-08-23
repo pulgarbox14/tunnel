@@ -190,7 +190,7 @@ export function AdminDashboard() {
   const [lessonUrls, setLessonUrls] = useState<Record<string, string>>({});
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [coachName, setCoachName] = useState("");
-  const [coachPhotos, setCoachPhotos] = useState<string[]>(["", ""]);
+  const [coachPhotos, setCoachPhotos] = useState<string[]>([""]);
   const [gallery, setGallery] = useState<string[]>(["", "", "", ""]);
   const [hosted, setHosted] = useState<
     { id: string; url: string; sizeMb: number; used: boolean }[]

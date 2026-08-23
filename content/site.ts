@@ -174,7 +174,8 @@ export const site = {
     missionProgram: "Cap sur monAvenir",
     mission:
       "Sa mission : qu'aucun bachelier ne se retrouve sans filière à la rentrée, et que chacun construise un avenir à la hauteur de son potentiel.",
-    photos: ["", ""] as string[],
+    /** Une seule photo du formateur. */
+    photos: [""] as string[],
   },
 
   gallery: {
