@@ -38,7 +38,7 @@ export function ResultsCarousel({ items }: { items: Testimonial[] }) {
                 )
               ) : (
                 <span className="icon-line">
-                  <Icon name={t.type === "vimeo" ? "video" : "smartphone"} size={16} />
+                  <Icon name={t.type === "vimeo" ? "video" : "award"} size={16} />
                   {t.type === "vimeo" ? "Vidéo à venir" : "Avis à venir"}
                 </span>
               )}

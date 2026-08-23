@@ -183,34 +183,14 @@ export const site = {
   },
 
   results: {
-    title: "Quelques résultats d'élèves",
+    title: "Ce que disent nos élèves",
     intro:
-      "Ils ont suivi l'accompagnement (d'abord sur WhatsApp) et ont décroché leur filière. Voici leurs retours :",
+      "Des retours authentiques d'élèves accompagnés jusqu'à leur filière. Voici quelques-uns de leurs avis :",
     items: [
-      {
-        name: "Élève 1",
-        caption: "Classé dans la filière de son premier choix avec une bourse",
-        type: "vimeo",
-        src: "",
-      },
-      {
-        name: "Élève 2",
-        caption: "A évité une erreur éliminatoire grâce à la stratégie de classement",
-        type: "vimeo",
-        src: "",
-      },
-      {
-        name: "Avis WhatsApp",
-        caption: "Retour reçu après l'accompagnement",
-        type: "image",
-        src: "",
-      },
-      {
-        name: "Avis WhatsApp",
-        caption: "Retour reçu après l'accompagnement",
-        type: "image",
-        src: "",
-      },
+      { name: "Avis d'élève", caption: "", type: "image", src: "" },
+      { name: "Avis d'élève", caption: "", type: "image", src: "" },
+      { name: "Avis d'élève", caption: "", type: "image", src: "" },
+      { name: "Avis d'élève", caption: "", type: "image", src: "" },
     ] as Testimonial[],
   },
 

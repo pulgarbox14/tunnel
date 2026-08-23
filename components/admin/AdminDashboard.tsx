@@ -523,7 +523,7 @@ export function AdminDashboard() {
           <div className="mt-2">
             <p className="muted small">
               Les avis s&apos;affichent en <strong>carrousel</strong> sur la page d&apos;accueil.
-              Type « image » = capture WhatsApp · type « vimeo » = vidéo témoignage.
+              Ajoute simplement les photos des avis (la légende est optionnelle).
             </p>
             {testimonials.map((t, i) => (
               <div className="card-dark mt-2 avis-editor" key={i}>
@@ -531,7 +531,7 @@ export function AdminDashboard() {
                   <input
                     type="text"
                     value={t.name}
-                    placeholder="Nom (ex : Élève 1, Avis WhatsApp)"
+                    placeholder="Titre du bloc (ex : Avis d\u2019élève)"
                     onChange={(e) => {
                       const next = [...testimonials];
                       next[i] = { ...t, name: e.target.value };
@@ -546,7 +546,7 @@ export function AdminDashboard() {
                       setTestimonials(next);
                     }}
                   >
-                    <option value="image">📷 Capture WhatsApp</option>
+                    <option value="image">📷 Photo de l\u2019avis</option>
                     <option value="vimeo">🎬 Vidéo (serveur ou Vimeo)</option>
                   </select>
                   <button
@@ -560,7 +560,7 @@ export function AdminDashboard() {
                   type="text"
                   className="mt-1"
                   value={t.caption}
-                  placeholder="Légende (ex : Classé dans la filière de son 1er choix)"
+                  placeholder="Légende optionnelle (ex : Classé dans la filière de son 1er choix)"
                   onChange={(e) => {
                     const next = [...testimonials];
                     next[i] = { ...t, caption: e.target.value };
@@ -575,7 +575,7 @@ export function AdminDashboard() {
                       next[i] = { ...t, src: v };
                       setTestimonials(next);
                     }}
-                    placeholder="Capture WhatsApp : URL ou upload →"
+                    placeholder="Photo de l\u2019avis : URL ou upload →"
                   />
                 ) : (
                   <VideoField
