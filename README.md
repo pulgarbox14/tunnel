@@ -62,11 +62,15 @@ marchand FeexPay. Le paiement par carte reste à brancher (TODO dans
 
 ## Emails (code d'accès)
 
-Fournisseur recommandé : **Resend** (resend.com — gratuit jusqu'à
-3 000 emails/mois). Étapes : créer un compte → ajouter le domaine
-`digitafrik.com` (2 enregistrements DNS à copier) → créer une clé API →
-renseigner `RESEND_API_KEY` et `MAIL_FROM_EMAIL=no-reply@digitafrik.com`.
-(`BREVO_API_KEY` reste supporté en alternative.)
+Trois fournisseurs supportés — en configurer UN :
+
+1. **SMTP Hostinger (recommandé si le domaine y est)** : créer une boîte
+   email dans Hostinger (Emails → digitafrik.com → Créer un compte email,
+   ex : `orientation@digitafrik.com`), puis renseigner `SMTP_HOST=smtp.hostinger.com`,
+   `SMTP_PORT=465`, `SMTP_USER` et `SMTP_PASS` (identifiants de la boîte).
+   SPF/DKIM sont gérés automatiquement par Hostinger.
+2. **Resend** (resend.com) : `RESEND_API_KEY` après vérification du domaine.
+3. **Brevo** (brevo.com) : `BREVO_API_KEY`.
 
 Vérifier l'adresse expéditrice chez le fournisseur pour une bonne
 délivrabilité. Sans clé : le code reste affiché sur la page `/merci`.

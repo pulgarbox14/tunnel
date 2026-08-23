@@ -55,7 +55,11 @@ if [ ! -f .env.production ]; then
   read -rsp "  Mot de passe admin     : " ADMIN_PASSWORD; echo
   read -rp "  Clé API FeexPay (vide = simulation) : " FEEXPAY_API_KEY
   read -rp "  Shop ID FeexPay        : " FEEXPAY_SHOP_ID
-  read -rp "  Clé API Resend (vide = pas d'email) : " RESEND_API_KEY
+  read -rp "  Email Hostinger d'envoi (ex orientation@digitafrik.com, vide = pas d'email) : " SMTP_USER
+  SMTP_PASS=""
+  if [ -n "$SMTP_USER" ]; then
+    read -rsp "  Mot de passe de cette boîte email : " SMTP_PASS; echo
+  fi
   AUTH_SECRET="$(openssl rand -hex 32)"
   cat > .env.production <<ENV
 APP_URL=https://$DOMAIN
@@ -64,8 +68,11 @@ ADMIN_PASSWORD=$ADMIN_PASSWORD
 AUTH_SECRET=$AUTH_SECRET
 FEEXPAY_API_KEY=$FEEXPAY_API_KEY
 FEEXPAY_SHOP_ID=$FEEXPAY_SHOP_ID
-RESEND_API_KEY=$RESEND_API_KEY
-MAIL_FROM_EMAIL=no-reply@digitafrik.com
+SMTP_HOST=smtp.hostinger.com
+SMTP_PORT=465
+SMTP_USER=$SMTP_USER
+SMTP_PASS=$SMTP_PASS
+MAIL_FROM_EMAIL=${SMTP_USER:-no-reply@digitafrik.com}
 MAIL_FROM_NAME=Cap sur monAvenir
 MAX_DEVICES=2
 MAX_VIDEO_MB=0

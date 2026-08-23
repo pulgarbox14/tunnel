@@ -1,12 +1,21 @@
+import nodemailer from "nodemailer";
+
 /**
  * Envoi d'emails transactionnels (code d'accès après achat).
  *
- * Deux fournisseurs supportés — il suffit de définir UNE clé API :
- *   BREVO_API_KEY   → https://www.brevo.com  (300 emails/jour gratuits)
- *   RESEND_API_KEY  → https://resend.com     (excellent taux de délivrabilité)
+ * Trois fournisseurs supportés — configurer UN seul :
  *
- * MAIL_FROM_EMAIL / MAIL_FROM_NAME : expéditeur (à vérifier chez le fournisseur
- * pour une bonne délivrabilité — idéalement une adresse de ton propre domaine).
+ *   SMTP (ex : boîte email Hostinger — recommandé si le domaine y est) :
+ *     SMTP_HOST=smtp.hostinger.com
+ *     SMTP_PORT=465
+ *     SMTP_USER=orientation@digitafrik.com   (la boîte créée chez Hostinger)
+ *     SMTP_PASS=mot-de-passe-de-la-boîte
+ *
+ *   RESEND_API_KEY  → https://resend.com
+ *   BREVO_API_KEY   → https://www.brevo.com
+ *
+ * MAIL_FROM_EMAIL / MAIL_FROM_NAME : expéditeur. Avec SMTP Hostinger,
+ * MAIL_FROM_EMAIL doit être la même adresse que SMTP_USER.
  */
 
 const FROM_EMAIL = process.env.MAIL_FROM_EMAIL ?? "no-reply@capsurmonavenir.bj";
@@ -42,6 +51,24 @@ export async function sendAccessCodeEmail(params: {
   const html = accessCodeHtml(params.name, params.code, `${appUrl}/connexion`);
 
   try {
+    // SMTP (Hostinger ou tout autre serveur mail)
+    if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+      const port = Number(process.env.SMTP_PORT ?? 465);
+      const transport = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port,
+        secure: port === 465,
+        auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      });
+      await transport.sendMail({
+        from: `"${FROM_NAME}" <${FROM_EMAIL}>`,
+        to: params.to,
+        subject,
+        html,
+      });
+      return { sent: true, provider: "smtp" };
+    }
+
     if (process.env.RESEND_API_KEY) {
       const res = await fetch("https://api.resend.com/emails", {
         method: "POST",
