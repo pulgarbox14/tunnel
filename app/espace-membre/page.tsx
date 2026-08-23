@@ -152,7 +152,7 @@ export default async function EspaceMembrePage() {
                   <Icon name="gift" size={13} /> Bonus débloqué !
                 </span>
                 <h2 className="title-red mt-2" style={{ fontSize: "1.3rem" }}>
-                  Félicitations, tu as terminé la formation ! 🎉
+                  Félicitations, tu as terminé la formation !
                 </h2>
                 <p className="muted mt-1" style={{ maxWidth: 520, margin: "12px auto 0" }}>
                   Tu as maintenant accès à une offre réservée aux membres qui vont au bout :{" "}

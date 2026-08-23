@@ -180,7 +180,8 @@ export const site = {
 
   gallery: {
     title: "Une communauté qui avance ensemble",
-    images: ["", "", "", ""] as string[],
+    /** Deux photos. */
+    images: ["", ""] as string[],
   },
 
   results: {

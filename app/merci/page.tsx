@@ -40,17 +40,19 @@ export default async function MerciPage({
                 <p className="muted mt-1">Voici ton code d&apos;accès personnel :</p>
                 <div className="access-code-box mt-1">{order.accessCode}</div>
                 {order.emailSent ? (
-                  <p className="muted small mt-1">
-                    📬 Une copie a été envoyée à <span className="strong-white">{order.email}</span>.
+                  <p className="muted small mt-1 icon-line">
+                    <Icon name="mail" size={13} /> Une copie a été envoyée à{" "}
+                    <span className="strong-white">{order.email}</span>.
                   </p>
                 ) : (
                   <p className="muted small mt-1">
                     Note bien ce code : c&apos;est ta clé d&apos;accès aux vidéos.
                   </p>
                 )}
-                <p className="muted small mt-1">
-                  ⚠️ Ce code est <span className="strong-white">personnel</span> — il se lie à ton
-                  appareil à la première connexion et ne peut pas être partagé.
+                <p className="muted small mt-1 icon-line">
+                  <Icon name="alert-triangle" size={13} /> Ce code est{" "}
+                  <span className="strong-white">personnel</span> — il se lie à ton appareil à la
+                  première connexion et ne peut pas être partagé.
                 </p>
               </>
             ) : (

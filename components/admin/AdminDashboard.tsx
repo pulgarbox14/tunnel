@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Icon } from "@/components/Icon";
+import { Icon, type IconName } from "@/components/Icon";
 import type { Testimonial } from "@/content/site";
 
 type Tab = "stats" | "videos" | "avis" | "photos";
@@ -107,7 +107,7 @@ function VideoField({
         onChange={(e) => onChange(e.target.value)}
       />
       <label className="btn-ghost upload-btn">
-        {pct !== null ? `⬆ ${pct}%` : "🎬 Uploader"}
+        {pct !== null ? `${pct} %` : <><Icon name="upload" size={13} /> Vidéo</>}
         <input
           type="file"
           accept="video/mp4,video/webm,video/x-m4v"
@@ -151,7 +151,7 @@ function ImageField({
         onChange={(e) => onChange(e.target.value)}
       />
       <label className="btn-ghost upload-btn">
-        {busy ? "…" : "📁 Fichier"}
+        {busy ? "…" : <><Icon name="upload" size={13} /> Image</>}
         <input
           type="file"
           accept="image/*"
@@ -191,7 +191,7 @@ export function AdminDashboard() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [coachName, setCoachName] = useState("");
   const [coachPhotos, setCoachPhotos] = useState<string[]>([""]);
-  const [gallery, setGallery] = useState<string[]>(["", "", "", ""]);
+  const [gallery, setGallery] = useState<string[]>(["", ""]);
   const [hosted, setHosted] = useState<
     { id: string; url: string; sizeMb: number; used: boolean }[]
   >([]);
@@ -236,7 +236,7 @@ export function AdminDashboard() {
       body: JSON.stringify(patch),
     });
     const json = await res.json();
-    setSaved(json.ok ? "✅ Enregistré ! Le site est à jour." : "❌ Erreur d'enregistrement.");
+    setSaved(json.ok ? "Enregistré — le site est à jour." : "Erreur d'enregistrement, réessaie.");
     if (json.ok) load();
   }
 
@@ -244,7 +244,7 @@ export function AdminDashboard() {
     if (
       !confirm(
         used
-          ? `⚠️ Cette vidéo est UTILISÉE sur le site ! La supprimer cassera sa lecture. Supprimer quand même ${id} ?`
+          ? `Attention : cette vidéo est UTILISÉE sur le site ! La supprimer cassera sa lecture. Supprimer quand même ${id} ?`
           : `Supprimer définitivement la vidéo ${id} du serveur ?`,
       )
     )
@@ -291,18 +291,18 @@ export function AdminDashboard() {
         <div className="admin-tabs">
           {(
             [
-              ["stats", "📊 Statistiques"],
-              ["videos", "🎬 Vidéos"],
-              ["avis", "⭐ Avis clients"],
-              ["photos", "📷 Photos"],
-            ] as [Tab, string][]
-          ).map(([key, label]) => (
+              ["stats", "bar-chart", "Statistiques"],
+              ["videos", "video", "Vidéos"],
+              ["avis", "award", "Avis clients"],
+              ["photos", "image", "Photos"],
+            ] as [Tab, IconName, string][]
+          ).map(([key, icon, label]) => (
             <button
               key={key}
-              className={`admin-tab${tab === key ? " active" : ""}`}
+              className={`admin-tab icon-line${tab === key ? " active" : ""}`}
               onClick={() => setTab(key)}
             >
-              {label}
+              <Icon name={icon} size={13} /> {label}
             </button>
           ))}
         </div>
@@ -371,16 +371,36 @@ export function AdminDashboard() {
                         <br />
                         {o.phone}
                       </td>
-                      <td>{o.product === "bonus" ? "🎁 bonus" : "🎓 programme"}</td>
+                      <td>
+                        <span className="icon-line">
+                          {o.product === "bonus" ? (
+                            <><Icon name="gift" size={12} /> bonus</>
+                          ) : (
+                            <><Icon name="graduation-cap" size={12} /> programme</>
+                          )}
+                        </span>
+                      </td>
                       <td>{o.method}</td>
                       <td>{o.amount.toLocaleString("fr-FR")} F</td>
                       <td>
-                        <span className={`status ${o.status}`}>
-                          {o.status === "paid" ? "✅ payé" : o.status === "pending" ? "⏳ en attente" : "❌ échec"}
+                        <span className={`status ${o.status} icon-line`}>
+                          {o.status === "paid" ? (
+                            <><Icon name="check" size={12} /> payé</>
+                          ) : o.status === "pending" ? (
+                            <><Icon name="clock" size={12} /> en attente</>
+                          ) : (
+                            <><Icon name="x" size={12} /> échec</>
+                          )}
                         </span>
                       </td>
                       <td className="mono">{o.accessCode ?? "—"}</td>
-                      <td>{o.emailSent ? "📬 envoyé" : "—"}</td>
+                      <td>
+                        {o.emailSent ? (
+                          <span className="icon-line"><Icon name="mail" size={12} /> envoyé</span>
+                        ) : (
+                          "—"
+                        )}
+                      </td>
                     </tr>
                   ))}
                   {stats.orders.recent.length === 0 && (
@@ -441,7 +461,7 @@ export function AdminDashboard() {
         {tab === "videos" && content && (
           <div className="mt-2">
             <p className="muted small">
-              Pour chaque vidéo : clique <strong>🎬 Uploader</strong> pour envoyer le fichier
+              Pour chaque vidéo : clique <strong>Vidéo</strong> pour envoyer le fichier
               mp4 directement sur ton serveur (protégé, réservé aux membres), ou colle un lien
               (Vimeo / mp4) si tu préfères.
             </p>
@@ -494,13 +514,19 @@ export function AdminDashboard() {
                     <tr key={v.id}>
                       <td className="mono">{v.id}</td>
                       <td>{v.sizeMb} Mo</td>
-                      <td>{v.used ? "✅ sur le site" : "—"}</td>
+                      <td>
+                        {v.used ? (
+                          <span className="icon-line text-green"><Icon name="check" size={12} /> sur le site</span>
+                        ) : (
+                          "—"
+                        )}
+                      </td>
                       <td>
                         <button
                           className="btn-ghost small-btn"
                           onClick={() => deleteVideo(v.id, v.used)}
                         >
-                          🗑 Supprimer
+                          <Icon name="trash" size={12} /> Supprimer
                         </button>
                       </td>
                     </tr>
@@ -531,7 +557,7 @@ export function AdminDashboard() {
                   <input
                     type="text"
                     value={t.name}
-                    placeholder="Titre du bloc (ex : Avis d\u2019élève)"
+                    placeholder="Titre du bloc (ex : Avis d'élève)"
                     onChange={(e) => {
                       const next = [...testimonials];
                       next[i] = { ...t, name: e.target.value };
@@ -546,14 +572,14 @@ export function AdminDashboard() {
                       setTestimonials(next);
                     }}
                   >
-                    <option value="image">📷 Photo de l\u2019avis</option>
-                    <option value="vimeo">🎬 Vidéo (serveur ou Vimeo)</option>
+                    <option value="image">Photo de l’avis</option>
+                    <option value="vimeo">Vidéo (serveur ou Vimeo)</option>
                   </select>
                   <button
                     className="btn-ghost small-btn"
                     onClick={() => setTestimonials(testimonials.filter((_, j) => j !== i))}
                   >
-                    🗑 Supprimer
+                    <Icon name="trash" size={12} /> Supprimer
                   </button>
                 </div>
                 <input
@@ -575,7 +601,7 @@ export function AdminDashboard() {
                       next[i] = { ...t, src: v };
                       setTestimonials(next);
                     }}
-                    placeholder="Photo de l\u2019avis : URL ou upload →"
+                    placeholder="Photo de l’avis : URL ou upload →"
                   />
                 ) : (
                   <VideoField
@@ -600,7 +626,7 @@ export function AdminDashboard() {
                   ])
                 }
               >
-                ➕ Ajouter un avis
+                <Icon name="plus" size={13} /> Ajouter un avis
               </button>
               <button className="btn-cta" onClick={() => save({ testimonials })}>
                 Enregistrer les avis
@@ -633,7 +659,7 @@ export function AdminDashboard() {
               />
             ))}
 
-            <h2 className="admin-h2">Galerie « communauté » (4 photos)</h2>
+            <h2 className="admin-h2">Galerie « communauté » (2 photos)</h2>
             {gallery.map((p, i) => (
               <ImageField
                 key={i}
