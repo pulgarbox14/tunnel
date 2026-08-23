@@ -17,6 +17,8 @@ export interface ContentOverrides {
   lessonUrls?: Record<string, string>;
   /** Blocs vidéo du bonus, ajoutés librement depuis le panel admin. */
   bonusVideos?: BonusVideo[];
+  /** Numéro WhatsApp d'accompagnement affiché dans l'espace bonus. */
+  bonusContactPhone?: string;
   coachName?: string;
   coachPhotos?: string[];
   gallery?: string[];
@@ -80,7 +82,8 @@ export async function getMergedSite() {
       });
     });
   }
-  // Blocs vidéo du bonus (espace membre) : gérés depuis le panel admin
+  // Blocs vidéo du bonus (espace bonus) : gérés depuis le panel admin
   merged.bonus.videos = (o.bonusVideos ?? []).filter((v) => v.url);
+  if (o.bonusContactPhone !== undefined) merged.bonus.contactPhone = o.bonusContactPhone;
   return merged;
 }

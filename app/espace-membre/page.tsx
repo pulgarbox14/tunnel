@@ -28,6 +28,10 @@ export default async function EspaceMembrePage() {
 
   const rec = isMaster ? undefined : await findCode(sessionCode);
   const product = rec?.product ?? "programme";
+  // Les acheteurs du bonus ont leur propre espace
+  if (!isMaster && product === "bonus") {
+    redirect("/espace-bonus");
+  }
   const showProgramme = isMaster || product === "programme";
 
   // Le bonus est déjà acheté ? (un autre code du même email, produit bonus)
@@ -192,49 +196,24 @@ export default async function EspaceMembrePage() {
           )
         )}
 
-        {/* ===== CONTENU DU BONUS (acheté) ===== */}
+        {/* ===== ACCÈS À L'ESPACE BONUS (déjà acheté) ===== */}
         {hasBonus && (
-          <section style={{ paddingBottom: 20 }}>
-            <div className="card-dark">
-              <div className="module-title-row">
-                <span className="module-icon">
-                  <Icon name="gift" size={22} />
-                </span>
-                <div>
-                  <span className="tag">Bonus</span>
-                  <h2 className="title-red mt-1" style={{ fontSize: "1.1rem" }}>
-                    {site.bonus.title}
-                  </h2>
-                </div>
-              </div>
-              <p className="muted small mt-1" style={{ fontStyle: "italic" }}>
-                « {site.bonus.pitch} »
+          <section style={{ paddingBottom: 30 }}>
+            <div className="card-dark text-center" style={{ maxWidth: 520, margin: "0 auto" }}>
+              <span className="badge badge-yellow">
+                <Icon name="gift" size={13} /> Ton bonus
+              </span>
+              <p className="muted mt-1 small">
+                Tu as le bonus <span className="strong-white">{site.bonus.title}</span> —
+                retrouve tes vidéos et ton accompagnement dans ton espace dédié.
               </p>
+              <div className="mt-1">
+                <Link href="/espace-bonus" className="btn-cta">
+                  Accéder à mon espace bonus
+                  <small>vidéos et accompagnement</small>
+                </Link>
+              </div>
             </div>
-
-            {site.bonus.videos.length > 0 ? (
-              <div className="video-list">
-                {site.bonus.videos.map((video) => (
-                  <div className="video-item" key={video.title + video.url}>
-                    {video.url.startsWith("/api/video/") ||
-                    video.url.endsWith(".mp4") ||
-                    video.url.endsWith(".webm") ? (
-                      <video controls controlsList="nodownload" src={video.url} />
-                    ) : (
-                      <iframe src={video.url} allowFullScreen title={video.title} />
-                    )}
-                    <div className="info">
-                      <h3>{video.title || "Vidéo du bonus"}</h3>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="muted small mt-2 icon-line">
-                <Icon name="clock" size={13} /> Les vidéos du bonus apparaîtront ici dès leur
-                publication.
-              </p>
-            )}
           </section>
         )}
       </div>

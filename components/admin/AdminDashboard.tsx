@@ -48,6 +48,7 @@ interface ContentData {
     testimonials: Testimonial[];
     modules: { tag: string; title: string; lessons: { title: string; url: string }[] }[];
     bonusVideos: { title: string; url: string }[];
+    bonusContactPhone: string;
   };
 }
 
@@ -190,6 +191,7 @@ export function AdminDashboard() {
   const [heroVideo, setHeroVideo] = useState("");
   const [lessonUrls, setLessonUrls] = useState<Record<string, string>>({});
   const [bonusVideos, setBonusVideos] = useState<{ title: string; url: string }[]>([]);
+  const [bonusPhone, setBonusPhone] = useState("");
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [coachName, setCoachName] = useState("");
   const [coachPhotos, setCoachPhotos] = useState<string[]>([""]);
@@ -222,6 +224,7 @@ export function AdminDashboard() {
       setBonusVideos(
         (o.bonusVideos as { title: string; url: string }[]) ?? d.bonusVideos ?? [],
       );
+      setBonusPhone((o.bonusContactPhone as string) ?? d.bonusContactPhone ?? "");
       setTestimonials((o.testimonials as Testimonial[]) ?? d.testimonials);
       setCoachName((o.coachName as string) ?? d.coachName);
       setCoachPhotos((o.coachPhotos as string[]) ?? d.coachPhotos);
@@ -295,7 +298,15 @@ export function AdminDashboard() {
               rel="noreferrer"
               className="btn-ghost icon-line"
             >
-              <Icon name="video" size={13} /> Voir l&apos;espace membre
+              <Icon name="video" size={13} /> Espace membre
+            </a>
+            <a
+              href="/espace-bonus"
+              target="_blank"
+              rel="noreferrer"
+              className="btn-ghost icon-line"
+            >
+              <Icon name="gift" size={13} /> Espace bonus
             </a>
             <button className="btn-ghost" onClick={logout}>
               Se déconnecter
@@ -550,9 +561,23 @@ export function AdminDashboard() {
               </button>
             </div>
 
+            <h2 className="admin-h2">Numéro d'accompagnement (espace bonus)</h2>
+            <p className="muted small">
+              Affiché aux acheteurs du bonus avec un bouton WhatsApp. Format international,
+              ex : +229 01 97 00 00 00.
+            </p>
+            <input
+              type="text"
+              value={bonusPhone}
+              placeholder="+229 ..."
+              onChange={(e) => setBonusPhone(e.target.value)}
+            />
+
             <button
               className="btn-cta mt-2"
-              onClick={() => save({ heroVideoUrl: heroVideo, lessonUrls, bonusVideos })}
+              onClick={() =>
+                save({ heroVideoUrl: heroVideo, lessonUrls, bonusVideos, bonusContactPhone: bonusPhone })
+              }
             >
               Enregistrer les vidéos
               <small>mise à jour immédiate</small>

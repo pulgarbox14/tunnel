@@ -24,6 +24,7 @@ export async function GET() {
         lessons: m.lessons.map((l) => ({ title: l.title, url: l.url ?? "" })),
       })),
       bonusVideos: [],
+      bonusContactPhone: site.bonus.contactPhone,
     },
   });
 }
@@ -48,6 +49,9 @@ export async function PUT(request: Request) {
     for (const key of Object.keys(patch.lessonUrls)) {
       patch.lessonUrls[key] = normalizeVideoInput(patch.lessonUrls[key]);
     }
+  }
+  if (typeof patch.bonusContactPhone === "string") {
+    patch.bonusContactPhone = patch.bonusContactPhone.trim();
   }
   if (patch.bonusVideos) {
     patch.bonusVideos = patch.bonusVideos

@@ -3,6 +3,21 @@
 Mise en ligne du site sur un serveur VPS (Ubuntu/Debian) avec le
 sous-domaine `orientation.digitafrik.com`.
 
+## ⚡ Méthode rapide : une seule commande
+
+Après avoir configuré le DNS (étape 1 ci-dessous), sur le serveur :
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/pulgarbox14/tunnel/claude/tunnel-vente-instantane-etmg21/deploy.sh -o deploy.sh
+sudo bash deploy.sh
+```
+
+Le script installe tout (Node, PM2, Nginx, HTTPS), demande tes identifiants
+admin et tes clés à la première exécution, puis lance le site. Pour les
+mises à jour suivantes : relancer `sudo bash deploy.sh`, c'est tout.
+
+Les étapes ci-dessous détaillent la méthode manuelle équivalente.
+
 ## 1. DNS (chez le registrar de digitafrik.com)
 
 Ajouter un enregistrement **A** :
