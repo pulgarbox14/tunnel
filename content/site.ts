@@ -299,6 +299,8 @@ export const site = {
           "Postuler dans les universités du Bénin (publiques et privées) · Le panorama des bourses extérieures · Monter un dossier qui passe · La candidature directe à l'étranger · Éviter les arnaques + ton accompagnement.",
       },
     ] as Lesson[],
+    /** Blocs vidéo affichés dans l'espace membre — remplis depuis le panel admin. */
+    videos: [] as { title: string; url: string }[],
     pricing: {
       oldPrice: "10 000",
       price: "5 000",

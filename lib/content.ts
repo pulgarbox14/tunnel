@@ -6,10 +6,17 @@ import { readJson, writeJson } from "./store";
  * Les valeurs enregistrées ici surchargent celles de content/site.ts.
  */
 
+export interface BonusVideo {
+  title: string;
+  url: string;
+}
+
 export interface ContentOverrides {
   heroVideoUrl?: string;
   /** URLs des capsules, clé "moduleIndex-lessonIndex" (ex : "0-2"). */
   lessonUrls?: Record<string, string>;
+  /** Blocs vidéo du bonus, ajoutés librement depuis le panel admin. */
+  bonusVideos?: BonusVideo[];
   coachName?: string;
   coachPhotos?: string[];
   gallery?: string[];
@@ -72,12 +79,8 @@ export async function getMergedSite() {
         if (url !== undefined) lesson.url = url;
       });
     });
-    // Les capsules du bonus sont indexées après les modules principaux
-    const bi = merged.memberModules.length;
-    merged.bonus.lessons.forEach((lesson, li) => {
-      const url = o.lessonUrls?.[`${bi}-${li}`];
-      if (url !== undefined) lesson.url = url;
-    });
   }
+  // Blocs vidéo du bonus (espace membre) : gérés depuis le panel admin
+  merged.bonus.videos = (o.bonusVideos ?? []).filter((v) => v.url);
   return merged;
 }

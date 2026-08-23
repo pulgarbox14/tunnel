@@ -18,18 +18,12 @@ export async function GET() {
       coachPhotos: site.coach.photos,
       gallery: site.gallery.images,
       testimonials: site.results.items,
-      modules: [
-        ...site.memberModules.map((m) => ({
-          tag: m.tag,
-          title: m.title,
-          lessons: m.lessons.map((l) => ({ title: l.title, url: l.url ?? "" })),
-        })),
-        {
-          tag: "Bonus",
-          title: site.bonus.title,
-          lessons: site.bonus.lessons.map((l) => ({ title: l.title, url: l.url ?? "" })),
-        },
-      ],
+      modules: site.memberModules.map((m) => ({
+        tag: m.tag,
+        title: m.title,
+        lessons: m.lessons.map((l) => ({ title: l.title, url: l.url ?? "" })),
+      })),
+      bonusVideos: [],
     },
   });
 }
@@ -54,6 +48,11 @@ export async function PUT(request: Request) {
     for (const key of Object.keys(patch.lessonUrls)) {
       patch.lessonUrls[key] = normalizeVideoInput(patch.lessonUrls[key]);
     }
+  }
+  if (patch.bonusVideos) {
+    patch.bonusVideos = patch.bonusVideos
+      .map((v) => ({ title: (v.title ?? "").trim(), url: normalizeVideoInput(v.url ?? "") }))
+      .filter((v) => v.title || v.url);
   }
   if (patch.testimonials) {
     patch.testimonials = patch.testimonials.map((t) => ({

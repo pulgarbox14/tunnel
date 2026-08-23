@@ -211,28 +211,29 @@ export default async function EspaceMembrePage() {
               </p>
             </div>
 
-            <div className="video-list">
-              {site.bonus.lessons.map((lesson) => (
-                <div className="video-item" key={lesson.title}>
-                  {lesson.url ? (
-                    lesson.url.startsWith("/api/video/") || lesson.url.endsWith(".mp4") || lesson.url.endsWith(".webm") ? (
-                      <video controls controlsList="nodownload" src={lesson.url} />
+            {site.bonus.videos.length > 0 ? (
+              <div className="video-list">
+                {site.bonus.videos.map((video) => (
+                  <div className="video-item" key={video.title + video.url}>
+                    {video.url.startsWith("/api/video/") ||
+                    video.url.endsWith(".mp4") ||
+                    video.url.endsWith(".webm") ? (
+                      <video controls controlsList="nodownload" src={video.url} />
                     ) : (
-                      <iframe src={lesson.url} allowFullScreen title={lesson.title} />
-                    )
-                  ) : (
-                    <div className="placeholder">
-                      <Icon name="video" size={20} />
-                      <span style={{ marginLeft: 8 }}>Vidéo à venir</span>
+                      <iframe src={video.url} allowFullScreen title={video.title} />
+                    )}
+                    <div className="info">
+                      <h3>{video.title || "Vidéo du bonus"}</h3>
                     </div>
-                  )}
-                  <div className="info">
-                    <h3>{lesson.title}</h3>
-                    <p>{lesson.description}</p>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <p className="muted small mt-2 icon-line">
+                <Icon name="clock" size={13} /> Les vidéos du bonus apparaîtront ici dès leur
+                publication.
+              </p>
+            )}
           </section>
         )}
       </div>

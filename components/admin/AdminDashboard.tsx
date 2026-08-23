@@ -47,6 +47,7 @@ interface ContentData {
     gallery: string[];
     testimonials: Testimonial[];
     modules: { tag: string; title: string; lessons: { title: string; url: string }[] }[];
+    bonusVideos: { title: string; url: string }[];
   };
 }
 
@@ -188,6 +189,7 @@ export function AdminDashboard() {
   // Champs éditables
   const [heroVideo, setHeroVideo] = useState("");
   const [lessonUrls, setLessonUrls] = useState<Record<string, string>>({});
+  const [bonusVideos, setBonusVideos] = useState<{ title: string; url: string }[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [coachName, setCoachName] = useState("");
   const [coachPhotos, setCoachPhotos] = useState<string[]>([""]);
@@ -217,6 +219,9 @@ export function AdminDashboard() {
         }),
       );
       setLessonUrls(urls);
+      setBonusVideos(
+        (o.bonusVideos as { title: string; url: string }[]) ?? d.bonusVideos ?? [],
+      );
       setTestimonials((o.testimonials as Testimonial[]) ?? d.testimonials);
       setCoachName((o.coachName as string) ?? d.coachName);
       setCoachPhotos((o.coachPhotos as string[]) ?? d.coachPhotos);
@@ -490,9 +495,54 @@ export function AdminDashboard() {
               </div>
             ))}
 
+            <h2 className="admin-h2">Vidéos du bonus</h2>
+            <p className="muted small">
+              Ajoute autant de blocs vidéo que tu veux pour le bonus — ils apparaîtront
+              dans l&apos;espace membre des acheteurs du bonus, dans cet ordre.
+            </p>
+            {bonusVideos.map((v, i) => (
+              <div className="card-dark mt-1 avis-editor" key={i}>
+                <div className="avis-row">
+                  <input
+                    type="text"
+                    value={v.title}
+                    placeholder={`Titre du bloc vidéo bonus ${i + 1}`}
+                    onChange={(e) => {
+                      const next = [...bonusVideos];
+                      next[i] = { ...v, title: e.target.value };
+                      setBonusVideos(next);
+                    }}
+                  />
+                  <button
+                    className="btn-ghost small-btn icon-line"
+                    onClick={() => setBonusVideos(bonusVideos.filter((_, j) => j !== i))}
+                  >
+                    <Icon name="trash" size={12} /> Supprimer
+                  </button>
+                </div>
+                <VideoField
+                  value={v.url}
+                  onChange={(url) => {
+                    const next = [...bonusVideos];
+                    next[i] = { ...v, url };
+                    setBonusVideos(next);
+                  }}
+                  placeholder="Vidéo du bloc : lien ou upload"
+                />
+              </div>
+            ))}
+            <div className="mt-1">
+              <button
+                className="btn-ghost icon-line"
+                onClick={() => setBonusVideos([...bonusVideos, { title: "", url: "" }])}
+              >
+                <Icon name="plus" size={13} /> Ajouter un bloc vidéo bonus
+              </button>
+            </div>
+
             <button
               className="btn-cta mt-2"
-              onClick={() => save({ heroVideoUrl: heroVideo, lessonUrls })}
+              onClick={() => save({ heroVideoUrl: heroVideo, lessonUrls, bonusVideos })}
             >
               Enregistrer les vidéos
               <small>mise à jour immédiate</small>
