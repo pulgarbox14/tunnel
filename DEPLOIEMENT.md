@@ -60,9 +60,11 @@ AUTH_SECRET=une-longue-phrase-aleatoire-de-50-caracteres-minimum
 FEEXPAY_API_KEY=ta_cle_api
 FEEXPAY_SHOP_ID=ton_shop_id
 
-# Emails via Resend
-RESEND_API_KEY=ta_cle_resend
-MAIL_FROM_EMAIL=no-reply@digitafrik.com
+# Emails via la boîte Hostinger (aucune API nécessaire)
+SMTP_HOST=smtp.hostinger.com
+SMTP_PORT=465
+SMTP_USER=orientation@digitafrik.com
+SMTP_PASS=mot-de-passe-de-la-boîte
 MAIL_FROM_NAME=Cap sur monAvenir
 ```
 

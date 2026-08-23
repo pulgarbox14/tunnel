@@ -62,15 +62,12 @@ marchand FeexPay. Le paiement par carte reste à brancher (TODO dans
 
 ## Emails (code d'accès)
 
-Trois fournisseurs supportés — en configurer UN :
-
-1. **SMTP Hostinger (recommandé si le domaine y est)** : créer une boîte
-   email dans Hostinger (Emails → digitafrik.com → Créer un compte email,
-   ex : `orientation@digitafrik.com`), puis renseigner `SMTP_HOST=smtp.hostinger.com`,
-   `SMTP_PORT=465`, `SMTP_USER` et `SMTP_PASS` (identifiants de la boîte).
-   SPF/DKIM sont gérés automatiquement par Hostinger.
-2. **Resend** (resend.com) : `RESEND_API_KEY` après vérification du domaine.
-3. **Brevo** (brevo.com) : `BREVO_API_KEY`.
+Envoi via **SMTP Hostinger** — aucune API nécessaire : créer une boîte
+email dans Hostinger (Emails → digitafrik.com → Créer un compte email,
+ex : `orientation@digitafrik.com`), puis renseigner
+`SMTP_HOST=smtp.hostinger.com`, `SMTP_PORT=465`, `SMTP_USER` et
+`SMTP_PASS` (les identifiants de la boîte). SPF/DKIM sont gérés
+automatiquement par Hostinger sur le domaine.
 
 Vérifier l'adresse expéditrice chez le fournisseur pour une bonne
 délivrabilité. Sans clé : le code reste affiché sur la page `/merci`.
@@ -89,8 +86,8 @@ sans `ADMIN_EMAIL` / `ADMIN_PASSWORD`, le panel admin est verrouillé.
 | `MAX_VIDEO_MB` | Taille max d'une vidéo uploadée (0 = illimité) | `0` (illimité) |
 | `FEEXPAY_API_KEY` | Clé API FeexPay | — (simulation) |
 | `FEEXPAY_SHOP_ID` | Boutique FeexPay | — |
-| `BREVO_API_KEY` / `RESEND_API_KEY` | Envoi des emails | — |
-| `MAIL_FROM_EMAIL` / `MAIL_FROM_NAME` | Expéditeur des emails | valeurs de dev |
+| `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` | Boîte Hostinger pour l'envoi des emails | — |
+| `MAIL_FROM_NAME` | Nom d'expéditeur affiché | `Cap sur monAvenir` |
 | `APP_URL` | URL publique du site | `http://localhost:3000` |
 
 ## Données
