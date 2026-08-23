@@ -63,10 +63,17 @@ export default async function MerciPage({
             )}
 
             <div className="mt-2">
-              <Link href="/connexion" className="btn-cta btn-block">
-                Accéder à mes vidéos
-                <small>espace membre</small>
-              </Link>
+              {order?.product === "bonus" ? (
+                <Link href="/connexion-bonus" className="btn-cta btn-block">
+                  Accéder à l&apos;espace bonus
+                  <small>avec ton code bonus</small>
+                </Link>
+              ) : (
+                <Link href="/connexion" className="btn-cta btn-block">
+                  Accéder à mes vidéos
+                  <small>espace membre</small>
+                </Link>
+              )}
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import { getSessionCode, isAdminAuthenticated } from "@/lib/auth";
-import { findCode, listCodes } from "@/lib/codes";
+import { getBonusSessionCode, isAdminAuthenticated } from "@/lib/auth";
+import { findCode } from "@/lib/codes";
 import { LogoutButton } from "@/components/LogoutButton";
 import { Icon } from "@/components/Icon";
 import { site as staticSite } from "@/content/site";
@@ -20,26 +20,14 @@ export const metadata = {
  * d'accompagnement.
  */
 export default async function EspaceBonusPage() {
-  const memberCode = await getSessionCode();
+  // Porte séparée : seule la session BONUS (code bonus saisi sur
+  // /connexion-bonus) ou la session admin ouvre cette page.
+  const bonusCode = await getBonusSessionCode();
   const isAdmin = await isAdminAuthenticated();
-  if (!memberCode && !isAdmin) {
-    redirect("/connexion");
+  if (!bonusCode && !isAdmin) {
+    redirect("/connexion-bonus");
   }
-
-  // A-t-il le bonus ? (code produit bonus, ou bonus acheté avec le même email)
-  let hasBonus = isAdmin;
-  if (!hasBonus && memberCode) {
-    const rec = await findCode(memberCode);
-    if (rec) {
-      hasBonus =
-        rec.product === "bonus" ||
-        (await listCodes()).some((c) => c.email === rec.email && c.product === "bonus");
-    }
-  }
-  if (!hasBonus) {
-    // Membre du programme sans bonus : retour à son espace (offre à la fin)
-    redirect("/espace-membre");
-  }
+  const rec = bonusCode ? await findCode(bonusCode) : undefined;
 
   const site = await getMergedSite();
   const phone = site.bonus.contactPhone;
@@ -51,7 +39,7 @@ export default async function EspaceBonusPage() {
         <div className="member-header">
           <div>
             <span className="badge badge-yellow">
-              <Icon name="gift" size={13} /> Espace bonus
+              <Icon name="gift" size={13} /> Espace bonus{rec ? ` — ${rec.name}` : ""}
             </span>
             <h1 className="title-red mt-1" style={{ fontSize: "1.4rem" }}>
               {site.bonus.title}

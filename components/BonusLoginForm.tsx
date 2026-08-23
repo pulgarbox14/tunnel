@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Icon } from "@/components/Icon";
 
-export function LoginForm() {
+export function BonusLoginForm() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -13,18 +13,16 @@ export function LoginForm() {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     const code = new FormData(e.currentTarget).get("code");
-
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch("/api/auth/login-bonus", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code }),
       });
       const data = await res.json();
       if (data.ok) {
-        router.push(data.redirect ?? "/espace-membre");
+        router.push("/espace-bonus");
         router.refresh();
       } else {
         setError(data.error ?? "Code incorrect.");
@@ -42,7 +40,7 @@ export function LoginForm() {
         <input
           name="code"
           type="password"
-          placeholder="Ton code d'accès"
+          placeholder="Ton code d'accès BONUS"
           autoComplete="off"
           required
         />
@@ -53,8 +51,8 @@ export function LoginForm() {
         </p>
       )}
       <button type="submit" className="btn-cta btn-block" disabled={loading}>
-        {loading ? "Vérification…" : "Débloquer mes vidéos"}
-        <small>accès membre</small>
+        {loading ? "Vérification…" : "Accéder à l'espace bonus"}
+        <small>accompagnement</small>
       </button>
     </form>
   );

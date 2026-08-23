@@ -58,6 +58,38 @@ export async function getSessionCode(): Promise<string | null> {
   return verifySessionToken(store.get(SESSION_COOKIE)?.value);
 }
 
+/* ============ Session BONUS (porte séparée, code dédié) ============ */
+
+export const BONUS_COOKIE = "bonus_session";
+
+export function createBonusToken(code: string): string {
+  const expiresAt = Date.now() + SESSION_DURATION_MS;
+  const payload = `bonus|${code}|${expiresAt}`;
+  return `${payload}.${sign(payload)}`;
+}
+
+export function verifyBonusToken(token: string | undefined): string | null {
+  if (!token) return null;
+  const idx = token.lastIndexOf(".");
+  if (idx <= 0) return null;
+  const payload = token.slice(0, idx);
+  const signature = token.slice(idx + 1);
+  const parts = payload.split("|");
+  if (parts.length !== 3 || parts[0] !== "bonus") return null;
+  const expected = sign(payload);
+  const a = Buffer.from(signature);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length || !timingSafeEqual(a, b)) return null;
+  if (Number(parts[2]) <= Date.now()) return null;
+  return parts[1];
+}
+
+/** Code bonus de la session bonus, ou null. */
+export async function getBonusSessionCode(): Promise<string | null> {
+  const store = await cookies();
+  return verifyBonusToken(store.get(BONUS_COOKIE)?.value);
+}
+
 /* ===================== Administration ===================== */
 
 /**

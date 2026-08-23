@@ -1,7 +1,7 @@
 import { randomBytes } from "crypto";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { createSessionToken, SESSION_COOKIE } from "@/lib/auth";
+import { createSessionToken, createBonusToken, SESSION_COOKIE, BONUS_COOKIE } from "@/lib/auth";
 import { tryUseCode } from "@/lib/codes";
 
 const DEVICE_COOKIE = "cap_did";
@@ -34,6 +34,27 @@ export async function POST(request: Request) {
       { ok: false, error: result.reason ?? "Code incorrect. Vérifie l'email reçu après ton achat." },
       { status: 401 },
     );
+  }
+  // Un code BONUS saisi ici : on ouvre directement la session bonus
+  if (result.rec.product === "bonus") {
+    const response = NextResponse.json({ ok: true, redirect: "/espace-bonus" });
+    response.cookies.set(BONUS_COOKIE, createBonusToken(result.rec.code), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30,
+    });
+    if (isNewDevice) {
+      response.cookies.set(DEVICE_COOKIE, deviceId, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 365,
+      });
+    }
+    return response;
   }
   const sessionCode = result.rec.code;
 
