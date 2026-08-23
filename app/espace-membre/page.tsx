@@ -196,26 +196,6 @@ export default async function EspaceMembrePage() {
           )
         )}
 
-        {/* ===== ACCÈS À L'ESPACE BONUS (déjà acheté) ===== */}
-        {hasBonus && (
-          <section style={{ paddingBottom: 30 }}>
-            <div className="card-dark text-center" style={{ maxWidth: 520, margin: "0 auto" }}>
-              <span className="badge badge-yellow">
-                <Icon name="gift" size={13} /> Ton bonus
-              </span>
-              <p className="muted mt-1 small">
-                Tu as le bonus <span className="strong-white">{site.bonus.title}</span> —
-                retrouve tes vidéos et ton accompagnement dans ton espace dédié.
-              </p>
-              <div className="mt-1">
-                <Link href="/espace-bonus" className="btn-cta">
-                  Accéder à mon espace bonus
-                  <small>vidéos et accompagnement</small>
-                </Link>
-              </div>
-            </div>
-          </section>
-        )}
       </div>
     </main>
   );
