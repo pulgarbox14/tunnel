@@ -18,7 +18,7 @@ APP_DIR="/var/www/orientation"
 REPO_URL="https://github.com/pulgarbox14/tunnel"
 BRANCH="claude/tunnel-vente-instantane-etmg21"
 APP_NAME="orientation"
-PORT="3000"
+PORT="3017"
 # ---------------------------------------------------
 
 say()  { echo -e "\n\033[1;33m▶ $*\033[0m"; }
@@ -88,20 +88,22 @@ say "Installation des dépendances et build…"
 npm install --no-fund --no-audit
 npm run build
 
-# 5. Lancement PM2
-if pm2 describe "$APP_NAME" >/dev/null 2>&1; then
-  say "Redémarrage de l'application…"
-  pm2 restart "$APP_NAME" --update-env
-else
-  say "Premier lancement de l'application…"
-  pm2 start npm --name "$APP_NAME" -- start -- -p "$PORT"
-  pm2 save
-  pm2 startup systemd -u root --hp /root >/dev/null || true
-fi
+# 5. Lancement PM2 (delete + start : applique toujours le bon port)
+say "Lancement de l'application sur le port $PORT…"
+pm2 delete "$APP_NAME" >/dev/null 2>&1 || true
+pm2 start npm --name "$APP_NAME" -- start -- -p "$PORT"
+pm2 save
+pm2 startup systemd -u root --hp /root >/dev/null 2>&1 || true
 ok "Application en ligne sur le port $PORT"
 
 # 6. Nginx
 NGINX_CONF="/etc/nginx/sites-available/$APP_NAME"
+if [ -f "$NGINX_CONF" ] && ! grep -q "127.0.0.1:$PORT" "$NGINX_CONF"; then
+  say "Mise à jour du port dans Nginx…"
+  sed -i "s|proxy_pass http://127.0.0.1:[0-9]*;|proxy_pass http://127.0.0.1:$PORT;|" "$NGINX_CONF"
+  nginx -t && systemctl reload nginx
+  ok "Nginx pointe maintenant vers le port $PORT"
+fi
 if [ ! -f "$NGINX_CONF" ]; then
   say "Configuration Nginx…"
   cat > "$NGINX_CONF" <<NGINX
