@@ -49,16 +49,21 @@ fi
 cd "$APP_DIR"
 
 # 3. Variables d'environnement
+# Un .env incomplet (cree lors d'un lancement sans terminal) est recree
+if [ -f .env.production ] && ! grep -q '^ADMIN_EMAIL=..*' .env.production; then
+  say ".env.production incomplet detecte - on le recree..."
+  rm -f .env.production
+fi
 if [ ! -f .env.production ]; then
   say "Création de .env.production (PREMIÈRE INSTALLATION)…"
-  read -rp "  Email admin            : " ADMIN_EMAIL
-  read -rsp "  Mot de passe admin     : " ADMIN_PASSWORD; echo
-  read -rp "  Clé API FeexPay (vide = simulation) : " FEEXPAY_API_KEY
-  read -rp "  Shop ID FeexPay        : " FEEXPAY_SHOP_ID
-  read -rp "  Email Hostinger d'envoi (ex orientation@digitafrik.com, vide = pas d'email) : " SMTP_USER
+  read -rp "  Email admin            : " ADMIN_EMAIL < /dev/tty
+  read -rsp "  Mot de passe admin     : " ADMIN_PASSWORD < /dev/tty; echo
+  read -rp "  Clé API FeexPay (vide = simulation) : " FEEXPAY_API_KEY < /dev/tty
+  read -rp "  Shop ID FeexPay        : " FEEXPAY_SHOP_ID < /dev/tty
+  read -rp "  Email Hostinger d'envoi (ex orientation@digitafrik.com, vide = pas d'email) : " SMTP_USER < /dev/tty
   SMTP_PASS=""
   if [ -n "$SMTP_USER" ]; then
-    read -rsp "  Mot de passe de cette boîte email : " SMTP_PASS; echo
+    read -rsp "  Mot de passe de cette boîte email : " SMTP_PASS < /dev/tty; echo
   fi
   AUTH_SECRET="$(openssl rand -hex 32)"
   cat > .env.production <<ENV
