@@ -33,8 +33,12 @@ export async function ensureUploadsDir(): Promise<void> {
 /** Chemin absolu d'une image uploadée, ou null si le nom est invalide/absent. */
 export async function uploadPath(name: string): Promise<string | null> {
   if (!UPLOAD_NAME_RE.test(name)) return null;
-  for (const dir of [UPLOADS_DIR, LEGACY_UPLOADS_DIR]) {
-    const file = path.join(dir, name);
+  // Chemins construits statiquement (le build ne trace pas tout le projet)
+  const candidates = [
+    path.join(process.cwd(), "data", "uploads", name),
+    path.join(process.cwd(), "public", "uploads", name),
+  ];
+  for (const file of candidates) {
     try {
       await fs.access(file);
       return file;
