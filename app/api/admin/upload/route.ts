@@ -3,11 +3,16 @@ import { promises as fs } from "fs";
 import path from "path";
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/auth";
+import { UPLOADS_DIR, ensureUploadsDir } from "@/lib/uploads";
 
 const ALLOWED = new Set(["jpg", "jpeg", "png", "webp", "gif"]);
 const MAX_BYTES = 4 * 1024 * 1024; // 4 Mo
 
-/** Upload d'image (avis WhatsApp, photos formateur/galerie) en base64. */
+/**
+ * Upload d'image (avis WhatsApp, photos formateur/galerie) en base64.
+ * Stockage dans data/uploads/ (hors public/, non servi après le build),
+ * diffusion via la route /uploads/<nom>.
+ */
 export async function POST(request: Request) {
   if (!(await isAdminAuthenticated())) {
     return NextResponse.json({ ok: false }, { status: 401 });
@@ -37,10 +42,9 @@ export async function POST(request: Request) {
     );
   }
 
-  const dir = path.join(process.cwd(), "public", "uploads");
-  await fs.mkdir(dir, { recursive: true });
+  await ensureUploadsDir();
   const name = `${Date.now()}-${randomBytes(4).toString("hex")}.${ext}`;
-  await fs.writeFile(path.join(dir, name), buffer);
+  await fs.writeFile(path.join(UPLOADS_DIR, name), buffer);
 
   return NextResponse.json({ ok: true, url: `/uploads/${name}` });
 }

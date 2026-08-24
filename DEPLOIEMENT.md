@@ -144,12 +144,11 @@ pm2 restart orientation
 
 ## Sauvegardes (important !)
 
-Les données vivent dans deux dossiers à sauvegarder régulièrement :
+Toutes les données vivent dans le dossier `data/` :
 
 ```bash
-# data/ : commandes, codes d'accès, stats, contenu admin, VIDÉOS
-# public/uploads/ : photos uploadées
-tar -czf backup-$(date +%F).tar.gz data public/uploads
+# data/ : commandes, codes d'accès, stats, contenu admin, VIDÉOS, photos
+tar -czf backup-$(date +%F).tar.gz data
 ```
 
 Un cron quotidien vers un autre disque ou un stockage distant est recommandé.

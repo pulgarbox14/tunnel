@@ -69,6 +69,27 @@ async function uploadImage(file: File): Promise<string> {
   return json.url as string;
 }
 
+/**
+ * Envoi d'un morceau avec 4 tentatives : une coupure réseau passagère
+ * ne fait plus échouer tout l'upload (le serveur accepte les renvois).
+ */
+async function postChunk(
+  url: string,
+  blob: Blob,
+): Promise<{ ok: boolean; id?: string; url?: string; error?: string }> {
+  let lastError: unknown = null;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    if (attempt > 0) await new Promise((r) => setTimeout(r, 2000 * attempt));
+    try {
+      const res = await fetch(url, { method: "POST", body: blob });
+      return await res.json();
+    } catch (err) {
+      lastError = err; // connexion coupée — on retente le même morceau
+    }
+  }
+  throw new Error(`Connexion instable, morceau non envoyé après 4 essais. ${String(lastError)}`);
+}
+
 /** Upload de vidéo par morceaux de 4 Mo, avec progression. */
 async function uploadVideo(file: File, onPct: (pct: number) => void): Promise<string> {
   const CHUNK = 4 * 1024 * 1024;
@@ -76,15 +97,14 @@ async function uploadVideo(file: File, onPct: (pct: number) => void): Promise<st
   let id = "";
   for (let i = 0; i < total; i++) {
     const blob = file.slice(i * CHUNK, (i + 1) * CHUNK);
-    const res = await fetch(
+    const json = await postChunk(
       `/api/admin/video-upload?name=${encodeURIComponent(file.name)}&chunk=${i}&total=${total}&id=${id}`,
-      { method: "POST", body: blob },
+      blob,
     );
-    const json = await res.json();
     if (!json.ok) throw new Error(json.error ?? "Échec de l'upload");
-    id = json.id;
+    id = json.id ?? id;
     onPct(Math.round(((i + 1) / total) * 100));
-    if (json.url) return json.url as string;
+    if (json.url) return json.url;
   }
   throw new Error("Upload incomplet");
 }

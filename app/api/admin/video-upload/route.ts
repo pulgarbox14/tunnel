@@ -11,9 +11,14 @@ import { VIDEOS_DIR, ensureVideosDir } from "@/lib/videos";
  * Le fichier est découpé côté navigateur (4 Mo par morceau) pour passer
  * sans problème même sur une connexion moyenne, puis assemblé ici.
  * Le panel appelle : POST /api/admin/video-upload?name=...&chunk=N&total=M&id=...
+ *
+ * Chaque morceau est écrit à sa position fixe (chunk × 4 Mo) : le panel
+ * peut renvoyer un morceau perdu par la connexion sans corrompre le fichier.
  */
 
 const ALLOWED = new Set(["mp4", "webm", "m4v"]);
+/** Doit correspondre au découpage côté panel (AdminDashboard). */
+const CHUNK_BYTES = 4 * 1024 * 1024;
 /** Taille maximale en Mo. 0 (défaut) = AUCUNE limite. */
 const MAX_MB = Number(process.env.MAX_VIDEO_MB ?? 0);
 
@@ -48,29 +53,46 @@ export async function POST(request: Request) {
   }
 
   const partFile = path.join(VIDEOS_DIR, `${id}.part`);
+  const finalFile = path.join(VIDEOS_DIR, id);
   const buffer = Buffer.from(await request.arrayBuffer());
 
+  // Dernier morceau renvoyé alors que la vidéo est déjà assemblée
+  // (la réponse précédente s'est perdue en route) : tout va bien.
+  if (chunk === total - 1 && (await fs.stat(finalFile).catch(() => null))) {
+    return NextResponse.json({ ok: true, id, url: `/api/video/${id}` });
+  }
+
   // Garde-fou optionnel (MAX_VIDEO_MB) — désactivé par défaut : aucune limite
-  if (MAX_MB > 0) {
-    const currentSize =
-      chunk === 0 ? 0 : (await fs.stat(partFile).catch(() => ({ size: 0 }))).size;
-    if (currentSize + buffer.length > MAX_MB * 1024 * 1024) {
-      await fs.rm(partFile, { force: true });
-      return NextResponse.json(
-        { ok: false, error: `Vidéo trop lourde (maximum ${MAX_MB} Mo).` },
-        { status: 400 },
-      );
-    }
+  if (MAX_MB > 0 && chunk * CHUNK_BYTES + buffer.length > MAX_MB * 1024 * 1024) {
+    await fs.rm(partFile, { force: true });
+    return NextResponse.json(
+      { ok: false, error: `Vidéo trop lourde (maximum ${MAX_MB} Mo).` },
+      { status: 400 },
+    );
   }
 
   if (chunk === 0) {
     await fs.writeFile(partFile, buffer);
   } else {
-    await fs.appendFile(partFile, buffer);
+    // Écriture à la position du morceau : un renvoi (retry) est sans danger
+    let fh;
+    try {
+      fh = await fs.open(partFile, "r+");
+    } catch {
+      return NextResponse.json(
+        { ok: false, error: "Upload interrompu côté serveur — recommence l'envoi du fichier." },
+        { status: 409 },
+      );
+    }
+    try {
+      await fh.write(buffer, 0, buffer.length, chunk * CHUNK_BYTES);
+    } finally {
+      await fh.close();
+    }
   }
 
   if (chunk === total - 1) {
-    await fs.rename(partFile, path.join(VIDEOS_DIR, id));
+    await fs.rename(partFile, finalFile);
     return NextResponse.json({ ok: true, id, url: `/api/video/${id}` });
   }
   return NextResponse.json({ ok: true, id });

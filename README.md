@@ -92,8 +92,9 @@ sans `ADMIN_EMAIL` / `ADMIN_PASSWORD`, le panel admin est verrouillé.
 
 ## Données
 
-Stockage JSON sur disque dans `data/` (commandes, codes, stats, contenu admin)
-et images uploadées dans `public/uploads/` — adaptés à un serveur Node (VPS,
+Stockage JSON sur disque dans `data/` (commandes, codes, stats, contenu
+admin), vidéos dans `data/videos/` et images uploadées dans `data/uploads/`
+(servies via la route `/uploads/<nom>`) — adaptés à un serveur Node (VPS,
 `next start`). Sur un hébergeur serverless (Vercel), prévoir une base de
 données à la place.
 
