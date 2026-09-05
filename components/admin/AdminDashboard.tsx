@@ -90,23 +90,77 @@ async function postChunk(
   throw new Error(`Connexion instable, morceau non envoyé après 4 essais. ${String(lastError)}`);
 }
 
-/** Upload de vidéo par morceaux de 4 Mo, avec progression. */
-async function uploadVideo(file: File, onPct: (pct: number) => void): Promise<string> {
+type UploadProgress = { pct: number; note: string };
+
+function formatDuration(seconds: number): string {
+  if (!Number.isFinite(seconds) || seconds <= 0) return "";
+  if (seconds < 90) return `${Math.round(seconds)} s`;
+  const min = Math.round(seconds / 60);
+  if (min < 60) return `${min} min`;
+  const h = Math.floor(min / 60);
+  return `${h} h ${String(min % 60).padStart(2, "0")}`;
+}
+
+/**
+ * Upload de vidéo par morceaux de 4 Mo, envoyés PAR 4 EN PARALLÈLE.
+ *
+ * Sur une connexion mobile, un seul envoi à la fois n'utilise qu'une
+ * fraction du débit disponible : envoyer plusieurs morceaux simultanément
+ * accélère nettement (souvent 2 à 3 fois) le transfert d'un gros fichier.
+ */
+async function uploadVideo(
+  file: File,
+  onProgress: (p: UploadProgress) => void,
+): Promise<string> {
   const CHUNK = 4 * 1024 * 1024;
+  const PARALLEL = 4;
   const total = Math.max(1, Math.ceil(file.size / CHUNK));
-  let id = "";
-  for (let i = 0; i < total; i++) {
-    const blob = file.slice(i * CHUNK, (i + 1) * CHUNK);
-    const json = await postChunk(
-      `/api/admin/video-upload?name=${encodeURIComponent(file.name)}&chunk=${i}&total=${total}&id=${id}`,
-      blob,
-    );
-    if (!json.ok) throw new Error(json.error ?? "Échec de l'upload");
-    id = json.id ?? id;
-    onPct(Math.round(((i + 1) / total) * 100));
-    if (json.url) return json.url;
-  }
-  throw new Error("Upload incomplet");
+  const base = `/api/admin/video-upload?name=${encodeURIComponent(file.name)}`;
+  const startedAt = Date.now();
+  let sent = 0;
+
+  const report = () => {
+    const elapsed = (Date.now() - startedAt) / 1000;
+    const speed = sent / Math.max(elapsed, 0.5); // octets/seconde
+    const remaining = formatDuration((file.size - sent) / Math.max(speed, 1));
+    const mbps = (speed / (1024 * 1024)).toFixed(1);
+    onProgress({
+      pct: Math.round((sent / file.size) * 100),
+      note: remaining ? `${mbps} Mo/s · ${remaining} restantes` : `${mbps} Mo/s`,
+    });
+  };
+
+  // 1. Le premier morceau crée le fichier côté serveur et donne son id
+  const firstBlob = file.slice(0, CHUNK);
+  const first = await postChunk(`${base}&chunk=0&total=${total}&id=`, firstBlob);
+  if (!first.ok || !first.id) throw new Error(first.error ?? "Échec de l'upload");
+  const id = first.id;
+  sent += firstBlob.size;
+  report();
+
+  // 2. Les morceaux suivants partent en parallèle (ordre sans importance :
+  //    le serveur écrit chacun à sa position exacte dans le fichier)
+  let next = 1;
+  const worker = async () => {
+    for (;;) {
+      const i = next++;
+      if (i >= total) return;
+      const blob = file.slice(i * CHUNK, (i + 1) * CHUNK);
+      const json = await postChunk(`${base}&chunk=${i}&total=${total}&id=${id}`, blob);
+      if (!json.ok) throw new Error(json.error ?? "Échec de l'upload");
+      sent += blob.size;
+      report();
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(PARALLEL, total - 1) }, worker));
+
+  // 3. Assemblage : le serveur vérifie que la taille reçue est la bonne
+  const done = await postChunk(
+    `/api/admin/video-upload?finalize=1&id=${id}&size=${file.size}`,
+    new Blob(),
+  );
+  if (!done.ok || !done.url) throw new Error(done.error ?? "Assemblage impossible");
+  return done.url;
 }
 
 /** Champ vidéo : lien (Vimeo/mp4) OU upload du fichier vers le serveur. */
@@ -119,7 +173,7 @@ function VideoField({
   onChange: (v: string) => void;
   placeholder?: string;
 }) {
-  const [pct, setPct] = useState<number | null>(null);
+  const [prog, setProg] = useState<UploadProgress | null>(null);
   return (
     <div className="img-field">
       <input
@@ -129,7 +183,7 @@ function VideoField({
         onChange={(e) => onChange(e.target.value)}
       />
       <label className="btn-ghost upload-btn">
-        {pct !== null ? `${pct} %` : <><Icon name="upload" size={13} /> Vidéo</>}
+        {prog ? `${prog.pct} %` : <><Icon name="upload" size={13} /> Vidéo</>}
         <input
           type="file"
           accept="video/mp4,video/webm,video/x-m4v"
@@ -137,18 +191,23 @@ function VideoField({
           onChange={async (e) => {
             const file = e.target.files?.[0];
             if (!file) return;
-            setPct(0);
+            setProg({ pct: 0, note: "démarrage de l'envoi…" });
             try {
-              const url = await uploadVideo(file, setPct);
+              const url = await uploadVideo(file, setProg);
               onChange(url);
             } catch (err) {
               alert(String(err));
             } finally {
-              setPct(null);
+              setProg(null);
             }
           }}
         />
       </label>
+      {prog && (
+        <p className="upload-note">
+          Envoi en cours — {prog.note}. Laisse cet onglet ouvert.
+        </p>
+      )}
     </div>
   );
 }

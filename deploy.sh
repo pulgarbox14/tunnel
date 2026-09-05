@@ -103,11 +103,21 @@ ok "Application en ligne sur le port $PORT"
 
 # 6. Nginx
 NGINX_CONF="/etc/nginx/sites-available/$APP_NAME"
+NGINX_CHANGED=""
 if [ -f "$NGINX_CONF" ] && ! grep -q "127.0.0.1:$PORT" "$NGINX_CONF"; then
   say "Mise à jour du port dans Nginx…"
   sed -i "s|proxy_pass http://127.0.0.1:[0-9]*;|proxy_pass http://127.0.0.1:$PORT;|" "$NGINX_CONF"
+  NGINX_CHANGED="port $PORT"
+fi
+# Upload vidéo : transmettre les morceaux sans les mettre en tampon
+if [ -f "$NGINX_CONF" ] && ! grep -q "proxy_request_buffering" "$NGINX_CONF"; then
+  say "Optimisation de l'upload dans Nginx…"
+  sed -i "s|proxy_buffering off;|proxy_buffering off;\n        proxy_request_buffering off;|" "$NGINX_CONF"
+  NGINX_CHANGED="${NGINX_CHANGED:+$NGINX_CHANGED, }upload accéléré"
+fi
+if [ -n "$NGINX_CHANGED" ]; then
   nginx -t && systemctl reload nginx
-  ok "Nginx pointe maintenant vers le port $PORT"
+  ok "Nginx mis à jour ($NGINX_CHANGED)"
 fi
 if [ ! -f "$NGINX_CONF" ]; then
   say "Configuration Nginx…"
@@ -124,6 +134,7 @@ server {
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto \$scheme;
         proxy_buffering off;
+        proxy_request_buffering off;
         proxy_read_timeout 3600s;
         proxy_send_timeout 3600s;
     }
