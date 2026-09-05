@@ -26,6 +26,7 @@ interface StatsData {
       status: string;
       accessCode?: string;
       emailSent?: boolean;
+      error?: string;
       createdAt: number;
     }[];
   };
@@ -549,7 +550,20 @@ export function AdminDashboard() {
                         )}
                       </td>
                     </tr>
-                  ))}
+                  )).flatMap((row, i) => {
+                    // Sous-ligne explicative en cas d'échec de paiement
+                    const o = stats.orders.recent[i];
+                    return o.error
+                      ? [
+                          row,
+                          <tr key={`${o.ref}-err`}>
+                            <td colSpan={9} className="order-error">
+                              Échec du paiement — réponse du prestataire : {o.error}
+                            </td>
+                          </tr>,
+                        ]
+                      : [row];
+                  })}
                   {stats.orders.recent.length === 0 && (
                     <tr>
                       <td colSpan={9} className="muted">

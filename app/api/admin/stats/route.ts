@@ -48,6 +48,7 @@ export async function GET() {
           status: o.status,
           accessCode: o.accessCode,
           emailSent: o.emailSent,
+          error: o.error,
           createdAt: o.createdAt,
         })),
     },

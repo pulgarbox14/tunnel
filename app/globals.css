@@ -926,6 +926,14 @@ input:focus { outline: 2px solid var(--yellow-light); }
   margin: 10px 0;
 }
 .img-field input[type="text"] { flex: 1; min-width: 200px; }
+.order-error {
+  color: var(--red);
+  font-size: 11px;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  word-break: break-word;
+  border-top: 0;
+  padding-top: 0;
+}
 .unsaved-banner {
   margin: 12px 0 0;
   padding: 10px 14px;

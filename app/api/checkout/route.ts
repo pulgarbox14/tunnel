@@ -69,10 +69,18 @@ export async function POST(request: Request) {
     await updateOrder(order.ref, { providerRef: reference });
     return NextResponse.json({ ok: true, redirect: `/paiement/${order.ref}` });
   } catch (e) {
-    console.error("FeexPay requestToPay:", e);
-    await updateOrder(order.ref, { status: "failed" });
+    // La cause technique est conservée sur la commande : elle s'affiche
+    // dans le panel admin (onglet Statistiques) sans avoir à ouvrir le
+    // serveur en SSH.
+    const detail = e instanceof Error ? e.message : String(e);
+    console.error("FeexPay requestToPay:", detail);
+    await updateOrder(order.ref, { status: "failed", error: detail });
     return NextResponse.json(
-      { ok: false, error: "Le paiement n'a pas pu être lancé. Vérifie ton numéro et réessaie." },
+      {
+        ok: false,
+        error: "Le paiement n'a pas pu être lancé. Vérifie ton numéro et réessaie.",
+        ref: order.ref,
+      },
       { status: 502 },
     );
   }

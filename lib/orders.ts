@@ -18,6 +18,8 @@ export interface Order {
   providerRef?: string;
   accessCode?: string;
   emailSent?: boolean;
+  /** Raison technique d'un échec (réponse du prestataire) — visible dans le panel. */
+  error?: string;
   createdAt: number;
   paidAt?: number;
 }
