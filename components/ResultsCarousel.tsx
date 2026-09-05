@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { Icon } from "@/components/Icon";
+import { Photo } from "@/components/Photo";
 import type { Testimonial } from "@/content/site";
 
 /**
@@ -45,8 +46,7 @@ export function ResultsCarousel({ items }: { items: Testimonial[] }) {
                 ) : t.src && kind === "iframe" ? (
                   <iframe src={t.src} allowFullScreen title={t.name} />
                 ) : t.src ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={t.src} alt={`Avis de ${t.name}`} loading="lazy" />
+                  <Photo src={t.src} alt={`Avis de ${t.name}`} />
                 ) : (
                   <span className="icon-line">
                     <Icon name={t.type === "vimeo" ? "video" : "award"} size={16} />

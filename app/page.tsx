@@ -1,5 +1,6 @@
 import { Cta } from "@/components/Cta";
 import { Icon } from "@/components/Icon";
+import { Photo } from "@/components/Photo";
 import { ResultsCarousel } from "@/components/ResultsCarousel";
 import { TrackVisit } from "@/components/TrackVisit";
 import { getMergedSite } from "@/lib/content";
@@ -253,8 +254,7 @@ export default async function HomePage() {
               {site.coach.photos.map((photo, i) =>
                 photo ? (
                   <div className="photo-frame coach-photo" key={i}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={photo} alt={site.coach.name} />
+                    <Photo src={photo} alt={site.coach.name} />
                   </div>
                 ) : (
                   <div className="photo-frame coach-photo" key={i}>
@@ -278,8 +278,7 @@ export default async function HomePage() {
             {site.gallery.images.map((img, i) =>
               img ? (
                 <div className="photo-frame" key={i}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img} alt="" />
+                  <Photo src={img} alt={site.gallery.title} />
                 </div>
               ) : (
                 <div className="photo-frame" key={i}>
