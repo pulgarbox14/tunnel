@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Icon, type IconName } from "@/components/Icon";
 import type { Testimonial } from "@/content/site";
@@ -279,6 +279,10 @@ export function AdminDashboard() {
     { id: string; url: string; sizeMb: number; used: boolean }[]
   >([]);
 
+  // Modifications faites mais pas encore enregistrées
+  const [dirty, setDirty] = useState(false);
+  const ignoreNextChange = useRef(true);
+
   const load = useCallback(async () => {
     const [statsRes, contentRes, videosRes] = await Promise.all([
       fetch("/api/admin/stats").then((r) => r.json()),
@@ -291,6 +295,10 @@ export function AdminDashboard() {
       setContent(contentRes);
       const o = contentRes.overrides ?? {};
       const d = contentRes.defaults;
+      // Ce rechargement remet les champs à leur valeur enregistrée :
+      // ce n'est pas une modification de l'utilisateur.
+      ignoreNextChange.current = true;
+      setDirty(false);
       setHeroVideo((o.heroVideoUrl as string) ?? d.heroVideoUrl ?? "");
       const urls: Record<string, string> = {};
       d.modules.forEach((m: ContentData["defaults"]["modules"][0], mi: number) =>
@@ -314,6 +322,33 @@ export function AdminDashboard() {
   useEffect(() => {
     load();
   }, [load]);
+
+  // Dès qu'un champ change, on signale les modifications non enregistrées
+  useEffect(() => {
+    if (ignoreNextChange.current) {
+      ignoreNextChange.current = false;
+      return;
+    }
+    setDirty(true);
+    setSaved("");
+  }, [
+    heroVideo,
+    lessonUrls,
+    bonusVideos,
+    bonusPhone,
+    testimonials,
+    coachName,
+    coachPhotos,
+    gallery,
+  ]);
+
+  // Filet de sécurité : prévenir avant de quitter la page sans enregistrer
+  useEffect(() => {
+    if (!dirty) return;
+    const warn = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty]);
 
   async function save(patch: Record<string, unknown>) {
     setSaved("");
@@ -412,6 +447,13 @@ export function AdminDashboard() {
           ))}
         </div>
 
+        {dirty && (
+          <p className="unsaved-banner icon-line">
+            <Icon name="clock" size={14} />
+            Modifications non enregistrées — clique sur <strong>Enregistrer</strong> en bas de
+            cette section, sinon le site ne changera pas.
+          </p>
+        )}
         {saved && <p className="muted mt-1">{saved}</p>}
 
         {/* ===== STATISTIQUES ===== */}

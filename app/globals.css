@@ -902,6 +902,16 @@ input:focus { outline: 2px solid var(--yellow-light); }
   margin: 10px 0;
 }
 .img-field input[type="text"] { flex: 1; min-width: 200px; }
+.unsaved-banner {
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  border: 1.5px solid var(--yellow);
+  border-radius: 10px;
+  background: rgba(252, 209, 22, 0.08);
+  color: var(--yellow);
+  font-size: 13px;
+  line-height: 1.5;
+}
 .upload-note {
   width: 100%;
   margin: 2px 0 0;
