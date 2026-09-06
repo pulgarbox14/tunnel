@@ -926,6 +926,25 @@ input:focus { outline: 2px solid var(--yellow-light); }
   margin: 10px 0;
 }
 .img-field input[type="text"] { flex: 1; min-width: 200px; }
+.accepted-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  justify-content: center;
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--gray-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.order-recap {
+  border: 1.5px solid var(--yellow);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  background: rgba(252, 209, 22, 0.06);
+}
+.to-check { color: var(--yellow); }
 .order-error {
   color: var(--red);
   font-size: 11px;

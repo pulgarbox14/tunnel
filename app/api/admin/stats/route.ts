@@ -49,6 +49,7 @@ export async function GET() {
           accessCode: o.accessCode,
           emailSent: o.emailSent,
           error: o.error,
+          paymentVerified: o.paymentVerified,
           createdAt: o.createdAt,
         })),
     },

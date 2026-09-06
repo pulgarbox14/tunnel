@@ -27,6 +27,7 @@ interface StatsData {
       accessCode?: string;
       emailSent?: boolean;
       error?: string;
+      paymentVerified?: boolean;
       createdAt: number;
     }[];
   };
@@ -533,7 +534,12 @@ export function AdminDashboard() {
                       <td>
                         <span className={`status ${o.status} icon-line`}>
                           {o.status === "paid" ? (
-                            <><Icon name="check" size={12} /> payé</>
+                            <>
+                              <Icon name="check" size={12} /> payé
+                              {o.paymentVerified === false && (
+                                <strong className="to-check"> à vérifier</strong>
+                              )}
+                            </>
                           ) : o.status === "pending" ? (
                             <><Icon name="clock" size={12} /> en attente</>
                           ) : (

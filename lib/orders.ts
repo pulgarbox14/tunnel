@@ -20,6 +20,12 @@ export interface Order {
   emailSent?: boolean;
   /** Raison technique d'un échec (réponse du prestataire) — visible dans le panel. */
   error?: string;
+  /**
+   * Paiement confirmé par FeexPay lui-même (et non seulement annoncé par
+   * le navigateur du client). `false` = à recouper avec le tableau de
+   * bord FeexPay depuis le panel admin.
+   */
+  paymentVerified?: boolean;
   createdAt: number;
   paidAt?: number;
 }

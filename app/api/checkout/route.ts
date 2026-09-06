@@ -1,24 +1,24 @@
 import { NextResponse } from "next/server";
-import { createOrder, markOrderPaid, updateOrder } from "@/lib/orders";
-import { feexpayConfigured, requestToPay } from "@/lib/feexpay";
+import { createOrder, markOrderPaid } from "@/lib/orders";
+import { feexpayConfigured } from "@/lib/feexpay";
 import { site } from "@/content/site";
 
 /**
- * Création de commande + lancement du paiement FeexPay.
+ * Création de la commande AVANT le paiement.
  *
- * - Mobile Money : demande "request to pay" (push USSD sur le téléphone),
- *   puis le client est redirigé vers /paiement/<ref> qui suit le statut.
- * - Sans FEEXPAY_API_KEY : mode simulation (paiement accepté directement)
- *   pour tester le tunnel de bout en bout.
+ * Le paiement lui-même se fait sur la page FeexPay, ouverte par le bouton
+ * officiel (SDK React) : c'est là que le client choisit son réseau (MTN,
+ * Moov, Celtiis, carte…) et saisit son numéro. Cette route se contente
+ * donc d'enregistrer la commande et de renvoyer :
+ *   - sa référence, utilisée comme référence de transaction chez FeexPay
+ *   - le montant, TOUJOURS calculé côté serveur
+ *   - la configuration publique du bouton FeexPay
+ *
+ * Sans clé FeexPay : mode simulation (commande validée directement) pour
+ * tester le tunnel de bout en bout.
  */
 export async function POST(request: Request) {
-  let data: {
-    name?: string;
-    email?: string;
-    phone?: string;
-    method?: string;
-    product?: string;
-  };
+  let data: { name?: string; email?: string; phone?: string; product?: string };
   try {
     data = await request.json();
   } catch {
@@ -28,10 +28,9 @@ export async function POST(request: Request) {
   const name = (data.name ?? "").trim();
   const email = (data.email ?? "").trim();
   const phone = (data.phone ?? "").trim();
-  const method = (data.method ?? "").trim();
   const product = data.product === "bonus" ? "bonus" : "programme";
 
-  if (!name || !email || !phone || !method) {
+  if (!name || !email || !phone) {
     return NextResponse.json(
       { ok: false, error: "Merci de remplir tous les champs." },
       { status: 400 },
@@ -45,43 +44,26 @@ export async function POST(request: Request) {
     name,
     email,
     phone,
-    method,
+    method: "",
     product,
     amount,
     currency: priceSource.currency,
   });
 
   // Mode simulation tant que FeexPay n'est pas configuré
-  if (!feexpayConfigured() || method === "card") {
-    // TODO carte bancaire : brancher la page de paiement carte FeexPay
+  if (!feexpayConfigured()) {
     await markOrderPaid(order.ref);
-    return NextResponse.json({ ok: true, redirect: `/merci?ref=${order.ref}` });
+    return NextResponse.json({ ok: true, simulation: true, redirect: `/merci?ref=${order.ref}` });
   }
 
-  try {
-    const { reference } = await requestToPay({
-      method,
-      phone,
-      amount,
-      orderRef: order.ref,
-      customer: { name, email },
-    });
-    await updateOrder(order.ref, { providerRef: reference });
-    return NextResponse.json({ ok: true, redirect: `/paiement/${order.ref}` });
-  } catch (e) {
-    // La cause technique est conservée sur la commande : elle s'affiche
-    // dans le panel admin (onglet Statistiques) sans avoir à ouvrir le
-    // serveur en SSH.
-    const detail = e instanceof Error ? e.message : String(e);
-    console.error("FeexPay requestToPay:", detail);
-    await updateOrder(order.ref, { status: "failed", error: detail });
-    return NextResponse.json(
-      {
-        ok: false,
-        error: "Le paiement n'a pas pu être lancé. Vérifie ton numéro et réessaie.",
-        ref: order.ref,
-      },
-      { status: 502 },
-    );
-  }
+  return NextResponse.json({
+    ok: true,
+    ref: order.ref,
+    amount,
+    feexpay: {
+      shopId: process.env.FEEXPAY_SHOP_ID,
+      token: process.env.FEEXPAY_API_KEY,
+      mode: process.env.FEEXPAY_MODE === "SANDBOX" ? "SANDBOX" : "LIVE",
+    },
+  });
 }
