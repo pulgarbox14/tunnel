@@ -42,6 +42,7 @@ export async function GET() {
           name: o.name,
           email: o.email,
           phone: o.phone,
+          whatsapp: o.whatsapp,
           method: o.method,
           product: o.product ?? "programme",
           amount: o.amount,

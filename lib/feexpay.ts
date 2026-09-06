@@ -1,43 +1,61 @@
 /**
- * Intégration FeexPay (https://feexpay.me) — paiements FCFA au Bénin :
- * MTN Mobile Money, Moov Money, Celtiis Cash, cartes bancaires.
+ * Intégration API FeexPay — paiements Mobile Money au Bénin.
  *
  * Variables d'environnement :
- *   FEEXPAY_API_KEY  — clé API du compte marchand (Bearer token)
- *   FEEXPAY_SHOP_ID  — identifiant de la boutique FeexPay
- *   FEEXPAY_BASE_URL — défaut : https://api.feexpay.me
+ *   FEEXPAY_API_KEY  — clé API du compte marchand (en-tête Bearer)
+ *   FEEXPAY_SHOP_ID  — identifiant de la boutique (ex : Ayg9lkjkhurIvNp)
+ *   FEEXPAY_BASE_URL — défaut : https://api-v2.feexpay.me
  *
- * Flux Mobile Money ("request to pay") :
- *   1. On envoie la demande de paiement → le client reçoit le push USSD
- *      sur son téléphone et confirme avec son code PIN.
- *   2. On interroge le statut de la transaction jusqu'à SUCCESSFUL.
+ * Flux « request to pay » :
+ *   1. On envoie la demande → le client reçoit le push USSD sur son
+ *      téléphone et confirme avec son code PIN.
+ *   2. La page /paiement/<ref> interroge le statut jusqu'à SUCCESSFUL.
  *
- * ⚠️ Les chemins d'API sont à vérifier avec la documentation FeexPay de
- * ton compte marchand (ils peuvent évoluer). Sans clé configurée, le
- * checkout passe en mode simulation pour tester le tunnel de bout en bout.
+ * Certains réseaux (Moov) renvoient parfois le statut final dès la
+ * première réponse : requestToPay renvoie donc aussi ce statut.
  */
 
-const BASE_URL = process.env.FEEXPAY_BASE_URL ?? "https://api.feexpay.me";
+const BASE_URL = process.env.FEEXPAY_BASE_URL ?? "https://api-v2.feexpay.me";
+
+/** Limites imposées par FeexPay (en XOF). */
+export const MIN_AMOUNT = 100;
+export const MAX_AMOUNT = 2_000_000;
 
 export function feexpayConfigured(): boolean {
   return Boolean(process.env.FEEXPAY_API_KEY && process.env.FEEXPAY_SHOP_ID);
 }
 
-/** Réseaux FeexPay par moyen de paiement du formulaire. */
-const NETWORKS: Record<string, string> = {
+/** Réseaux gérés, du choix affiché vers le segment d'URL FeexPay. */
+export const NETWORKS: Record<string, string> = {
   mtn: "mtn",
   moov: "moov",
   celtiis: "celtiis_bj",
 };
 
 /**
- * Numéro attendu par FeexPay : chiffres uniquement, SANS le "+" ni
- * l'indicatif pays (les exemples officiels montrent le numéro local).
- * "+229 01 97 91 77 59" → "0197917759"
+ * Format attendu par FeexPay : indicatif 229 suivi du numéro local à
+ * 10 chiffres commençant par 01 (exemple de la doc : 2290166000000).
+ *
+ *   "+229 01 97 91 77 59" → "2290197917759"
+ *   "0197917759"          → "2290197917759"
+ *   "97917759" (ancien)   → "2290197917759"
  */
 export function normalizePhone(raw: string): string {
-  const digits = raw.replace(/\D/g, "");
-  return digits.startsWith("229") ? digits.slice(3) : digits;
+  let local = raw.replace(/\D/g, "");
+  if (local.startsWith("229")) local = local.slice(3);
+  // Anciens numéros à 8 chiffres : le Bénin les préfixe désormais de 01
+  if (local.length === 8) local = `01${local}`;
+  return `229${local}`;
+}
+
+/** Le numéro est-il exploitable (10 chiffres locaux commençant par 0) ? */
+export function isValidPhone(raw: string): boolean {
+  return /^2290\d{9}$/.test(normalizePhone(raw));
+}
+
+/** FeexPay refuse les caractères spéciaux dans description. */
+function plain(text: string): string {
+  return text.replace(/[^a-zA-Z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
 }
 
 async function api(path: string, method: string, body?: unknown) {
@@ -52,22 +70,30 @@ async function api(path: string, method: string, body?: unknown) {
       body: body ? JSON.stringify(body) : undefined,
     });
   } catch (e) {
-    // Le serveur n'a pas pu joindre FeexPay du tout (réseau, DNS, pare-feu)
     throw new Error(`FeexPay injoignable (${BASE_URL}${path}) : ${String(e)}`);
   }
 
   const raw = await res.text();
-  let data: Record<string, unknown> = {};
+  let data: unknown = {};
   try {
     data = raw ? JSON.parse(raw) : {};
   } catch {
-    // Réponse non-JSON (page HTML d'erreur, proxy…) : on garde le texte brut
     if (!res.ok) throw new Error(`FeexPay ${path} → HTTP ${res.status} : ${raw.slice(0, 300)}`);
   }
   if (!res.ok) {
     throw new Error(`FeexPay ${path} → HTTP ${res.status} : ${JSON.stringify(data).slice(0, 300)}`);
   }
-  return data;
+  return data as Record<string, unknown>;
+}
+
+/** Message lisible renvoyé par l'opérateur en cas de refus. */
+export function operatorMessage(data: Record<string, unknown>): string {
+  const op = data.response_operator as { description?: unknown } | undefined;
+  const desc = op?.description;
+  if (Array.isArray(desc) && desc.length) return String(desc[0]);
+  if (typeof desc === "string") return desc;
+  if (typeof data.message === "string") return data.message;
+  return "";
 }
 
 /**
@@ -80,35 +106,42 @@ export async function requestToPay(params: {
   amount: number;
   orderRef: string;
   customer: { name: string; email: string };
-}): Promise<{ reference: string }> {
+}): Promise<{ reference: string; status: string; message: string }> {
   const network = NETWORKS[params.method];
   if (!network) {
-    throw new Error(`Moyen de paiement non géré par l'API Mobile Money : ${params.method}`);
+    throw new Error(`Réseau non géré : ${params.method}`);
+  }
+  if (params.amount < MIN_AMOUNT || params.amount > MAX_AMOUNT) {
+    throw new Error(
+      `Montant hors limites FeexPay (${MIN_AMOUNT} à ${MAX_AMOUNT} XOF) : ${params.amount}`,
+    );
   }
   const [firstname, ...rest] = params.customer.name.trim().split(/\s+/);
 
   const data = await api(`/api/transactions/public/requesttopay/${network}`, "POST", {
     shop: process.env.FEEXPAY_SHOP_ID,
     amount: params.amount,
-    phoneNumber: normalizePhone(params.phone),
-    first_name: firstname || "Client",
-    last_name: rest.join(" ") || "-",
-    email: params.customer.email,
-    custom_id: params.orderRef,
+    phoneNumber: Number(normalizePhone(params.phone)),
+    first_name: plain(firstname) || "Client",
+    last_name: plain(rest.join(" ")) || "-",
+    description: plain(`Commande ${params.orderRef}`),
+    callback_info: params.orderRef,
   });
 
-  // La clé portant la référence varie selon les versions de l'API
-  const d = data as { reference?: string; id?: string; transaction?: { reference?: string } };
-  const reference = d.reference ?? d.transaction?.reference ?? d.id;
+  const reference = typeof data.reference === "string" ? data.reference : "";
   if (!reference) {
     throw new Error(
-      `FeexPay : référence de transaction absente de la réponse ${JSON.stringify(data).slice(0, 300)}`,
+      `FeexPay : référence absente de la réponse ${JSON.stringify(data).slice(0, 300)}`,
     );
   }
-  return { reference };
+  return {
+    reference,
+    status: String(data.status ?? "PENDING").toUpperCase(),
+    message: operatorMessage(data),
+  };
 }
 
-/** Statut d'une transaction : SUCCESSFUL | PENDING | FAILED (selon FeexPay). */
+/** Statut d'une transaction : SUCCESSFUL | PENDING | FAILED. */
 export async function getStatus(reference: string): Promise<string> {
   const data = await api(`/api/transactions/public/single/status/${reference}`, "GET");
   const d = data as { status?: string; transaction?: { status?: string } };

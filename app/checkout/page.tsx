@@ -51,14 +51,6 @@ export default async function CheckoutPage({
               <Icon name="lock" size={13} /> Paiement 100 % sécurisé via FeexPay. Après
               validation, tu reçois ton code d&apos;accès personnel par email.
             </p>
-            {/* Simple rappel des moyens acceptés — le choix se fait sur FeexPay */}
-            <div className="accepted-methods">
-              {site.paymentMethods.map((m) => (
-                <span key={m.id} className="icon-line">
-                  <Icon name={m.icon} size={13} /> {m.label}
-                </span>
-              ))}
-            </div>
           </div>
         </div>
       </section>

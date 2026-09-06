@@ -49,26 +49,37 @@ renommer le dossier `app/gestion-cap-x7k9`.
 - **Pas de code maître** : le formateur accède à l'espace membre via sa
   session admin (bouton « Voir l'espace membre » dans le panel).
 
-## Paiements — FeexPay
+## Paiements — API FeexPay
 
-Intégration officielle par le **SDK React** (`react-sdk-feexpay`) :
+Intégration **API** (`https://api-v2.feexpay.me`) : le paiement se déroule
+entièrement sur le site, sans redirection.
 
-1. Le client laisse ses coordonnées (nom, email, **numéro WhatsApp** — ce
-   numéro sert au contact, pas au paiement) → la commande est créée côté
-   serveur, qui fixe le montant.
-2. Le bouton FeexPay ouvre la page de paiement : le client y choisit son
-   réseau (MTN, Moov, Celtiis, carte) et saisit le numéro à débiter.
-3. Au retour, `/api/checkout/confirm` **revérifie le statut auprès de
-   FeexPay** avant de délivrer le code d'accès. Si cette vérification est
-   impossible, la commande est validée mais marquée « à vérifier » dans le
-   panel admin (à recouper avec le tableau de bord FeexPay).
+1. Le client saisit nom, email, **numéro WhatsApp** (contact), son réseau
+   Mobile Money et le **numéro à débiter**.
+2. `POST /api/transactions/public/requesttopay/{mtn|moov|celtiis_bj}` avec
+   l'en-tête `Authorization: Bearer <clé>` → le client reçoit le push USSD
+   et confirme avec son code PIN.
+3. La page `/paiement/<ref>` interroge le statut jusqu'à `SUCCESSFUL`, puis
+   redirige vers `/merci` avec le code d'accès.
+
+Détails d'implémentation (`lib/feexpay.ts`) :
+
+- **Numéro** au format exigé : indicatif `229` + numéro local à 10 chiffres
+  commençant par `01` (`+229 01 97 91 77 59` → `2290197917759`). Les anciens
+  numéros à 8 chiffres sont préfixés automatiquement.
+- **Montant** borné par FeexPay : 100 à 2 000 000 XOF (vérifié côté serveur).
+- **`description`** nettoyée de tout caractère spécial (exigence FeexPay).
+- **Moov** peut renvoyer le statut final dès la première réponse (par
+  exemple `FAILED` / « Balance is insufficient ») : le message de
+  l'opérateur est alors affiché tel quel au client.
+- Toute erreur est enregistrée sur la commande et **visible dans le panel
+  admin**, sans avoir à ouvrir le serveur en SSH.
 
 **Sans clé configurée, mode simulation** (commande validée directement) pour
 tester le tunnel de bout en bout.
 
-⚠️ Le SDK s'exécute dans le navigateur : `FEEXPAY_API_KEY` y est donc
-visible. Vérifier auprès de FeexPay qu'il s'agit bien de la clé prévue pour
-le frontend.
+⚠️ Le paiement par **carte bancaire** n'est pas branché : la doc de
+l'endpoint correspondant est nécessaire.
 
 ## Emails (code d'accès)
 
@@ -94,9 +105,9 @@ sans `ADMIN_EMAIL` / `ADMIN_PASSWORD`, le panel admin est verrouillé.
 | `AUTH_SECRET` | Secret de signature des sessions | valeur de dev |
 | `MAX_DEVICES` | Appareils autorisés par code | `2` |
 | `MAX_VIDEO_MB` | Taille max d'une vidéo uploadée (0 = illimité) | `0` (illimité) |
-| `FEEXPAY_API_KEY` | Clé API FeexPay (visible côté navigateur) | — (simulation) |
+| `FEEXPAY_API_KEY` | Clé API FeexPay | — (simulation) |
 | `FEEXPAY_SHOP_ID` | Boutique FeexPay | — |
-| `FEEXPAY_MODE` | `LIVE` ou `SANDBOX` | `LIVE` |
+| `FEEXPAY_BASE_URL` | Base de l'API FeexPay | `https://api-v2.feexpay.me` |
 | `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` | Boîte Hostinger pour l'envoi des emails | — |
 | `MAIL_FROM_NAME` | Nom d'expéditeur affiché | `Cap sur monAvenir` |
 | `APP_URL` | URL publique du site | `http://localhost:3000` |

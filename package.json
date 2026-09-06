@@ -11,8 +11,7 @@
     "next": "16.3.1",
     "nodemailer": "^9.0.5",
     "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "react-sdk-feexpay": "^1.0.4"
+    "react-dom": "19.2.8"
   },
   "devDependencies": {
     "@types/node": "^20",

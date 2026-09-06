@@ -7,7 +7,11 @@ export interface Order {
   ref: string;
   name: string;
   email: string;
+  /** Numéro Mobile Money débité. */
   phone: string;
+  /** Numéro WhatsApp de contact (peut différer du numéro de paiement). */
+  whatsapp?: string;
+  /** Réseau Mobile Money : mtn | moov | celtiis. */
   method: string;
   /** "programme" (offre principale) ou "bonus" (bourses extérieures). */
   product: "programme" | "bonus";

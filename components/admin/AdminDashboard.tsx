@@ -20,6 +20,7 @@ interface StatsData {
       name: string;
       email: string;
       phone: string;
+      whatsapp?: string;
       method: string;
       product?: string;
       amount: number;
@@ -518,7 +519,17 @@ export function AdminDashboard() {
                       <td>
                         {o.email}
                         <br />
-                        {o.phone}
+                        {o.whatsapp ? (
+                          <a
+                            href={`https://wa.me/${o.whatsapp.replace(/\D/g, "")}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {o.whatsapp}
+                          </a>
+                        ) : (
+                          o.phone
+                        )}
                       </td>
                       <td>
                         <span className="icon-line">
