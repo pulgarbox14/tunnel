@@ -331,9 +331,6 @@ export default async function HomePage() {
               <Cta href="/checkout" label="Rejoindre le programme" sub="accès immédiat" block />
             </div>
           </div>
-          <p className="muted mt-2 small icon-line">
-            <Icon name="lock" size={12} /> {site.pricing.paymentNote}
-          </p>
         </div>
       </section>
     </main>

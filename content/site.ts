@@ -272,8 +272,6 @@ export const site = {
       "Mises à jour gratuites",
       "Garantie satisfait ou remboursé 7 jours",
     ],
-    paymentNote:
-      "Paiement sécurisé via FeexPay (MTN MoMo, Moov Money, Celtiis Cash, carte bancaire) — Après ton achat, tu reçois immédiatement ton code d'accès personnel par email.",
   },
 
   /** BONUS optionnel — proposé en upsell après la fin de la formation. */

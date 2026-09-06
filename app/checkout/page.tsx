@@ -1,6 +1,5 @@
 import { CheckoutForm } from "@/components/CheckoutForm";
 import { site } from "@/content/site";
-import { Icon } from "@/components/Icon";
 
 export const metadata = { title: `Commande — ${site.brand}` };
 
@@ -47,10 +46,6 @@ export default async function CheckoutPage({
               priceLabel={`${pricing.price} ${pricing.currency}`}
             />
 
-            <p className="muted small mt-2 icon-line">
-              <Icon name="lock" size={13} /> Paiement 100 % sécurisé via FeexPay. Après
-              validation, tu reçois ton code d&apos;accès personnel par email.
-            </p>
           </div>
         </div>
       </section>
