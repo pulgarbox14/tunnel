@@ -139,9 +139,6 @@ export function CheckoutForm({
           callback={handlePayment}
         />
 
-        <p className="muted small mt-1">
-          Tu choisis ton réseau et saisis le numéro à débiter sur la page FeexPay.
-        </p>
         <button
           type="button"
           className="btn-ghost btn-block mt-1"
@@ -166,12 +163,10 @@ export function CheckoutForm({
       <div className="form-field">
         <label htmlFor="email">Email</label>
         <input id="email" name="email" type="email" placeholder="ton@email.com" required />
-        <small className="muted">Ton code d&apos;accès y sera envoyé.</small>
       </div>
       <div className="form-field">
         <label htmlFor="phone">Numéro WhatsApp</label>
         <input id="phone" name="phone" type="tel" placeholder="+229 01 00 00 00 00" required />
-        <small className="muted">Pour te joindre — le paiement se fait à l&apos;étape suivante.</small>
       </div>
 
       {error && (
